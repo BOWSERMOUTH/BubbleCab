@@ -7,8 +7,10 @@ public class Submarine : MonoBehaviour {
 
     Rigidbody rigidBody;
     AudioSource audioSource;
+    [SerializeField] float rcsThrust = 150f;
+    [SerializeField] float mainThrust = 1f;
 
-	void Start ()
+    void Start ()
     {
         rigidBody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
@@ -16,15 +18,15 @@ public class Submarine : MonoBehaviour {
 	
 	void Update ()
     {
-        ProcessInput();
+        Thrust();
+        Rotate();
 	}
     // Controls
-    private void ProcessInput()
+    private void Thrust()
     {
-        // Thrust
         if (Input.GetKey(KeyCode.W))
         {
-            rigidBody.AddRelativeForce(Vector3.up);
+            rigidBody.AddRelativeForce(Vector3.up * mainThrust);
             // So audio doesn't layer
             if (!audioSource.isPlaying)
             {
@@ -37,18 +39,27 @@ public class Submarine : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.S))
         {
-            print("going down");
-            rigidBody.AddRelativeForce(Vector3.down);
+            rigidBody.AddRelativeForce(Vector3.down * mainThrust);
         }
+    }
+    private void Rotate()
+    {
+        // Freezing rotation as soon as we rotate
+        rigidBody.freezeRotation = true;
+        // Turning Power
+        float rotationThisFrame = rcsThrust * Time.deltaTime;
+
         // Rotating Left
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(Vector3.forward);
+            transform.Rotate(Vector3.forward * rotationThisFrame);
         }
         // Rotating Right
         else if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(Vector3.back);
+            transform.Rotate(Vector3.back * rotationThisFrame);
         }
+        // Allowing rotation to resume after rotating
+        rigidBody.freezeRotation = false;
     }
 }
