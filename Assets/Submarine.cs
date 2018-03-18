@@ -62,4 +62,21 @@ public class Submarine : MonoBehaviour {
         // Allowing rotation to resume after rotating
         rigidBody.freezeRotation = false;
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        switch (collision.gameObject.tag)
+        {
+            case "Friendly":
+                print("Ok");
+                // Do Nothing
+                break;
+            case "Fuel":
+                print("Fuel");
+                break;
+            default:
+                print("Dead");
+                break;
+        }
+    }
 }
