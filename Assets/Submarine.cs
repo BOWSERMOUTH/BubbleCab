@@ -1,14 +1,19 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Submarine : MonoBehaviour {
 
     Rigidbody rigidBody;
     AudioSource audioSource;
+
     [SerializeField] float rcsThrust = 150f;
     [SerializeField] float mainThrust = 1f;
+
+    enum State {  Alive, Dying, Transcending }
+    State state = State.Alive;
+
+    public GameObject submarine; //FOOLING AROUND
+    public GameObject popo;
 
     void Start ()
     {
@@ -18,9 +23,13 @@ public class Submarine : MonoBehaviour {
 	
 	void Update ()
     {
-        Thrust();
-        Rotate();
+        if (state == State.Alive)
+        {
+            Thrust();
+            Rotate();
+        }
 	}
+
     // Controls
     private void Thrust()
     {
@@ -68,15 +77,27 @@ public class Submarine : MonoBehaviour {
         switch (collision.gameObject.tag)
         {
             case "Friendly":
-                print("Ok");
                 // Do Nothing
                 break;
-            case "Fuel":
-                print("Fuel");
+            case "Finish":
+                state = State.Transcending;
+                Invoke("LoadNextLevel", 1f); // parameterise time
                 break;
             default:
-                print("Dead");
+                state = State.Dying;
+                submarine.transform.parent = null;
+                popo.transform.parent = null;
+                Invoke("LoadFirstLevel", 1f);
                 break;
         }
+    }
+
+    private void LoadNextLevel()
+    {
+        SceneManager.LoadScene(1);
+    }
+    private void LoadFirstLevel()
+    {
+        SceneManager.LoadScene(0);
     }
 }
