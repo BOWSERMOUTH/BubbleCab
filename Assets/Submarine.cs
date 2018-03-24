@@ -79,6 +79,8 @@ public class Submarine : MonoBehaviour {
             case "Friendly":
                 // Do Nothing
                 break;
+            case "Grippable":
+                break;
             case "Finish":
                 state = State.Transcending;
                 Invoke("LoadNextLevel", 1f); // parameterise time
