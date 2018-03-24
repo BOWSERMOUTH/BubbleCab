@@ -5,6 +5,9 @@ public class Submarine : MonoBehaviour {
 
     Rigidbody rigidBody;
     AudioSource audioSource;
+    [SerializeField] AudioClip mainEngine;
+    [SerializeField] AudioClip deathSound;
+    [SerializeField] AudioClip winSound;
 
     [SerializeField] float rcsThrust = 150f;
     [SerializeField] float mainThrust = 1f;
@@ -25,23 +28,16 @@ public class Submarine : MonoBehaviour {
     {
         if (state == State.Alive)
         {
-            Thrust();
-            Rotate();
+            RespondToThrustInput();
+            RespondToRotateInput();
         }
 	}
 
     // Controls
-    private void Thrust()
+    private void RespondToThrustInput()
     {
         if (Input.GetKey(KeyCode.W))
-        {
-            rigidBody.AddRelativeForce(Vector3.up * mainThrust);
-            // So audio doesn't layer
-            if (!audioSource.isPlaying)
-            {
-                audioSource.Play();
-            }
-        }
+            AppleThrust();
         else
         {
             audioSource.Stop();
@@ -51,7 +47,18 @@ public class Submarine : MonoBehaviour {
             rigidBody.AddRelativeForce(Vector3.down * mainThrust);
         }
     }
-    private void Rotate()
+    // THRUST STRENGTH
+    private void AppleThrust()
+    {
+        rigidBody.AddRelativeForce(Vector3.up * mainThrust);
+        // So audio doesn't layer
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(mainEngine);
+        }
+    }
+
+    private void RespondToRotateInput()
     {
         // Freezing rotation as soon as we rotate
         rigidBody.freezeRotation = true;
@@ -74,6 +81,11 @@ public class Submarine : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
+        // If we're not alive, return
+        if (state != State.Alive)
+        {
+            return;
+        }
         switch (collision.gameObject.tag)
         {
             case "Friendly":
@@ -82,16 +94,30 @@ public class Submarine : MonoBehaviour {
             case "Grippable":
                 break;
             case "Finish":
-                state = State.Transcending;
-                Invoke("LoadNextLevel", 1f); // parameterise time
+                SuccessSequence();
                 break;
             default:
-                state = State.Dying;
-                submarine.transform.parent = null;
-                popo.transform.parent = null;
-                Invoke("LoadFirstLevel", 1f);
+                DeathSequence();
                 break;
         }
+    }
+
+    private void DeathSequence()
+    {
+        state = State.Dying;
+        audioSource.Stop();
+        audioSource.PlayOneShot(deathSound);
+        submarine.transform.parent = null;
+        popo.transform.parent = null;
+        Invoke("LoadFirstLevel", 1f);
+    }
+
+    private void SuccessSequence()
+    {
+        audioSource.Stop();
+        audioSource.PlayOneShot(winSound);
+        state = State.Transcending;
+        Invoke("LoadNextLevel", 2.5f); // parameterise time
     }
 
     private void LoadNextLevel()
