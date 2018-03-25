@@ -18,6 +18,11 @@ public class Submarine : MonoBehaviour {
     public GameObject submarine; //FOOLING AROUND
     public GameObject popo;
 
+    public bool lightControl;
+    public GameObject topLight;
+    public GameObject leftLight;
+    public GameObject rightLight;
+
     void Start ()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -30,9 +35,30 @@ public class Submarine : MonoBehaviour {
         {
             RespondToThrustInput();
             RespondToRotateInput();
+            lightsOnOff();
         }
 	}
-
+    // CONTROLS LIGHTS WITH F
+    private void lightsOnOff()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            lightControl = !lightControl;
+        }
+        if (lightControl == true)
+            {
+                topLight.gameObject.SetActive(true);
+                rightLight.gameObject.SetActive(true);
+                leftLight.gameObject.SetActive(true);
+            }
+        if (lightControl == false)
+        {
+            topLight.gameObject.SetActive(false);
+            rightLight.gameObject.SetActive(false);
+            leftLight.gameObject.SetActive(false);
+        }
+    }
+    
     // Controls
     private void RespondToThrustInput()
     {
