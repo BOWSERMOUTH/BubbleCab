@@ -11,9 +11,9 @@ public class GripPoint : MonoBehaviour
         touchingObject = false;
     }
     // You are not touching the object bool
-    void OnTriggerEnter(Collider cube)
+    void OnTriggerEnter(Collider poop)
     {
-        if (cube.gameObject.tag == "Grippable")
+        if (poop.gameObject.tag == "Grippable")
         {
             touchingObject = true;
         }

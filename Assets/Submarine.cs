@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Submarine : MonoBehaviour {
+
+    //public count how many scuba people you have
+    
 
     Rigidbody rigidBody;
     AudioSource audioSource;
@@ -11,13 +15,25 @@ public class Submarine : MonoBehaviour {
 
     [SerializeField] float rcsThrust = 150f;
     [SerializeField] float mainThrust = 1f;
+    [SerializeField] float levelLoadDelay = 2f;
 
     enum State {  Alive, Dying, Transcending }
     State state = State.Alive;
 
-    public GameObject submarine; //FOOLING AROUND
+
+
+    //PIECES THAT FALL OFF WHEN DEAD
+    public GameObject dome;
     public GameObject popo;
 
+    //CARRYING LOGIC
+    public bool isCarrying = false;
+    public int carryingCapacity = 1;
+    public static int score = 0;
+    public TimerScript timer;
+    public static int cargoCount = 0;
+
+    //LIGHT CONTROLS
     public bool lightControl;
     public GameObject topLight;
     public GameObject leftLight;
@@ -27,6 +43,7 @@ public class Submarine : MonoBehaviour {
     {
         rigidBody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
+
     }
 	
 	void Update ()
@@ -36,6 +53,7 @@ public class Submarine : MonoBehaviour {
             RespondToThrustInput();
             RespondToRotateInput();
             lightsOnOff();
+            //add pickup scubadiver method
         }
 	}
     // CONTROLS LIGHTS WITH F
@@ -63,7 +81,7 @@ public class Submarine : MonoBehaviour {
     private void RespondToThrustInput()
     {
         if (Input.GetKey(KeyCode.W))
-            AppleThrust();
+            ApplyThrust();
         else
         {
             audioSource.Stop();
@@ -74,7 +92,7 @@ public class Submarine : MonoBehaviour {
         }
     }
     // THRUST STRENGTH
-    private void AppleThrust()
+    private void ApplyThrust()
     {
         rigidBody.AddRelativeForce(Vector3.up * mainThrust);
         // So audio doesn't layer
@@ -104,7 +122,6 @@ public class Submarine : MonoBehaviour {
         // Allowing rotation to resume after rotating
         rigidBody.freezeRotation = false;
     }
-
     private void OnCollisionEnter(Collision collision)
     {
         // If we're not alive, return
@@ -117,6 +134,9 @@ public class Submarine : MonoBehaviour {
             case "Friendly":
                 // Do Nothing
                 break;
+            case "Surface":
+                ScoringPoint();
+                break;
             case "Grippable":
                 break;
             case "Finish":
@@ -127,15 +147,41 @@ public class Submarine : MonoBehaviour {
                 break;
         }
     }
-
+    // SCORING A POINT WITH A SCUBA GUY
+    private void ScoringPoint()
+    {
+        if (isCarrying == true)
+        {
+            dome.transform.Find("ScubaDiver").transform.gameObject.tag = "Friendly";
+            dome.transform.Find("ScubaDiver").transform.parent = null;
+            
+            score = score + cargoCount;
+            isCarrying = false;
+            carryingCapacity = carryingCapacity + 1;
+            TimerScript.timeLeft = TimerScript.timeLeft + 30f;
+        }
+    }
+    // COLLIDING WITH SCUBA DIVER
+    private void OnTriggerEnter(Collider scuba)
+    {
+        if (scuba.gameObject.tag == "Diver" && carryingCapacity >= 1f)
+        {
+            scuba.transform.parent = dome.transform;
+            scuba.gameObject.transform.position = dome.transform.position + dome.transform.right * .3f;
+            scuba.transform.rotation = Quaternion.identity;
+            isCarrying = true;
+            carryingCapacity = carryingCapacity - 1;
+            cargoCount = cargoCount + 1;
+        }
+    }
     private void DeathSequence()
     {
         state = State.Dying;
         audioSource.Stop();
         audioSource.PlayOneShot(deathSound);
-        submarine.transform.parent = null;
+        dome.transform.parent = null;
         popo.transform.parent = null;
-        Invoke("LoadFirstLevel", 1f);
+        Invoke("LoadFirstLevel", levelLoadDelay);
     }
 
     private void SuccessSequence()
