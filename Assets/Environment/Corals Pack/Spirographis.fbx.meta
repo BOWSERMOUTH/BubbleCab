@@ -1,0 +1,313 @@
+fileFormatVersion: 2
+guid: 2d505447fdc8e394480a8b21875f5ba0
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Anillo_01
+    100002: Anillo_02
+    100004: Anillo_03
+    100006: Espirografo_Animado_FINAL:Jnt_disco_01_A_01
+    100008: Espirografo_Animado_FINAL:Jnt_disco_01_A_01_end
+    100010: Espirografo_Animado_FINAL:Jnt_disco_01_A_Root
+    100012: Espirografo_Animado_FINAL:Jnt_disco_01_B_01
+    100014: Espirografo_Animado_FINAL:Jnt_disco_01_B_01_end
+    100016: Espirografo_Animado_FINAL:Jnt_disco_01_B_Root
+    100018: Espirografo_Animado_FINAL:Jnt_disco_01_C_01
+    100020: Espirografo_Animado_FINAL:Jnt_disco_01_C_01_end
+    100022: Espirografo_Animado_FINAL:Jnt_disco_01_C_Root
+    100024: Espirografo_Animado_FINAL:Jnt_disco_01_D_01
+    100026: Espirografo_Animado_FINAL:Jnt_disco_01_D_01_end
+    100028: Espirografo_Animado_FINAL:Jnt_disco_01_D_Root
+    100030: Espirografo_Animado_FINAL:Jnt_disco_01_E_01
+    100032: Espirografo_Animado_FINAL:Jnt_disco_01_E_01_end
+    100034: Espirografo_Animado_FINAL:Jnt_disco_01_E_Root
+    100036: Espirografo_Animado_FINAL:Jnt_disco_01_F_01
+    100038: Espirografo_Animado_FINAL:Jnt_disco_01_F_01_end
+    100040: Espirografo_Animado_FINAL:Jnt_disco_01_F_Root
+    100042: Espirografo_Animado_FINAL:Jnt_disco_01_G_01
+    100044: Espirografo_Animado_FINAL:Jnt_disco_01_G_01_end
+    100046: Espirografo_Animado_FINAL:Jnt_disco_01_G_Root
+    100048: Espirografo_Animado_FINAL:Jnt_disco_01_H_01
+    100050: Espirografo_Animado_FINAL:Jnt_disco_01_H_01_end
+    100052: Espirografo_Animado_FINAL:Jnt_disco_01_H_Root
+    100054: Espirografo_Animado_FINAL:Jnt_disco_02_A_01
+    100056: Espirografo_Animado_FINAL:Jnt_disco_02_A_01_end
+    100058: Espirografo_Animado_FINAL:Jnt_disco_02_A_Root
+    100060: Espirografo_Animado_FINAL:Jnt_disco_02_B_01
+    100062: Espirografo_Animado_FINAL:Jnt_disco_02_B_01_end
+    100064: Espirografo_Animado_FINAL:Jnt_disco_02_B_Root
+    100066: Espirografo_Animado_FINAL:Jnt_disco_02_C_01
+    100068: Espirografo_Animado_FINAL:Jnt_disco_02_C_01_end
+    100070: Espirografo_Animado_FINAL:Jnt_disco_02_C_Root
+    100072: Espirografo_Animado_FINAL:Jnt_disco_02_D_01
+    100074: Espirografo_Animado_FINAL:Jnt_disco_02_D_01_end
+    100076: Espirografo_Animado_FINAL:Jnt_disco_02_D_Root
+    100078: Espirografo_Animado_FINAL:Jnt_disco_02_E_01
+    100080: Espirografo_Animado_FINAL:Jnt_disco_02_E_01_end
+    100082: Espirografo_Animado_FINAL:Jnt_disco_02_E_Root
+    100084: Espirografo_Animado_FINAL:Jnt_disco_02_F_01
+    100086: Espirografo_Animado_FINAL:Jnt_disco_02_F_01_end
+    100088: Espirografo_Animado_FINAL:Jnt_disco_02_F_Root
+    100090: Espirografo_Animado_FINAL:Jnt_disco_02_G_01
+    100092: Espirografo_Animado_FINAL:Jnt_disco_02_G_01_end
+    100094: Espirografo_Animado_FINAL:Jnt_disco_02_G_Root
+    100096: Espirografo_Animado_FINAL:Jnt_disco_02_H_01
+    100098: Espirografo_Animado_FINAL:Jnt_disco_02_H_01_end
+    100100: Espirografo_Animado_FINAL:Jnt_disco_02_H_Root
+    100102: Espirografo_Animado_FINAL:Jnt_disco_03_A_01
+    100104: Espirografo_Animado_FINAL:Jnt_disco_03_A_01_end
+    100106: Espirografo_Animado_FINAL:Jnt_disco_03_A_Root
+    100108: Espirografo_Animado_FINAL:Jnt_disco_03_B_01
+    100110: Espirografo_Animado_FINAL:Jnt_disco_03_B_01_end
+    100112: Espirografo_Animado_FINAL:Jnt_disco_03_B_Root
+    100114: Espirografo_Animado_FINAL:Jnt_disco_03_C_01
+    100116: Espirografo_Animado_FINAL:Jnt_disco_03_C_01_end
+    100118: Espirografo_Animado_FINAL:Jnt_disco_03_C_Root
+    100120: Espirografo_Animado_FINAL:Jnt_disco_03_D_01
+    100122: Espirografo_Animado_FINAL:Jnt_disco_03_D_01_end
+    100124: Espirografo_Animado_FINAL:Jnt_disco_03_D_Root
+    100126: Espirografo_Animado_FINAL:Jnt_disco_03_E_01
+    100128: Espirografo_Animado_FINAL:Jnt_disco_03_E_01_end
+    100130: Espirografo_Animado_FINAL:Jnt_disco_03_E_Root
+    100132: Espirografo_Animado_FINAL:Jnt_disco_03_F_01
+    100134: Espirografo_Animado_FINAL:Jnt_disco_03_F_Root
+    100136: Espirografo_Animado_FINAL:Jnt_disco_03_G_01
+    100138: Espirografo_Animado_FINAL:Jnt_disco_03_G_Root
+    100140: Espirografo_Animado_FINAL:Jnt_disco_03_H_01
+    100142: Espirografo_Animado_FINAL:Jnt_disco_03_H_Root
+    100144: Espirografo_Animado_FINAL:joint3
+    100146: Espirografo_Animado_FINAL:joint3 1
+    100148: Espirografo_Animado_FINAL:joint3 2
+    100150: Grp_Joints_Anillo_01
+    100152: Grp_Joints_Anillo_02
+    100154: Grp_Joints_Anillo_03
+    100156: Jnt_tallo_01
+    100158: Jnt_tallo_Root
+    100160: Jnt_tallo_tallo_01_End
+    100162: Matrix
+    100164: //RootNode
+    100166: Spirographis
+    100168: Tallo
+    400000: Anillo_01
+    400002: Anillo_02
+    400004: Anillo_03
+    400006: Espirografo_Animado_FINAL:Jnt_disco_01_A_01
+    400008: Espirografo_Animado_FINAL:Jnt_disco_01_A_01_end
+    400010: Espirografo_Animado_FINAL:Jnt_disco_01_A_Root
+    400012: Espirografo_Animado_FINAL:Jnt_disco_01_B_01
+    400014: Espirografo_Animado_FINAL:Jnt_disco_01_B_01_end
+    400016: Espirografo_Animado_FINAL:Jnt_disco_01_B_Root
+    400018: Espirografo_Animado_FINAL:Jnt_disco_01_C_01
+    400020: Espirografo_Animado_FINAL:Jnt_disco_01_C_01_end
+    400022: Espirografo_Animado_FINAL:Jnt_disco_01_C_Root
+    400024: Espirografo_Animado_FINAL:Jnt_disco_01_D_01
+    400026: Espirografo_Animado_FINAL:Jnt_disco_01_D_01_end
+    400028: Espirografo_Animado_FINAL:Jnt_disco_01_D_Root
+    400030: Espirografo_Animado_FINAL:Jnt_disco_01_E_01
+    400032: Espirografo_Animado_FINAL:Jnt_disco_01_E_01_end
+    400034: Espirografo_Animado_FINAL:Jnt_disco_01_E_Root
+    400036: Espirografo_Animado_FINAL:Jnt_disco_01_F_01
+    400038: Espirografo_Animado_FINAL:Jnt_disco_01_F_01_end
+    400040: Espirografo_Animado_FINAL:Jnt_disco_01_F_Root
+    400042: Espirografo_Animado_FINAL:Jnt_disco_01_G_01
+    400044: Espirografo_Animado_FINAL:Jnt_disco_01_G_01_end
+    400046: Espirografo_Animado_FINAL:Jnt_disco_01_G_Root
+    400048: Espirografo_Animado_FINAL:Jnt_disco_01_H_01
+    400050: Espirografo_Animado_FINAL:Jnt_disco_01_H_01_end
+    400052: Espirografo_Animado_FINAL:Jnt_disco_01_H_Root
+    400054: Espirografo_Animado_FINAL:Jnt_disco_02_A_01
+    400056: Espirografo_Animado_FINAL:Jnt_disco_02_A_01_end
+    400058: Espirografo_Animado_FINAL:Jnt_disco_02_A_Root
+    400060: Espirografo_Animado_FINAL:Jnt_disco_02_B_01
+    400062: Espirografo_Animado_FINAL:Jnt_disco_02_B_01_end
+    400064: Espirografo_Animado_FINAL:Jnt_disco_02_B_Root
+    400066: Espirografo_Animado_FINAL:Jnt_disco_02_C_01
+    400068: Espirografo_Animado_FINAL:Jnt_disco_02_C_01_end
+    400070: Espirografo_Animado_FINAL:Jnt_disco_02_C_Root
+    400072: Espirografo_Animado_FINAL:Jnt_disco_02_D_01
+    400074: Espirografo_Animado_FINAL:Jnt_disco_02_D_01_end
+    400076: Espirografo_Animado_FINAL:Jnt_disco_02_D_Root
+    400078: Espirografo_Animado_FINAL:Jnt_disco_02_E_01
+    400080: Espirografo_Animado_FINAL:Jnt_disco_02_E_01_end
+    400082: Espirografo_Animado_FINAL:Jnt_disco_02_E_Root
+    400084: Espirografo_Animado_FINAL:Jnt_disco_02_F_01
+    400086: Espirografo_Animado_FINAL:Jnt_disco_02_F_01_end
+    400088: Espirografo_Animado_FINAL:Jnt_disco_02_F_Root
+    400090: Espirografo_Animado_FINAL:Jnt_disco_02_G_01
+    400092: Espirografo_Animado_FINAL:Jnt_disco_02_G_01_end
+    400094: Espirografo_Animado_FINAL:Jnt_disco_02_G_Root
+    400096: Espirografo_Animado_FINAL:Jnt_disco_02_H_01
+    400098: Espirografo_Animado_FINAL:Jnt_disco_02_H_01_end
+    400100: Espirografo_Animado_FINAL:Jnt_disco_02_H_Root
+    400102: Espirografo_Animado_FINAL:Jnt_disco_03_A_01
+    400104: Espirografo_Animado_FINAL:Jnt_disco_03_A_01_end
+    400106: Espirografo_Animado_FINAL:Jnt_disco_03_A_Root
+    400108: Espirografo_Animado_FINAL:Jnt_disco_03_B_01
+    400110: Espirografo_Animado_FINAL:Jnt_disco_03_B_01_end
+    400112: Espirografo_Animado_FINAL:Jnt_disco_03_B_Root
+    400114: Espirografo_Animado_FINAL:Jnt_disco_03_C_01
+    400116: Espirografo_Animado_FINAL:Jnt_disco_03_C_01_end
+    400118: Espirografo_Animado_FINAL:Jnt_disco_03_C_Root
+    400120: Espirografo_Animado_FINAL:Jnt_disco_03_D_01
+    400122: Espirografo_Animado_FINAL:Jnt_disco_03_D_01_end
+    400124: Espirografo_Animado_FINAL:Jnt_disco_03_D_Root
+    400126: Espirografo_Animado_FINAL:Jnt_disco_03_E_01
+    400128: Espirografo_Animado_FINAL:Jnt_disco_03_E_01_end
+    400130: Espirografo_Animado_FINAL:Jnt_disco_03_E_Root
+    400132: Espirografo_Animado_FINAL:Jnt_disco_03_F_01
+    400134: Espirografo_Animado_FINAL:Jnt_disco_03_F_Root
+    400136: Espirografo_Animado_FINAL:Jnt_disco_03_G_01
+    400138: Espirografo_Animado_FINAL:Jnt_disco_03_G_Root
+    400140: Espirografo_Animado_FINAL:Jnt_disco_03_H_01
+    400142: Espirografo_Animado_FINAL:Jnt_disco_03_H_Root
+    400144: Espirografo_Animado_FINAL:joint3
+    400146: Espirografo_Animado_FINAL:joint3 1
+    400148: Espirografo_Animado_FINAL:joint3 2
+    400150: Grp_Joints_Anillo_01
+    400152: Grp_Joints_Anillo_02
+    400154: Grp_Joints_Anillo_03
+    400156: Jnt_tallo_01
+    400158: Jnt_tallo_Root
+    400160: Jnt_tallo_tallo_01_End
+    400162: Matrix
+    400164: //RootNode
+    400166: Spirographis
+    400168: Tallo
+    4300000: Anillo_03
+    4300002: Anillo_02
+    4300004: Anillo_01
+    4300006: Tallo
+    7400000: Idle
+    7400002: Hide
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: Anillo_01
+    13700002: Anillo_02
+    13700004: Anillo_03
+    13700006: Tallo
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Idle
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 100
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Hide
+      takeName: Take 001
+      firstFrame: 101
+      lastFrame: 110
+      wrapMode: 4
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

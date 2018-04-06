@@ -10,10 +10,10 @@ public class GripPoint : MonoBehaviour
     {
         touchingObject = false;
     }
-    // You are not touching the object bool
-    void OnTriggerEnter(Collider poop)
+    // You are now touching the object bool
+    void OnTriggerEnter(Collider targetCollider)
     {
-        if (poop.gameObject.tag == "Grippable")
+        if (targetCollider.gameObject.tag == "Grippable")
         {
             touchingObject = true;
         }
@@ -29,27 +29,26 @@ public class GripPoint : MonoBehaviour
         touchingObject = false;
     }
 
-
     void OnTriggerStay(Collider cube)
     {
-            if (Input.GetKeyDown(KeyCode.Mouse0) && touchingObject == true)
+        if (Input.GetMouseButtonDown(0) && touchingObject == true)
             {
-                print("i'm gripping");
                 Vector3 scale = cube.transform.localScale;
                 cube.transform.parent = transform;
                 Rigidbody rb = cube.GetComponent<Rigidbody>();
-
-                //cube.transform.localScale = scale;
+                CapsuleCollider cc = cube.GetComponent<CapsuleCollider>();
+                cc.isTrigger = true;
                 rb.isKinematic = true;
             }
-            else if (Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            Rigidbody rb = cube.GetComponent<Rigidbody>();
-            rb.isKinematic = false;
-            transform.DetachChildren();
-        }
+        else if (Input.GetMouseButtonUp(0) && touchingObject == true)
+            {
+                Rigidbody rb = cube.GetComponent<Rigidbody>();
+                rb.isKinematic = false;
+                CapsuleCollider cc = cube.GetComponent<CapsuleCollider>();
+                cc.isTrigger = false;
+                transform.DetachChildren();
+            }
     }
-
     void Update()
     {
 

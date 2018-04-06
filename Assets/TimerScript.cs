@@ -8,7 +8,7 @@ public class TimerScript : MonoBehaviour
 
     public Submarine submarine;
     public Text timer;
-    public static float timeLeft = 30.0f;
+    public float timeLeft = 30.0f;
 
     void Start()
     {

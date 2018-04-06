@@ -9,6 +9,7 @@ public class Submarine : MonoBehaviour {
 
     Rigidbody rigidBody;
     AudioSource audioSource;
+    
     [SerializeField] AudioClip mainEngine;
     [SerializeField] AudioClip deathSound;
     [SerializeField] AudioClip winSound;
@@ -20,17 +21,18 @@ public class Submarine : MonoBehaviour {
     enum State {  Alive, Dying, Transcending }
     State state = State.Alive;
 
-
+    public TimerScript timer;
 
     //PIECES THAT FALL OFF WHEN DEAD
     public GameObject dome;
     public GameObject popo;
-
+    //DAMAGE LOGIC
+    public static bool invincibility;
+    public static int hull = 3;
     //CARRYING LOGIC
     public bool isCarrying = false;
     public int carryingCapacity = 1;
     public static int score = 0;
-    public TimerScript timer;
     public static int cargoCount = 0;
 
     //LIGHT CONTROLS
@@ -39,10 +41,12 @@ public class Submarine : MonoBehaviour {
     public GameObject leftLight;
     public GameObject rightLight;
 
+
     void Start ()
     {
         rigidBody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
+        hull = 3;
 
     }
 	
@@ -143,7 +147,11 @@ public class Submarine : MonoBehaviour {
                 SuccessSequence();
                 break;
             default:
-                DeathSequence();
+                hull = hull - 1;
+                if (hull < 1)
+                    {
+                    DeathSequence();
+                    }
                 break;
         }
     }
@@ -158,7 +166,7 @@ public class Submarine : MonoBehaviour {
             score = score + cargoCount;
             isCarrying = false;
             carryingCapacity = carryingCapacity + 1;
-            TimerScript.timeLeft = TimerScript.timeLeft + 30f;
+            timer.timeLeft = timer.timeLeft + 30f;
         }
     }
     // COLLIDING WITH SCUBA DIVER
