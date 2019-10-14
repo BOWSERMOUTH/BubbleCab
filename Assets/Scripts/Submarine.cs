@@ -87,7 +87,7 @@ public class Submarine : MonoBehaviour {
     // CONTROLS LIGHTS WITH F
     private void lightsOnOff()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && GameManager.instance.upgradedtolights)
         {
             lightControl = !lightControl;
             audioSource2.PlayOneShot(flashlight);
