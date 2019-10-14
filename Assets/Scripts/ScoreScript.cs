@@ -5,9 +5,7 @@ using UnityEngine.UI;
 
 public class ScoreScript : MonoBehaviour
 {
-
-    public Submarine submarine;
-    public Text scoreText;
+    private Text scoreText;
     public GameObject popupscore;
 
 	void Start ()

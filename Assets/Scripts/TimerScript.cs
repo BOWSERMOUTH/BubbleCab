@@ -30,7 +30,7 @@ public class TimerScript : MonoBehaviour
     void Update()
     {
         timeLeft -= Time.deltaTime;
-        timer.text = "Time: " + timeLeft.ToString("F0");
+        timer.text = timeLeft.ToString("F0");
         {
             if (timeLeft < 0)
             {

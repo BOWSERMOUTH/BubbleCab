@@ -10,6 +10,7 @@ public class Submarine : MonoBehaviour {
     public AudioSource audioSource1;
     public AudioSource audioSource2;
     public ScoreScript scoreboard;
+    //public HullScript hullshake;
     
     [SerializeField] AudioClip mainEngine;
     [SerializeField] AudioClip deathSound;
@@ -26,9 +27,12 @@ public class Submarine : MonoBehaviour {
     State state = State.Alive;
 
     public TimerScript timer;
+    public GameObject gamemanager;
     //PIECES THAT FALL OFF WHEN DEAD
     public GameObject dome;
     public GameObject popo;
+    public GameObject penny;
+    
     //DAMAGE LOGIC
     public static bool invincibility;
     public bool bubbleBoost;
@@ -45,33 +49,19 @@ public class Submarine : MonoBehaviour {
     public GameObject leftLight;
     public GameObject rightLight;
 
+    // PHYSICS
     public bool engineOffOutside;
-    // SWITCHING CHARACTER
-    public bool switchChar;
-    private GameObject submarine;
-    private GameObject penny;
-    public void switchchar()
-    {
-        if (switchChar == true)
-        {
-            penny.active = false;
-            popo.active = true;
-        }
-        else
-        {
-            penny.active = true;
-            popo.active = false;
-        }
-    }
+
     //SCUBA MAN UPRIGHT
     private Quaternion upRight = Quaternion.Euler(-50, -90, 0);
-
+    private void Awake()
+    {
+        gamemanager = GameObject.Find("GameManager");
+    }
     void Start ()
     {
         rigidBody = GetComponent<Rigidbody>();
         hull = 3;
-        submarine = GameObject.Find("Submarine");
-        penny = GameObject.Find("PennyModel");
     }
     private void ApplyThrust()
     {
@@ -82,7 +72,7 @@ public class Submarine : MonoBehaviour {
             audioSource1.PlayOneShot(mainEngine);
         }
     }
-    
+
     void Update ()
     {
         if (state == State.Alive)
@@ -90,7 +80,6 @@ public class Submarine : MonoBehaviour {
             RespondToThrustInput();
             RespondToRotateInput();
             lightsOnOff();
-            switchchar();
             //add pickup scubadiver method
         }
 	}
@@ -190,8 +179,9 @@ public class Submarine : MonoBehaviour {
                 SuccessSequence();
                 break;
             default:
-                hull = hull - 1;
                 audioSource2.PlayOneShot(hurt);
+                hull = hull - 1;
+                //hullshake.cameraShake();
                 if (hull < 1)
                     {
                     DeathSequence();
@@ -211,9 +201,11 @@ public class Submarine : MonoBehaviour {
             cargoCount = 0;
             isCarrying = false;
             carryingCapacity = carryingCapacity + 1;
+            print("i have scored");
             timer.timeLeft = timer.timeLeft + 30f;
             // MAKE MONEY
             scoreboard.makePopUpOnScore();
+
         }
     }
 
