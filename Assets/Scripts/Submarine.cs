@@ -26,7 +26,6 @@ public class Submarine : MonoBehaviour {
     State state = State.Alive;
 
     public TimerScript timer;
-
     //PIECES THAT FALL OFF WHEN DEAD
     public GameObject dome;
     public GameObject popo;
@@ -47,7 +46,23 @@ public class Submarine : MonoBehaviour {
     public GameObject rightLight;
 
     public bool engineOffOutside;
-
+    // SWITCHING CHARACTER
+    public bool switchChar;
+    private GameObject submarine;
+    private GameObject penny;
+    public void switchchar()
+    {
+        if (switchChar == true)
+        {
+            penny.active = false;
+            popo.active = true;
+        }
+        else
+        {
+            penny.active = true;
+            popo.active = false;
+        }
+    }
     //SCUBA MAN UPRIGHT
     private Quaternion upRight = Quaternion.Euler(-50, -90, 0);
 
@@ -55,7 +70,8 @@ public class Submarine : MonoBehaviour {
     {
         rigidBody = GetComponent<Rigidbody>();
         hull = 3;
-
+        submarine = GameObject.Find("Submarine");
+        penny = GameObject.Find("PennyModel");
     }
     private void ApplyThrust()
     {
@@ -66,7 +82,7 @@ public class Submarine : MonoBehaviour {
             audioSource1.PlayOneShot(mainEngine);
         }
     }
-
+    
     void Update ()
     {
         if (state == State.Alive)
@@ -74,6 +90,7 @@ public class Submarine : MonoBehaviour {
             RespondToThrustInput();
             RespondToRotateInput();
             lightsOnOff();
+            switchchar();
             //add pickup scubadiver method
         }
 	}
