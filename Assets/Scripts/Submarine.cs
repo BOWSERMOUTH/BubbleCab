@@ -25,9 +25,8 @@ public class Submarine : MonoBehaviour {
 
     enum State {  Alive, Dying, Transcending }
     State state = State.Alive;
-
+    private GameObject gamemanager;
     public TimerScript timer;
-    public GameObject gamemanager;
     //PIECES THAT FALL OFF WHEN DEAD
     public GameObject dome;
     public GameObject popo;
@@ -51,6 +50,8 @@ public class Submarine : MonoBehaviour {
 
     // PHYSICS
     public bool engineOffOutside;
+    public Camera maincamera;
+    AudioHighPassFilter mufflesound;
 
     //SCUBA MAN UPRIGHT
     private Quaternion upRight = Quaternion.Euler(-50, -90, 0);
@@ -62,6 +63,7 @@ public class Submarine : MonoBehaviour {
     {
         rigidBody = GetComponent<Rigidbody>();
         hull = 3;
+        mufflesound = maincamera.GetComponent<AudioHighPassFilter>();
     }
     private void ApplyThrust()
     {
@@ -228,6 +230,7 @@ public class Submarine : MonoBehaviour {
     {
         if (outofwater.gameObject.tag == "Surface")
         {
+            mufflesound.enabled = true;
             rigidBody.useGravity = true;
             rigidBody.mass = 3;
             rigidBody.drag = 1;
@@ -241,6 +244,7 @@ public class Submarine : MonoBehaviour {
     {
         if (backinwater.gameObject.tag == "Surface")
         {
+            mufflesound.enabled = false;
             rigidBody.useGravity = false;
             rigidBody.mass = 1;
             rigidBody.drag = 2.61f;
