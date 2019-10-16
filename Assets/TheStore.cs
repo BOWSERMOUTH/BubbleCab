@@ -39,7 +39,8 @@ public class TheStore : MonoBehaviour {
     }
     private void OnTriggerExit(Collider subleftstore)
     {
-
+        openstoreon.SetActive(false);
+        openstorebool = !openstorebool;
     }
     private void OpenStoreBooleon()
     {

@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
 
     // ABILITY UPGRADES
     public bool upgradedtolights;
+    public bool upgradedtoradar;
 
 
 
