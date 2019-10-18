@@ -5,8 +5,8 @@ using UnityEngine;
 public class Grabbing : MonoBehaviour
 {
 
-    public GameObject touchingObject;
-    public bool grabbing;
+    private GameObject touchingObject;
+    private bool grabbing;
 
     void Start()
     {
@@ -48,7 +48,7 @@ public class Grabbing : MonoBehaviour
         {
             grabbing = true;
         }
-        else// if (Input.GetMouseButtonUp(0) && touchingObject.tag == "Grippable")
+        else
         {
             grabbing = false;
         }

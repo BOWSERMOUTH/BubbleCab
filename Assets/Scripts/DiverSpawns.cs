@@ -22,7 +22,7 @@ public class DiverSpawns : MonoBehaviour
         while (usedIds.IndexOf(r) != -1);
 
         usedIds.Add(r);
-        Instantiate(diver, spawnPoints[r], Quaternion.identity);
+        Instantiate(diver, spawnPoints[r], Quaternion.Euler(0,-90,0));
         maxDivers = maxDivers -1;
     }
     private void preventSameSpawn()
