@@ -21,7 +21,7 @@ public class ScoreScript : MonoBehaviour
 
 	void Update ()
     {
-        scoreText.text = "Score: " + Submarine.score.ToString();
+        scoreText.text = Submarine.score.ToString();
     }
     
 }

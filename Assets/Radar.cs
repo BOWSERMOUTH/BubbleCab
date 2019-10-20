@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Radar : MonoBehaviour {
 
@@ -11,9 +12,15 @@ public class Radar : MonoBehaviour {
     public bool radarcooldowntoggle;
     private AudioSource audioSource;
     private AudioClip beep;
+    public GameObject radarpic;
+    public Text radarResultText;
+    
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
+        submarine = GameObject.Find("Submarine");
+        radarpic = GameObject.Find("radarpic");
+        radarResultText = radarpic.GetComponentInChildren<Text>();
         radarcollider = GetComponent<SphereCollider>();
         ps = GetComponent<ParticleSystem>();
         audioSource = GetComponent<AudioSource>();
@@ -24,7 +31,7 @@ public class Radar : MonoBehaviour {
         if (collider.gameObject.tag == "Diver")
         {
             float dist = Vector3.Distance(submarine.transform.position, collider.transform.position);
-            print(dist);
+            radarResultText.text = dist.ToString();
         }
     }
     public void RadarOn()

@@ -8,7 +8,7 @@ public class DiverSpawns : MonoBehaviour
     public int maxDivers = 3;
     public GameObject diver;
     public List<int> usedIds;
-    int r;
+    int random;
 
     void Start ()
     {
@@ -17,12 +17,12 @@ public class DiverSpawns : MonoBehaviour
     {
         do
         {
-            r = Random.Range(0, spawnPoints.Length);
+            random = Random.Range(0, spawnPoints.Length);
         }
-        while (usedIds.IndexOf(r) != -1);
+        while (usedIds.IndexOf(random) != -1);
 
-        usedIds.Add(r);
-        Instantiate(diver, spawnPoints[r], Quaternion.Euler(0,-90,0));
+        usedIds.Add(random);
+        Instantiate(diver, spawnPoints[random], Quaternion.Euler(0,-90,0));
         maxDivers = maxDivers -1;
     }
     private void preventSameSpawn()

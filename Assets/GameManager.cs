@@ -12,16 +12,30 @@ public class GameManager : MonoBehaviour {
     private GameObject toplightbulb;
     private GameObject rearrightbulb;
     private GameObject rearleftbulb;
+    public GameObject radar;
+    public GameObject radarpic;
+    public GameObject theClaw;
+
 
     // ABILITY UPGRADES
     public bool upgradedtolights;
     public bool upgradedtoradar;
+    public bool upgradedtoboost;
+    public bool upgradedtoclaw;
 
 
 
 
     void Start ()
     {
+        po = GameObject.Find("popo");
+        penny = GameObject.Find("PennyModel");
+        toplightbulb = GameObject.Find("TopLightBulb");
+        rearleftbulb = GameObject.Find("LeftLightBulb");
+        rearrightbulb = GameObject.Find("RightLightBulb");
+        radar = GameObject.Find("Radar");
+        radarpic = GameObject.Find("radarpic");
+        theClaw = GameObject.Find("ArmPivotPoint");
     }
     // Player
     void Awake ()
@@ -50,10 +64,37 @@ public class GameManager : MonoBehaviour {
             penny.SetActive(true);
         }
     }
+    public void upgraded2radar()
+    {
+        if (upgradedtoradar == true)
+        {
+            radar.SetActive(true);
+            radarpic.SetActive(true);
+        }
+        else
+        {
+            radar.SetActive(false);
+            radarpic.SetActive(false);
+        }
+    }
+    public void upgraded2claw()
+    {
+        if (upgradedtoclaw == true)
+        {
+            theClaw.SetActive(true);
+        }
+        else
+        {
+            theClaw.SetActive(false);
+        }
+    }
+
     // Update is called once per frame
     void Update () {
         SceneManager.sceneLoaded += OnSceneLoaded;
         whosplaying();
+        upgraded2radar();
+        upgraded2claw();
     }
     void OnSceneLoaded (Scene scene, LoadSceneMode mode)
     {
@@ -62,5 +103,8 @@ public class GameManager : MonoBehaviour {
         toplightbulb = GameObject.Find("TopLightBulb");
         rearleftbulb = GameObject.Find("LeftLightBulb");
         rearrightbulb = GameObject.Find("RightLightBulb");
+        radar = GameObject.Find("Radar");
+        radarpic = GameObject.Find("radarpic");
+        theClaw = GameObject.Find("ArmPivotPoint");
     }
 }

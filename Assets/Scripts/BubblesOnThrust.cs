@@ -27,7 +27,7 @@ public class BubblesOnThrust : MonoBehaviour {
             bubbleThrust.maxParticles = 160;
             bubbleThrust.emissionRate = 49;
             {
-                if (Input.GetKey(KeyCode.LeftShift))
+                if (Input.GetKey(KeyCode.LeftShift) && GameManager.instance.upgradedtoboost == true)
                 {
                     bubbleThrust.emissionRate = 160;
                     shape.angle = 28.6f;

@@ -65,6 +65,7 @@ public class Submarine : MonoBehaviour {
         hull = 3;
         mufflesound = maincamera.GetComponent<AudioHighPassFilter>();
     }
+
     private void ApplyThrust()
     {
         rigidBody.AddRelativeForce(Vector3.up * mainThrust);
@@ -115,7 +116,7 @@ public class Submarine : MonoBehaviour {
         {
             mainThrust = 0f;
         }
-        if (Input.GetKey(KeyCode.LeftShift) && engineOffOutside == false)
+        if (Input.GetKey(KeyCode.LeftShift) && engineOffOutside == false && GameManager.instance.upgradedtoboost == true)
         {
             mainThrust = 20f;
             audioSource1.pitch = 1.6f;
@@ -199,7 +200,7 @@ public class Submarine : MonoBehaviour {
             dome.transform.Find("ScubaDiver(Clone)").transform.rotation = upRight;
             dome.transform.Find("ScubaDiver(Clone)").transform.gameObject.tag = "Friendly";
             dome.transform.Find("ScubaDiver(Clone)").transform.parent = null;
-            score = score + cargoCount;
+            ScoreValue();
             cargoCount = 0;
             isCarrying = false;
             carryingCapacity = carryingCapacity + 1;
@@ -209,6 +210,10 @@ public class Submarine : MonoBehaviour {
             scoreboard.makePopUpOnScore();
 
         }
+    }
+    public void ScoreValue()
+    {
+        score = score + 200 * cargoCount;
     }
 
     // COLLIDING WITH SCUBA DIVER
