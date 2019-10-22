@@ -13,7 +13,9 @@ public class TheStore : MonoBehaviour {
     public Button upgrade2boost;
     public Button upgrade2claw;
     public Button upgrade2radar;
+    public Button repairhull;
     public Button leavestore;
+    [SerializeField] int repaircost = 100;
     [SerializeField] int firstupgrade = 400;
     [SerializeField] int secondupgrade = 800;
     [SerializeField] int thirdupgrade = 1600;
@@ -27,6 +29,7 @@ public class TheStore : MonoBehaviour {
         upgrade2boost.onClick.AddListener(boost2gamemanager);
         upgrade2claw.onClick.AddListener(claw2gamemanager);
         upgrade2radar.onClick.AddListener(radar2gamemanager);
+        repairhull.onClick.AddListener(repair2ship);
         leavestore.onClick.AddListener(exitstore);
 	}
     public void flashlight2gamemanager()
@@ -62,7 +65,14 @@ public class TheStore : MonoBehaviour {
             Submarine.score = Submarine.score - firstupgrade;
         }
     }
-
+    public void repair2ship()
+    {
+        if (Submarine.score >= repaircost)
+        {
+            Submarine.hull = Submarine.hull + 1;
+            Submarine.score = Submarine.score - repaircost;
+        }
+    }
     public void exitstore()
     {
         panel.SetActive(false);
@@ -89,7 +99,7 @@ public class TheStore : MonoBehaviour {
             openstoreon.SetActive(false);
         }
     }
-    private void ButtonDisabler()
+    private void ButtonDisabler400()
     {
         if (Submarine.score >= firstupgrade)
         {
@@ -106,10 +116,22 @@ public class TheStore : MonoBehaviour {
             upgrade2radar.interactable = false;
         }
     }
+    private void ButtonDisabler100()
+    {
+        if (Submarine.score >= repaircost)
+        {
+            repairhull.interactable = true;
+        }
+        else
+        {
+            repairhull.interactable = false;
+        }
+    }
     // Update is called once per frame
     void Update ()
     {
         OpenStoreBooleon();
-        ButtonDisabler();
+        ButtonDisabler100();
+        ButtonDisabler400();
 	}
 }
