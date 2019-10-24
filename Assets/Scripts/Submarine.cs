@@ -10,7 +10,6 @@ public class Submarine : MonoBehaviour {
     public AudioSource audioSource1;
     public AudioSource audioSource2;
     public ScoreScript scoreboard;
-    //public HullScript hullshake;
     
     [SerializeField] AudioClip mainEngine;
     [SerializeField] AudioClip deathSound;
@@ -36,9 +35,10 @@ public class Submarine : MonoBehaviour {
     public static bool invincibility;
     public bool bubbleBoost;
     public static int hull = 3;
+    public static int hulllimit = 3;
     //CARRYING LOGIC
     public bool isCarrying = false;
-    public int carryingCapacity = 1;
+    public static int carryingCapacity = 1;
     public static int score = 0;
     public static int cargoCount = 0;
 
@@ -186,9 +186,10 @@ public class Submarine : MonoBehaviour {
                 hull = hull - 1;
                 //hullshake.cameraShake();
                 if (hull < 1)
-                    {
+                {
                     DeathSequence();
-                    }
+                    Destroy(gamemanager);
+                }
                 break;
         }
     }
@@ -204,7 +205,6 @@ public class Submarine : MonoBehaviour {
             cargoCount = 0;
             isCarrying = false;
             carryingCapacity = carryingCapacity + 1;
-            print("i have scored");
             timer.timeLeft = timer.timeLeft + 30f;
             // MAKE MONEY
             scoreboard.makePopUpOnScore();
@@ -235,7 +235,7 @@ public class Submarine : MonoBehaviour {
     {
         if (outofwater.gameObject.tag == "Surface")
         {
-            mufflesound.enabled = true;
+            //mufflesound.enabled = true;
             rigidBody.useGravity = true;
             rigidBody.mass = 3;
             rigidBody.drag = 1;

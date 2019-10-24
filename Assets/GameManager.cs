@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager instance = null;
     public bool charactertoggle;
-    private GameObject po;
-    private GameObject penny;
+    public GameObject po;
+    public GameObject penny;
     private GameObject toplightbulb;
     private GameObject rearrightbulb;
     private GameObject rearleftbulb;
@@ -82,10 +82,12 @@ public class GameManager : MonoBehaviour {
         if (upgradedtoclaw == true)
         {
             theClaw.SetActive(true);
+            print("i've turned the claw on");
         }
         else
         {
             theClaw.SetActive(false);
+            print("i've turned the claw off");
         }
     }
 

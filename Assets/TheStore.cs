@@ -14,6 +14,8 @@ public class TheStore : MonoBehaviour {
     public Button upgrade2claw;
     public Button upgrade2radar;
     public Button repairhull;
+    public Button upgrade2hull;
+    public Button upgrade2carrying;
     public Button leavestore;
     [SerializeField] int repaircost = 100;
     [SerializeField] int firstupgrade = 400;
@@ -25,6 +27,8 @@ public class TheStore : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        upgrade2carrying.onClick.AddListener(carrying2ship);
+        upgrade2hull.onClick.AddListener(hull2ship);
         upgrade2flashlight.onClick.AddListener(flashlight2gamemanager);
         upgrade2boost.onClick.AddListener(boost2gamemanager);
         upgrade2claw.onClick.AddListener(claw2gamemanager);
@@ -32,6 +36,20 @@ public class TheStore : MonoBehaviour {
         repairhull.onClick.AddListener(repair2ship);
         leavestore.onClick.AddListener(exitstore);
 	}
+    public void carrying2ship()
+    {
+        if (Submarine.score >= secondupgrade)
+        {
+            Submarine.carryingCapacity = Submarine.carryingCapacity + 1;
+        }
+    }
+    public void hull2ship()
+    {
+        if (Submarine.score >= firstupgrade)
+        {
+            Submarine.hulllimit = Submarine.hulllimit + 1;
+        }
+    }
     public void flashlight2gamemanager()
     {
         if (Submarine.score >= firstupgrade)
@@ -71,6 +89,7 @@ public class TheStore : MonoBehaviour {
         {
             Submarine.hull = Submarine.hull + 1;
             Submarine.score = Submarine.score - repaircost;
+            print("transaction complete");
         }
     }
     public void exitstore()
@@ -107,6 +126,7 @@ public class TheStore : MonoBehaviour {
             upgrade2claw.interactable = true;
             upgrade2flashlight.interactable = true;
             upgrade2radar.interactable = true;
+            upgrade2hull.interactable = true;
         }
         else
         {
@@ -114,11 +134,12 @@ public class TheStore : MonoBehaviour {
             upgrade2claw.interactable = false;
             upgrade2flashlight.interactable = false;
             upgrade2radar.interactable = false;
+            upgrade2hull.interactable = false;
         }
     }
     private void ButtonDisabler100()
     {
-        if (Submarine.score >= repaircost)
+        if (Submarine.score >= repaircost && Submarine.hull < Submarine.hulllimit)
         {
             repairhull.interactable = true;
         }
@@ -127,11 +148,23 @@ public class TheStore : MonoBehaviour {
             repairhull.interactable = false;
         }
     }
+    private void ButtonDisabler800()
+    {
+        if (Submarine.score >= secondupgrade && Submarine.carryingCapacity < 4)
+        {
+            upgrade2carrying.interactable = true;
+        }
+        else
+        {
+            upgrade2carrying.interactable = false;
+        }
+    }
     // Update is called once per frame
     void Update ()
     {
         OpenStoreBooleon();
         ButtonDisabler100();
         ButtonDisabler400();
+        ButtonDisabler800();
 	}
 }

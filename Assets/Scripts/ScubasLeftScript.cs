@@ -16,6 +16,6 @@ public class ScubasLeftScript : MonoBehaviour
     void Update()
     {
         diver = GameObject.FindGameObjectsWithTag("Diver").Length;
-        howManyLeft.text = "Divers left: " + diver.ToString();
+        howManyLeft.text = "DIVERS LEFT: " + diver.ToString();
     }
 }
