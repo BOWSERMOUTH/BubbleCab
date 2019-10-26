@@ -15,7 +15,14 @@ public class GameManager : MonoBehaviour {
     public GameObject radar;
     public GameObject radarpic;
     public GameObject theClaw;
+    public GameObject diverSpawnScript;
 
+    // SPAWN DIVER LOGIC
+    public Vector3[] spawnPoints;
+    public int maxDivers = 3;
+    public GameObject diver;
+    public List<int> usedIds;
+    int random;
 
     // ABILITY UPGRADES
     public bool upgradedtolights;
@@ -37,7 +44,6 @@ public class GameManager : MonoBehaviour {
         radarpic = GameObject.Find("radarpic");
         theClaw = GameObject.Find("ArmPivotPoint");
     }
-    // Player
     void Awake ()
     {
             if (instance == null)
@@ -50,7 +56,19 @@ public class GameManager : MonoBehaviour {
             }
             DontDestroyOnLoad(gameObject);
         }
-    
+    // Tells divers to spawn in random locations
+    private void spawnDiverIntro()
+    {
+        do
+        {
+            random = Random.Range(0, spawnPoints.Length);
+        }
+        while (usedIds.IndexOf(random) != -1);
+
+        usedIds.Add(random);
+        Instantiate(diver, spawnPoints[random], Quaternion.Euler(0, -90, 0));
+        maxDivers = maxDivers - 1;
+    }
     public void whosplaying()
     {
         if (charactertoggle == true)
@@ -90,13 +108,22 @@ public class GameManager : MonoBehaviour {
             print("i've turned the claw off");
         }
     }
-
+    public void diverspawnonupdate()
+    {
+        if (maxDivers < 1)
+        {
+            return;
+        }
+        else
+            spawnDiverIntro();
+    }
     // Update is called once per frame
     void Update () {
         SceneManager.sceneLoaded += OnSceneLoaded;
         whosplaying();
         upgraded2radar();
         upgraded2claw();
+        diverspawnonupdate();
     }
     void OnSceneLoaded (Scene scene, LoadSceneMode mode)
     {
@@ -108,5 +135,6 @@ public class GameManager : MonoBehaviour {
         radar = GameObject.Find("Radar");
         radarpic = GameObject.Find("radarpic");
         theClaw = GameObject.Find("ArmPivotPoint");
+        diverSpawnScript = GameObject.Find("DiverSpawnPoints");
     }
 }

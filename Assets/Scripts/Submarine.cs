@@ -235,7 +235,7 @@ public class Submarine : MonoBehaviour {
     {
         if (outofwater.gameObject.tag == "Surface")
         {
-            //mufflesound.enabled = true;
+            mufflesound.enabled = true;
             rigidBody.useGravity = true;
             rigidBody.mass = 3;
             rigidBody.drag = 1;

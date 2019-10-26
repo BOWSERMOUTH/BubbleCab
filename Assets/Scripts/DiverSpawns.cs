@@ -28,14 +28,18 @@ public class DiverSpawns : MonoBehaviour
     private void preventSameSpawn()
     {
     }
-
-	void Update ()
+    public void diverspawnonupdate()
     {
         if (maxDivers < 1)
         {
             return;
         }
         else
-        spawnDiverIntro();
-	}
+            spawnDiverIntro();
+    }
+	void Update ()
+    {
+        diverspawnonupdate();
+    }
+    
 }
