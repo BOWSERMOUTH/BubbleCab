@@ -10,11 +10,14 @@ public class TimerScript : MonoBehaviour
     public Rigidbody rb;
     public BubblesOnThrust bubblesoff;
     public ParticleSystem bubbles;
+    private AudioSource pop;
     private Text timer;
     public float timeLeft = 30.0f;
 
+
     void Start()
     {
+        pop = gameObject.GetComponent<AudioSource>();
         timer = gameObject.GetComponent<Text>();
         rb = submarine.GetComponent<Rigidbody>();
         bubbles = bubblesoff.GetComponent<ParticleSystem>();
@@ -31,6 +34,13 @@ public class TimerScript : MonoBehaviour
     {
         timeLeft -= Time.deltaTime;
         timer.text = timeLeft.ToString("F0");
+        {
+            if (timeLeft < 11 && timeLeft > 0 && pop.isPlaying == false)
+            {
+                pop.Play();
+            }
+            
+        }
         {
             if (timeLeft < 0)
             {

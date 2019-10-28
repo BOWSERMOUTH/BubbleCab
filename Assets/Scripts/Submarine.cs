@@ -201,21 +201,19 @@ public class Submarine : MonoBehaviour {
             dome.transform.Find("ScubaDiver(Clone)").transform.rotation = upRight;
             dome.transform.Find("ScubaDiver(Clone)").transform.gameObject.tag = "Friendly";
             dome.transform.Find("ScubaDiver(Clone)").transform.parent = null;
-            ScoreValue();
+            ScoreValueDiver();
             cargoCount = 0;
             isCarrying = false;
             carryingCapacity = carryingCapacity + 1;
             timer.timeLeft = timer.timeLeft + 30f;
             // MAKE MONEY
             scoreboard.makePopUpOnScore();
-
         }
     }
-    public void ScoreValue()
+    public void ScoreValueDiver()
     {
         score = score + 200 * cargoCount;
     }
-
     // COLLIDING WITH SCUBA DIVER
     private void OnTriggerEnter(Collider collidedwith)
     {
@@ -229,6 +227,12 @@ public class Submarine : MonoBehaviour {
             cargoCount = cargoCount + 1;
             audioSource1.PlayOneShot(grabbedScuba, 1);
 
+        }
+        if (collidedwith.gameObject.tag == "Treasure")
+        {
+            Destroy(collidedwith.gameObject);
+            score = score + 100;
+            scoreboard.makePopUpOnScore();
         }
     }
     private void OnTriggerStay(Collider outofwater)

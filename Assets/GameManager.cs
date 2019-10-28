@@ -19,10 +19,15 @@ public class GameManager : MonoBehaviour {
 
     // SPAWN DIVER LOGIC
     public Vector3[] spawnPoints;
+    public Vector3[] treasureSpawnPoints;
     public int maxDivers = 3;
+    public int maxTreasures = 5;
     public GameObject diver;
+    public GameObject treasurechest;
+    public List<int> treasureIds;
     public List<int> usedIds;
-    int random;
+    int diverrandom;
+    int treasurerandom;
 
     // ABILITY UPGRADES
     public bool upgradedtolights;
@@ -61,13 +66,25 @@ public class GameManager : MonoBehaviour {
     {
         do
         {
-            random = Random.Range(0, spawnPoints.Length);
+            diverrandom = Random.Range(0, spawnPoints.Length);
         }
-        while (usedIds.IndexOf(random) != -1);
+        while (usedIds.IndexOf(diverrandom) != -1);
 
-        usedIds.Add(random);
-        Instantiate(diver, spawnPoints[random], Quaternion.Euler(0, -90, 0));
+        usedIds.Add(diverrandom);
+        Instantiate(diver, spawnPoints[diverrandom], Quaternion.Euler(0, -90, 0));
         maxDivers = maxDivers - 1;
+    }
+    private void spawnTreasureIntro()
+    {
+        do
+        {
+            treasurerandom = Random.Range(0, treasureSpawnPoints.Length);
+        }
+        while (treasureIds.IndexOf(treasurerandom) != -1);
+
+        treasureIds.Add(treasurerandom);
+        Instantiate(treasurechest, treasureSpawnPoints[treasurerandom], Quaternion.Euler(-90, -90, 0));
+        maxTreasures = maxTreasures - 1;
     }
     public void whosplaying()
     {
@@ -117,6 +134,16 @@ public class GameManager : MonoBehaviour {
         else
             spawnDiverIntro();
     }
+    public void treasurespawnonupdate()
+    {
+        if (maxTreasures < 1)
+        {
+            return;
+        }
+        else
+            spawnTreasureIntro();
+    }
+
     // Update is called once per frame
     void Update () {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -124,6 +151,7 @@ public class GameManager : MonoBehaviour {
         upgraded2radar();
         upgraded2claw();
         diverspawnonupdate();
+        treasurespawnonupdate();
     }
     void OnSceneLoaded (Scene scene, LoadSceneMode mode)
     {
