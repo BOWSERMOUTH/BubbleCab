@@ -15,13 +15,12 @@ public class GameManager : MonoBehaviour {
     public GameObject radar;
     public GameObject radarpic;
     public GameObject theClaw;
-    public GameObject diverSpawnScript;
 
     // SPAWN DIVER LOGIC
     public Vector3[] spawnPoints;
     public Vector3[] treasureSpawnPoints;
-    public int maxDivers = 3;
-    public int maxTreasures = 5;
+    public int maxDivers = 4;
+    public int maxTreasures = 3;
     public GameObject diver;
     public GameObject treasurechest;
     public List<int> treasureIds;
@@ -35,7 +34,10 @@ public class GameManager : MonoBehaviour {
     public bool upgradedtoboost;
     public bool upgradedtoclaw;
 
-
+    // LEVEL LOGIC
+    public int level;
+    public bool caveExplorable = false;
+    public bool levelwinbool = false;
 
 
     void Start ()
@@ -129,7 +131,7 @@ public class GameManager : MonoBehaviour {
     {
         if (maxDivers < 1)
         {
-            return;
+            levelwinbool = true;
         }
         else
             spawnDiverIntro();
@@ -143,7 +145,54 @@ public class GameManager : MonoBehaviour {
         else
             spawnTreasureIntro();
     }
-
+    public void LevelLogic()
+    {
+        if (level == 2)
+        {
+            maxDivers = 4;
+            maxTreasures = 3;
+        }
+        if (level == 3)
+        {
+            maxDivers = 5;
+            maxTreasures = 3;
+        }
+        if (level == 4)
+        {
+            maxDivers = 6;
+            maxTreasures = 3;
+            caveExplorable = true;
+        }
+        if (level == 5)
+        {
+            maxDivers = 7;
+            maxTreasures = 3;
+        }
+        if (level == 6)
+        {
+            maxDivers = 8;
+            maxTreasures = 3;
+        }
+        if (level == 7)
+        {
+            maxDivers = 8;
+            maxTreasures = 3;
+        }
+        if (level == 8)
+        {
+            maxDivers = 8;
+            maxTreasures = 3;
+        }
+    }
+    public void BeatingLevel()
+    {
+        if (ScubasLeftScript.diver == 0 && levelwinbool == true)
+        {
+            level = level + 1;
+            LevelLogic();
+            levelwinbool = false;
+        }
+    }
     // Update is called once per frame
     void Update () {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -152,9 +201,13 @@ public class GameManager : MonoBehaviour {
         upgraded2claw();
         diverspawnonupdate();
         treasurespawnonupdate();
+        BeatingLevel();
     }
     void OnSceneLoaded (Scene scene, LoadSceneMode mode)
     {
+        level = 1;
+        maxDivers = 4;
+        maxTreasures = 3;
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
         toplightbulb = GameObject.Find("TopLightBulb");
@@ -163,6 +216,5 @@ public class GameManager : MonoBehaviour {
         radar = GameObject.Find("Radar");
         radarpic = GameObject.Find("radarpic");
         theClaw = GameObject.Find("ArmPivotPoint");
-        diverSpawnScript = GameObject.Find("DiverSpawnPoints");
     }
 }

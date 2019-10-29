@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ScubasLeftScript : MonoBehaviour
 {
     public static Text howManyLeft;
-    int diver;
+    public static int diver;
 
     void Start()
     {

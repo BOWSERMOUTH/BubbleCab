@@ -41,6 +41,7 @@ public class TheStore : MonoBehaviour {
         if (Submarine.score >= secondupgrade)
         {
             Submarine.carryingCapacity = Submarine.carryingCapacity + 1;
+            Submarine.score = Submarine.score - secondupgrade;
         }
     }
     public void hull2ship()
@@ -48,6 +49,7 @@ public class TheStore : MonoBehaviour {
         if (Submarine.score >= firstupgrade)
         {
             Submarine.hulllimit = Submarine.hulllimit + 1;
+            Submarine.score = Submarine.score - firstupgrade;
         }
     }
     public void flashlight2gamemanager()
@@ -89,7 +91,6 @@ public class TheStore : MonoBehaviour {
         {
             Submarine.hull = Submarine.hull + 1;
             Submarine.score = Submarine.score - repaircost;
-            print("transaction complete");
         }
     }
     public void exitstore()
@@ -150,7 +151,7 @@ public class TheStore : MonoBehaviour {
     }
     private void ButtonDisabler800()
     {
-        if (Submarine.score >= secondupgrade && Submarine.carryingCapacity < 4)
+        if (Submarine.score >= secondupgrade && Submarine.carryingCapacity <= 2)
         {
             upgrade2carrying.interactable = true;
         }
