@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     public GameObject radar;
     public GameObject radarpic;
     public GameObject theClaw;
+    public GameObject Pause;
 
     // SPAWN DIVER LOGIC
     public Vector3[] spawnPoints;
@@ -38,31 +39,47 @@ public class GameManager : MonoBehaviour {
     public int level;
     public bool caveExplorable = false;
     public bool levelwinbool = false;
+    public bool paused = false;
+    public TimerScript timer;
+
 
 
     void Start ()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
-        toplightbulb = GameObject.Find("TopLightBulb");
-        rearleftbulb = GameObject.Find("LeftLightBulb");
-        rearrightbulb = GameObject.Find("RightLightBulb");
-        radar = GameObject.Find("Radar");
-        radarpic = GameObject.Find("radarpic");
-        theClaw = GameObject.Find("ArmPivotPoint");
+
+        //toplightbulb = GameObject.Find("TopLightBulb");
+        //rearleftbulb = GameObject.Find("LeftLightBulb");
+        //rearrightbulb = GameObject.Find("RightLightBulb");
+        //radar = GameObject.Find("Radar");
+        //radarpic = GameObject.Find("radarpic");
+        //theClaw = GameObject.Find("ArmPivotPoint");
     }
     void Awake ()
     {
-            if (instance == null)
-            {
-                instance = this;
-            }
-            else if (instance != this)
-            {
-                Destroy(gameObject);
-            }
-            DontDestroyOnLoad(gameObject);
+        if (instance == null)
+        {
+            instance = this;
         }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+    void Update()
+    {
+        whosplaying();
+        PauseGame();
+        upgraded2radar();
+        upgraded2claw();
+        diverspawnonupdate();
+        treasurespawnonupdate();
+        ProgressLevel();
+    }
+
     // Tells divers to spawn in random locations
     private void spawnDiverIntro()
     {
@@ -131,7 +148,7 @@ public class GameManager : MonoBehaviour {
     {
         if (maxDivers < 1)
         {
-            levelwinbool = true;
+            return;
         }
         else
             spawnDiverIntro();
@@ -147,67 +164,108 @@ public class GameManager : MonoBehaviour {
     }
     public void LevelLogic()
     {
-        if (level == 2)
+        if (level == 1)
         {
+            maxDivers = 1;
+            maxTreasures = 3;
+            timer.timeLeft = 120f;
+        }
+        else if (level == 2)
+        {
+            ResettingMap();
             maxDivers = 4;
             maxTreasures = 3;
+            timer.timeLeft = 120f;
         }
-        if (level == 3)
+        else if (level == 3)
         {
+            ResettingMap();
             maxDivers = 5;
             maxTreasures = 3;
+            timer.timeLeft = 120f;
         }
-        if (level == 4)
+        else if (level == 4)
         {
+            ResettingMap();
             maxDivers = 6;
             maxTreasures = 3;
             caveExplorable = true;
+            timer.timeLeft = 120f;
         }
-        if (level == 5)
+        else if (level == 5)
         {
+            ResettingMap();
             maxDivers = 7;
             maxTreasures = 3;
+            timer.timeLeft = 120f;
         }
-        if (level == 6)
+        else if (level == 6)
         {
+            ResettingMap();
             maxDivers = 8;
             maxTreasures = 3;
+            timer.timeLeft = 120f;
         }
-        if (level == 7)
+        else if (level == 7)
         {
+            ResettingMap();
             maxDivers = 8;
             maxTreasures = 3;
+            timer.timeLeft = 120f;
         }
-        if (level == 8)
+        else if (level == 8)
         {
+            ResettingMap();
             maxDivers = 8;
             maxTreasures = 3;
+            timer.timeLeft = 120f;
         }
     }
     public void BeatingLevel()
     {
-        if (ScubasLeftScript.diver == 0 && levelwinbool == true)
+        if (ScubasLeftScript.diver < 1)
+        {
+            print("i've beat the level");
+            levelwinbool = true;
+        }
+    }
+    public void ProgressLevel()
+    {
+        if (levelwinbool == true)
         {
             level = level + 1;
             LevelLogic();
             levelwinbool = false;
         }
     }
-    // Update is called once per frame
-    void Update () {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        whosplaying();
-        upgraded2radar();
-        upgraded2claw();
-        diverspawnonupdate();
-        treasurespawnonupdate();
-        BeatingLevel();
+    public void ResettingMap()
+    {
+        GameObject[] divers = GameObject.FindGameObjectsWithTag("Diver");
+        GameObject[] treasures = GameObject.FindGameObjectsWithTag("Treasure");
+        for (var i = 0; i < divers.Length; i ++)
+        {
+            Destroy(divers[i]);
+        }
+        for (var o = 0; o < treasures.Length; o ++)
+        {
+            Destroy(treasures[o]);
+        }
+    }
+    public void PauseGame()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+        {
+            Pause.SetActive(true);
+        }
     }
     void OnSceneLoaded (Scene scene, LoadSceneMode mode)
     {
         level = 1;
-        maxDivers = 4;
+        maxDivers = 1;
         maxTreasures = 3;
+        print("i have loadedscene");
+        // FIXME
+        Pause = GameObject.Find("PauseScreen");
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
         toplightbulb = GameObject.Find("TopLightBulb");
@@ -216,5 +274,6 @@ public class GameManager : MonoBehaviour {
         radar = GameObject.Find("Radar");
         radarpic = GameObject.Find("radarpic");
         theClaw = GameObject.Find("ArmPivotPoint");
+        timer = GameObject.FindObjectOfType<TimerScript>();
     }
 }

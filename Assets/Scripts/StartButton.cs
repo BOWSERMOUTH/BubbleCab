@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class StartButton : MonoBehaviour
 {
-
-
     public AudioSource audio;
     public AudioClip starthighlight;
     public AudioClip startclick;
@@ -20,10 +18,14 @@ public class StartButton : MonoBehaviour
     {
         audio.PlayOneShot(startclick);
     }
-    public void StartGame()
+    public void QuitGame()
     {
-
-            SceneManager.LoadScene(1);
+        Application.Quit();
+    }
+    public void ReturnToMenu()
+    {
+        Destroy(GameManager.instance);
+        SceneManager.LoadScene(0);
     }
 }
 

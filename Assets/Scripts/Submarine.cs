@@ -17,14 +17,13 @@ public class Submarine : MonoBehaviour {
     [SerializeField] AudioClip grabbedScuba;
     [SerializeField] AudioClip flashlight;
     [SerializeField] AudioClip hurt;
-
+    // CONTROLS
     public float rotationThrust = 150f;
     [SerializeField] float mainThrust = 1f;
     [SerializeField] float levelLoadDelay = 2f;
 
     enum State {  Alive, Dying, Transcending }
     State state = State.Alive;
-    private GameObject gamemanager;
     public TimerScript timer;
     //PIECES THAT FALL OFF WHEN DEAD
     public GameObject dome;
@@ -49,16 +48,12 @@ public class Submarine : MonoBehaviour {
     public GameObject rightLight;
 
     // PHYSICS
-    public bool engineOffOutside;
+    public bool engineOff;
     public Camera maincamera;
     AudioHighPassFilter mufflesound;
 
     //SCUBA MAN UPRIGHT
     private Quaternion upRight = Quaternion.Euler(-50, -90, 0);
-    private void Awake()
-    {
-        gamemanager = GameObject.Find("GameManager");
-    }
     void Start ()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -112,17 +107,17 @@ public class Submarine : MonoBehaviour {
     // Controls
     private void RespondToThrustInput()
     {
-        if (engineOffOutside == true)
+        if (engineOff == true)
         {
             mainThrust = 0f;
         }
-        if (Input.GetKey(KeyCode.LeftShift) && engineOffOutside == false && GameManager.instance.upgradedtoboost == true)
+        if (Input.GetKey(KeyCode.LeftShift) && engineOff == false && GameManager.instance.upgradedtoboost == true)
         {
             mainThrust = 20f;
             audioSource1.pitch = 1.6f;
         }
 
-        else if (engineOffOutside == false)
+        else if (engineOff == false)
         {
             mainThrust = 10f;
             audioSource1.pitch = .6f;
@@ -188,7 +183,6 @@ public class Submarine : MonoBehaviour {
                 if (hull < 1)
                 {
                     DeathSequence();
-                    Destroy(gamemanager);
                 }
                 break;
         }
@@ -208,6 +202,7 @@ public class Submarine : MonoBehaviour {
             timer.timeLeft = timer.timeLeft + 30f;
             // MAKE MONEY
             scoreboard.makePopUpOnScore();
+            GameManager.instance.BeatingLevel();
         }
     }
     public void ScoreValueDiver()
@@ -243,7 +238,7 @@ public class Submarine : MonoBehaviour {
             rigidBody.useGravity = true;
             rigidBody.mass = 3;
             rigidBody.drag = 1;
-            engineOffOutside = true;
+            engineOff = true;
             rigidBody.freezeRotation = false;
             print("i've touched the surface");
             ScoringPoint();
@@ -257,7 +252,7 @@ public class Submarine : MonoBehaviour {
             rigidBody.useGravity = false;
             rigidBody.mass = 1;
             rigidBody.drag = 2.61f;
-            engineOffOutside = false;
+            engineOff = false;
             rigidBody.freezeRotation = true;
         }
     }

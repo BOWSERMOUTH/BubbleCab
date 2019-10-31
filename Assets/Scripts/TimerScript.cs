@@ -12,7 +12,7 @@ public class TimerScript : MonoBehaviour
     public ParticleSystem bubbles;
     private AudioSource pop;
     private Text timer;
-    public float timeLeft = 30.0f;
+    public float timeLeft;
 
 
     void Start()
