@@ -41,21 +41,13 @@ public class GameManager : MonoBehaviour {
     public bool levelwinbool = false;
     public bool paused = false;
     public TimerScript timer;
-
-
+    public int diversleft;
 
     void Start ()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
-
-        //toplightbulb = GameObject.Find("TopLightBulb");
-        //rearleftbulb = GameObject.Find("LeftLightBulb");
-        //rearrightbulb = GameObject.Find("RightLightBulb");
-        //radar = GameObject.Find("Radar");
-        //radarpic = GameObject.Find("radarpic");
-        //theClaw = GameObject.Find("ArmPivotPoint");
     }
     void Awake ()
     {
@@ -77,7 +69,11 @@ public class GameManager : MonoBehaviour {
         upgraded2claw();
         diverspawnonupdate();
         treasurespawnonupdate();
-        ProgressLevel();
+        CheckForDivers();
+    }
+    private void CheckForDivers()
+    {
+        diversleft = GameObject.FindGameObjectsWithTag("Diver").Length;
     }
 
     // Tells divers to spawn in random locations
@@ -125,7 +121,7 @@ public class GameManager : MonoBehaviour {
             radar.SetActive(true);
             radarpic.SetActive(true);
         }
-        else
+        else if (upgradedtoradar == false)
         {
             radar.SetActive(false);
             radarpic.SetActive(false);
@@ -136,12 +132,10 @@ public class GameManager : MonoBehaviour {
         if (upgradedtoclaw == true)
         {
             theClaw.SetActive(true);
-            print("i've turned the claw on");
         }
-        else
+        else if (upgradedtoclaw == false)
         {
             theClaw.SetActive(false);
-            print("i've turned the claw off");
         }
     }
     public void diverspawnonupdate()
@@ -151,7 +145,9 @@ public class GameManager : MonoBehaviour {
             return;
         }
         else
+        {
             spawnDiverIntro();
+        }
     }
     public void treasurespawnonupdate()
     {
@@ -160,7 +156,9 @@ public class GameManager : MonoBehaviour {
             return;
         }
         else
+        {
             spawnTreasureIntro();
+        }
     }
     public void LevelLogic()
     {
@@ -172,21 +170,18 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 2)
         {
-            ResettingMap();
-            maxDivers = 4;
+            maxDivers = 2;
             maxTreasures = 3;
             timer.timeLeft = 120f;
         }
         else if (level == 3)
         {
-            ResettingMap();
             maxDivers = 5;
             maxTreasures = 3;
             timer.timeLeft = 120f;
         }
         else if (level == 4)
         {
-            ResettingMap();
             maxDivers = 6;
             maxTreasures = 3;
             caveExplorable = true;
@@ -194,28 +189,24 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 5)
         {
-            ResettingMap();
             maxDivers = 7;
             maxTreasures = 3;
             timer.timeLeft = 120f;
         }
         else if (level == 6)
         {
-            ResettingMap();
             maxDivers = 8;
             maxTreasures = 3;
             timer.timeLeft = 120f;
         }
         else if (level == 7)
         {
-            ResettingMap();
             maxDivers = 8;
             maxTreasures = 3;
             timer.timeLeft = 120f;
         }
         else if (level == 8)
         {
-            ResettingMap();
             maxDivers = 8;
             maxTreasures = 3;
             timer.timeLeft = 120f;
@@ -223,20 +214,10 @@ public class GameManager : MonoBehaviour {
     }
     public void BeatingLevel()
     {
-        if (ScubasLeftScript.diver < 1)
-        {
-            print("i've beat the level");
-            levelwinbool = true;
-        }
-    }
-    public void ProgressLevel()
-    {
-        if (levelwinbool == true)
-        {
+            print("divers indeed were less than 1");
+            ResettingMap();
             level = level + 1;
             LevelLogic();
-            levelwinbool = false;
-        }
     }
     public void ResettingMap()
     {
@@ -261,10 +242,6 @@ public class GameManager : MonoBehaviour {
     void OnSceneLoaded (Scene scene, LoadSceneMode mode)
     {
         level = 1;
-        maxDivers = 1;
-        maxTreasures = 3;
-        print("i have loadedscene");
-        // FIXME
         Pause = GameObject.Find("PauseScreen");
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
@@ -273,7 +250,10 @@ public class GameManager : MonoBehaviour {
         rearrightbulb = GameObject.Find("RightLightBulb");
         radar = GameObject.Find("Radar");
         radarpic = GameObject.Find("radarpic");
+        upgradedtoradar = false;
         theClaw = GameObject.Find("ArmPivotPoint");
+        upgradedtoclaw = false;
         timer = GameObject.FindObjectOfType<TimerScript>();
+        LevelLogic();
     }
 }

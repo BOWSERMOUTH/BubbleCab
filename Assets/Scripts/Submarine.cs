@@ -200,8 +200,10 @@ public class Submarine : MonoBehaviour {
             isCarrying = false;
             carryingCapacity = carryingCapacity + 1;
             timer.timeLeft = timer.timeLeft + 30f;
-            // MAKE MONEY
             scoreboard.makePopUpOnScore();
+        }
+        if (GameManager.instance.diversleft < 1)
+        {
             GameManager.instance.BeatingLevel();
         }
     }
@@ -223,16 +225,13 @@ public class Submarine : MonoBehaviour {
             audioSource1.PlayOneShot(grabbedScuba, 1);
 
         }
-        if (collidedwith.gameObject.tag == "Treasure")
+        else if (collidedwith.gameObject.tag == "Treasure")
         {
             Destroy(collidedwith.gameObject);
             score = score + 100;
             scoreboard.makePopUpOnScore();
         }
-    }
-    private void OnTriggerStay(Collider outofwater)
-    {
-        if (outofwater.gameObject.tag == "Surface")
+        else if (collidedwith.gameObject.tag == "Surface")
         {
             mufflesound.enabled = true;
             rigidBody.useGravity = true;
@@ -243,6 +242,20 @@ public class Submarine : MonoBehaviour {
             print("i've touched the surface");
             ScoringPoint();
         }
+    }
+    private void OnTriggerStay(Collider outofwater)
+    {
+        //if (outofwater.gameObject.tag == "Surface")
+        //{
+            //mufflesound.enabled = true;
+            //rigidBody.useGravity = true;
+            //rigidBody.mass = 3;
+            //rigidBody.drag = 1;
+            //engineOff = true;
+            //rigidBody.freezeRotation = false;
+            //print("i've touched the surface");
+            //ScoringPoint();
+        //}
     }
     private void OnTriggerExit(Collider backinwater)
     {
