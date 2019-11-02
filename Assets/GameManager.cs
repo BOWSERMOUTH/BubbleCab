@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
+    public GameObject ui;
     public static GameManager instance = null;
     public bool charactertoggle;
     public GameObject po;
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour {
     public GameObject radarpic;
     public GameObject theClaw;
     public GameObject Pause;
+    public GameObject WinScreen;
 
     // SPAWN DIVER LOGIC
     public Vector3[] spawnPoints;
@@ -214,9 +216,9 @@ public class GameManager : MonoBehaviour {
     }
     public void BeatingLevel()
     {
-            print("divers indeed were less than 1");
             ResettingMap();
             level = level + 1;
+            SpawnWinScreen();
             LevelLogic();
     }
     public void ResettingMap()
@@ -239,21 +241,40 @@ public class GameManager : MonoBehaviour {
             Pause.SetActive(true);
         }
     }
+    public void ResetGameManager()
+    {
+        maxDivers = 0;
+        maxTreasures = 0;
+        upgradedtolights = false;
+        upgradedtoclaw = false;
+        upgradedtoradar = false;
+        upgradedtoboost = false;
+        level = 0;
+        caveExplorable = false;
+    }
+    public void SpawnWinScreen()
+    {
+        Instantiate(WinScreen, ui.transform);
+    }
     void OnSceneLoaded (Scene scene, LoadSceneMode mode)
     {
-        level = 1;
-        Pause = GameObject.Find("PauseScreen");
-        po = GameObject.Find("popo");
-        penny = GameObject.Find("PennyModel");
-        toplightbulb = GameObject.Find("TopLightBulb");
-        rearleftbulb = GameObject.Find("LeftLightBulb");
-        rearrightbulb = GameObject.Find("RightLightBulb");
-        radar = GameObject.Find("Radar");
-        radarpic = GameObject.Find("radarpic");
-        upgradedtoradar = false;
-        theClaw = GameObject.Find("ArmPivotPoint");
-        upgradedtoclaw = false;
-        timer = GameObject.FindObjectOfType<TimerScript>();
-        LevelLogic();
+        if (scene.buildIndex != 0)
+        {
+            level = 1;
+            ui = GameObject.Find("UI");
+            Pause = GameObject.Find("PauseScreen");
+            po = GameObject.Find("popo");
+            penny = GameObject.Find("PennyModel");
+            toplightbulb = GameObject.Find("TopLightBulb");
+            rearleftbulb = GameObject.Find("LeftLightBulb");
+            rearrightbulb = GameObject.Find("RightLightBulb");
+            radar = GameObject.Find("Radar");
+            radarpic = GameObject.Find("radarpic");
+            upgradedtoradar = false;
+            theClaw = GameObject.Find("ArmPivotPoint");
+            upgradedtoclaw = false;
+            timer = GameObject.FindObjectOfType<TimerScript>();
+            LevelLogic();
+        }
     }
 }

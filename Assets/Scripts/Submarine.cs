@@ -239,23 +239,8 @@ public class Submarine : MonoBehaviour {
             rigidBody.drag = 1;
             engineOff = true;
             rigidBody.freezeRotation = false;
-            print("i've touched the surface");
             ScoringPoint();
         }
-    }
-    private void OnTriggerStay(Collider outofwater)
-    {
-        //if (outofwater.gameObject.tag == "Surface")
-        //{
-            //mufflesound.enabled = true;
-            //rigidBody.useGravity = true;
-            //rigidBody.mass = 3;
-            //rigidBody.drag = 1;
-            //engineOff = true;
-            //rigidBody.freezeRotation = false;
-            //print("i've touched the surface");
-            //ScoringPoint();
-        //}
     }
     private void OnTriggerExit(Collider backinwater)
     {
@@ -276,9 +261,9 @@ public class Submarine : MonoBehaviour {
         audioSource1.PlayOneShot(deathSound);
         dome.transform.parent = null;
         popo.transform.parent = null;
+        GameManager.instance.ResetGameManager();
         Invoke("LoadFirstLevel", levelLoadDelay);
     }
-
     private void SuccessSequence()
     {
         audioSource1.Stop();
@@ -286,7 +271,6 @@ public class Submarine : MonoBehaviour {
         state = State.Transcending;
         Invoke("LoadNextLevel", 2.5f); // parameterise time
     }
-
     private void LoadNextLevel()
     {
         SceneManager.LoadScene(1);

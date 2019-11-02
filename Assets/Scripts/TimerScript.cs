@@ -46,7 +46,6 @@ public class TimerScript : MonoBehaviour
             {
                 timer.text = "Game Over!";
                 TimerEnd();
-                print("timer ended");
             }
         }
     }

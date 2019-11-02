@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Pause : MonoBehaviour
 {
     private AudioSource audio;
+    public AudioSource musicaudio;
     public AudioClip starthighlight;
     public AudioClip startclick;
     public Submarine submarine;
@@ -15,7 +16,6 @@ public class Pause : MonoBehaviour
     }
     private void OnEnable()
     {
-        
         audio = gameObject.GetComponent<AudioSource>();
         Time.timeScale = 0;
         submarine.engineOff = true;
@@ -47,7 +47,22 @@ public class Pause : MonoBehaviour
     public void UnPause()
     {
         gameObject.SetActive(false);
-        print("gamemanager is now set to unpaused");
+    }
+    public void MuteMusic()
+    {
+        if (musicaudio.mute == false)
+        {
+            musicaudio.mute = true;
+        }
+        else if (musicaudio.mute == true)
+        {
+            musicaudio.mute = false;
+        }
+    }
+
+    public void UnMuteMusic()
+    {
+        musicaudio.mute = false;
     }
 
     // Update is called once per frame
