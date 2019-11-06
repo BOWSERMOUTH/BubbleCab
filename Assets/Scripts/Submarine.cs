@@ -4,8 +4,7 @@ using UnityEngine.UI;
 
 public class Submarine : MonoBehaviour {
 
-    //public count how many scuba people you have
-
+    public static Submarine instance = null;
     Rigidbody rigidBody;
     public AudioSource audioSource1;
     public AudioSource audioSource2;
@@ -79,6 +78,7 @@ public class Submarine : MonoBehaviour {
             RespondToRotateInput();
             lightsOnOff();
             //add pickup scubadiver method
+            print(score);
         }
 	}
 

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class TheStore : MonoBehaviour {
 
+    public static TheStore instance = null;
     public GameObject panel;
     public GameObject openstoreon;
     private bool openstorebool;
@@ -83,6 +84,7 @@ public class TheStore : MonoBehaviour {
         {
             GameManager.instance.upgradedtoradar = true;
             Submarine.score = Submarine.score - firstupgrade;
+
         }
     }
     public void repair2ship()
@@ -119,14 +121,26 @@ public class TheStore : MonoBehaviour {
             openstoreon.SetActive(false);
         }
     }
-    private void ButtonDisabler400()
+    public void ButtonDisabler400()
     {
-        if (Submarine.score >= firstupgrade)
+        if (Submarine.score >= firstupgrade && GameManager.instance.upgradedtoboost == false)
         {
             upgrade2boost.interactable = true;
+        }
+        if (Submarine.score >= firstupgrade && GameManager.instance.upgradedtoclaw == false)
+        {
             upgrade2claw.interactable = true;
+        }
+        if (Submarine.score >= firstupgrade && GameManager.instance.upgradedtolights == false)
+        {
             upgrade2flashlight.interactable = true;
+        }
+        if (Submarine.score >= firstupgrade && GameManager.instance.upgradedtoradar == false)
+        {
             upgrade2radar.interactable = true;
+        }
+        if (Submarine.score >= firstupgrade && Submarine.hulllimit < 6)
+        {
             upgrade2hull.interactable = true;
         }
         else

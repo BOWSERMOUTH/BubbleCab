@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
+    //DEBUG
+    public bool DebugBool;
+    public GameObject DebugMode;
+    //GAME LOGIC
     public GameObject ui;
     public static GameManager instance = null;
-    public bool charactertoggle;
+    
+    //OBJECT REFERENCES
     public GameObject po;
     public GameObject penny;
     private GameObject toplightbulb;
@@ -18,6 +24,7 @@ public class GameManager : MonoBehaviour {
     public GameObject theClaw;
     public GameObject Pause;
     public GameObject WinScreen;
+    public GameObject CaveCutScene;
 
     // SPAWN DIVER LOGIC
     public Vector3[] spawnPoints;
@@ -44,6 +51,7 @@ public class GameManager : MonoBehaviour {
     public bool paused = false;
     public TimerScript timer;
     public int diversleft;
+    public bool charactertoggle;
 
     void Start ()
     {
@@ -72,6 +80,8 @@ public class GameManager : MonoBehaviour {
         diverspawnonupdate();
         treasurespawnonupdate();
         CheckForDivers();
+        CheckForDebugMode();
+        TurnOnDebug();
     }
     private void CheckForDivers()
     {
@@ -122,6 +132,7 @@ public class GameManager : MonoBehaviour {
         {
             radar.SetActive(true);
             radarpic.SetActive(true);
+            TheStore.instance.upgrade2radar.interactable = false;
         }
         else if (upgradedtoradar == false)
         {
@@ -166,13 +177,13 @@ public class GameManager : MonoBehaviour {
     {
         if (level == 1)
         {
-            maxDivers = 1;
+            maxDivers = 3;
             maxTreasures = 3;
             timer.timeLeft = 120f;
         }
         else if (level == 2)
         {
-            maxDivers = 2;
+            maxDivers = 3;
             maxTreasures = 3;
             timer.timeLeft = 120f;
         }
@@ -187,7 +198,11 @@ public class GameManager : MonoBehaviour {
             maxDivers = 6;
             maxTreasures = 3;
             caveExplorable = true;
-            timer.timeLeft = 120f;
+            Destroy(GameObject.Find("CutSceneRockLeftG"));
+            Destroy(GameObject.Find("CutSceneRockRightG"));
+            Destroy(GameObject.Find("FigureheadG"));
+            Instantiate(CaveCutScene);
+            StartCoroutine(WaitingForScript());
         }
         else if (level == 5)
         {
@@ -221,8 +236,17 @@ public class GameManager : MonoBehaviour {
             SpawnWinScreen();
             LevelLogic();
     }
+    IEnumerator WaitingForScript()
+    {
+        ui.SetActive(false);
+        yield return new WaitForSeconds(23.3f);
+        Destroy(GameObject.Find("CaveCutScene(Clone)"));
+        ui.SetActive(true);
+        timer.timeLeft = 120f;
+    }
     public void ResettingMap()
     {
+        GameObject[] savedDivers = GameObject.FindGameObjectsWithTag("Friendly");
         GameObject[] divers = GameObject.FindGameObjectsWithTag("Diver");
         GameObject[] treasures = GameObject.FindGameObjectsWithTag("Treasure");
         for (var i = 0; i < divers.Length; i ++)
@@ -232,6 +256,10 @@ public class GameManager : MonoBehaviour {
         for (var o = 0; o < treasures.Length; o ++)
         {
             Destroy(treasures[o]);
+        }
+        for (var d = 0; d < savedDivers.Length; d ++)
+        {
+            Destroy(savedDivers[d]);
         }
     }
     public void PauseGame()
@@ -256,11 +284,34 @@ public class GameManager : MonoBehaviour {
     {
         Instantiate(WinScreen, ui.transform);
     }
+    public void TurnOnDebug()
+    {
+        if (Input.GetKey(KeyCode.F12))
+        {
+            if (Input.GetKey(KeyCode.D))
+            {
+                DebugBool = true;
+                CheckForDebugMode();
+
+            }
+        }
+    }
+    public void CheckForDebugMode()
+    {
+        if (DebugBool == true)
+        {
+            DebugMode.SetActive(true);
+        }
+        else if (DebugBool == false)
+        {
+            DebugMode.SetActive(false);
+        }
+    }
     void OnSceneLoaded (Scene scene, LoadSceneMode mode)
     {
         if (scene.buildIndex != 0)
         {
-            level = 1;
+            level = 3;
             ui = GameObject.Find("UI");
             Pause = GameObject.Find("PauseScreen");
             po = GameObject.Find("popo");

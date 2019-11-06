@@ -20,14 +20,14 @@ public class Grabbing : MonoBehaviour
             Vector3 scale = touchingObject.transform.localScale;
             touchingObject.transform.parent = transform;
             Rigidbody rb = touchingObject.GetComponent<Rigidbody>();
-            CapsuleCollider cc = touchingObject.GetComponent<CapsuleCollider>();
+            MeshCollider cc = touchingObject.GetComponent<MeshCollider>();
             cc.isTrigger = true;
             rb.isKinematic = true;
         }
         else if (grabbing == false && touchingObject.tag == "Grippable")
         {
             Rigidbody rb = touchingObject.GetComponent<Rigidbody>();
-            CapsuleCollider cc = touchingObject.GetComponent<CapsuleCollider>();
+            MeshCollider cc = touchingObject.GetComponent<MeshCollider>();
             rb.isKinematic = false;
             cc.isTrigger = false;
             transform.DetachChildren();

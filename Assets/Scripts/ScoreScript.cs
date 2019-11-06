@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ScoreScript : MonoBehaviour
 {
+    public static ScoreScript instance = null;
     private Text scoreText;
     public GameObject popupscore;
 
