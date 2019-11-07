@@ -17,9 +17,11 @@ public class DebugMode : MonoBehaviour
     {
         GameManager gamemanager = GameManager.instance;
         Submarine submarine = Submarine.instance;
+
     }
     public void addhundredpoints()
     {
+        scorescript = ScoreScript.instance;
         Submarine.score = Submarine.score + 100;
         scorescript.makePopUpOnScore();
     }
@@ -57,6 +59,6 @@ public class DebugMode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

@@ -189,7 +189,7 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 3)
         {
-            maxDivers = 5;
+            maxDivers = 1;
             maxTreasures = 3;
             timer.timeLeft = 120f;
         }
