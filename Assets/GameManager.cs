@@ -46,7 +46,6 @@ public class GameManager : MonoBehaviour {
 
     // LEVEL LOGIC
     public int level;
-    public bool caveExplorable = false;
     public bool levelwinbool = false;
     public bool paused = false;
     public TimerScript timer;
@@ -58,6 +57,28 @@ public class GameManager : MonoBehaviour {
         SceneManager.sceneLoaded += OnSceneLoaded;
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
+        spawnPoints = new Vector3[15];
+        SetSpawnPoints();
+
+
+    }
+    public void SetSpawnPoints()
+    {
+        spawnPoints[0] = new Vector3(-9.47f, -7.67f, -0.09f);
+        spawnPoints[1] = new Vector3(-24.64f, -7.67f, -0.09f);
+        spawnPoints[2] = new Vector3(-55.2f, -10.23f, -0.09f);
+        spawnPoints[3] = new Vector3(1.45f, -7.45f, -0.09f);
+        spawnPoints[4] = new Vector3(27.48f, -10.42f, -0.09f);
+        spawnPoints[5] = new Vector3(59.72f, -11.65f, -0.09f);
+        spawnPoints[6] = new Vector3(79.61f, 5.92f, -0.09f);
+        spawnPoints[7] = new Vector3(79.61f, -11.67f, -0.09f);
+        spawnPoints[8] = new Vector3(-2.97f, 5.81f, -0.09f);
+        spawnPoints[9] = new Vector3(23.74f, -6.68f, -0.09f);
+        spawnPoints[10] = new Vector3(59.44f, -1.08f, -0.09f);
+        spawnPoints[11] = new Vector3(46.3f, -11.26f, -0.09f);
+        spawnPoints[12] = new Vector3(37.16f, -13.11f, -0.09f);
+        spawnPoints[13] = new Vector3(-35.86f, 6.62f, -0.09f);
+        spawnPoints[14] = new Vector3(-62.84f, -10.09f, -0.09f);
     }
     void Awake ()
     {
@@ -195,9 +216,14 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 4)
         {
+            spawnPoints = new Vector3[19];
+            SetSpawnPoints();
+            spawnPoints[15] = new Vector3(29.88f, -29.51f, -0.09f);
+            spawnPoints[16] = new Vector3(8.97f, -23.98f, -0.09f);
+            spawnPoints[17] = new Vector3(-11.41f, -24.92f, -0.09f);
+            spawnPoints[18] = new Vector3(-21.11f, -20.2f, -0.09f);
             maxDivers = 6;
             maxTreasures = 3;
-            caveExplorable = true;
             Destroy(GameObject.Find("CutSceneRockLeftG"));
             Destroy(GameObject.Find("CutSceneRockRightG"));
             Destroy(GameObject.Find("FigureheadG"));
@@ -278,7 +304,6 @@ public class GameManager : MonoBehaviour {
         upgradedtoradar = false;
         upgradedtoboost = false;
         level = 0;
-        caveExplorable = false;
     }
     public void SpawnWinScreen()
     {
