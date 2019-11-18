@@ -201,21 +201,23 @@ public class Submarine : MonoBehaviour {
             carryingCapacity = carryingCapacity + 1;
             timer.timeLeft = timer.timeLeft + 30f;
             scoreboard.makePopUpOnScore();
-        }
-        if (GameManager.instance.diversleft < 1)
-        {
-            GameManager.instance.BeatingLevel();
+            if (GameManager.instance.currentDivers.Count < 1)
+            {
+                GameManager.instance.BeatingLevel();
+            }
         }
     }
     public void ScoreValueDiver()
     {
         score = score + 200 * cargoCount;
     }
+
     // COLLIDING WITH SCUBA DIVER
     private void OnTriggerEnter(Collider collidedwith)
     {
         if (collidedwith.gameObject.tag == "Diver" && carryingCapacity >= 1f)
         {
+            // Pick Up Diver
             collidedwith.transform.parent = dome.transform;
             collidedwith.gameObject.transform.position = dome.transform.position + dome.transform.right * .3f;
             collidedwith.transform.rotation = Quaternion.identity;
@@ -223,7 +225,8 @@ public class Submarine : MonoBehaviour {
             carryingCapacity = carryingCapacity - 1;
             cargoCount = cargoCount + 1;
             audioSource1.PlayOneShot(grabbedScuba, 1);
-
+            //remove diver from playing field
+            GameManager.instance.currentDivers.Remove(collidedwith.gameObject);
         }
         else if (collidedwith.gameObject.tag == "Treasure")
         {

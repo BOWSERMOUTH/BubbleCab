@@ -27,14 +27,15 @@ public class GameManager : MonoBehaviour {
     public GameObject CaveCutScene;
 
     // SPAWN DIVER LOGIC
-    public Vector3[] spawnPoints;
+    public List<Vector3> spawnPoints;
+    private List<Vector3> remainingSpawnPoints;
+    public List<GameObject> currentDivers;
     public Vector3[] treasureSpawnPoints;
     public int maxDivers = 4;
     public int maxTreasures = 3;
     public GameObject diver;
     public GameObject treasurechest;
     public List<int> treasureIds;
-    public List<int> usedIds;
     int diverrandom;
     int treasurerandom;
 
@@ -57,29 +58,45 @@ public class GameManager : MonoBehaviour {
         SceneManager.sceneLoaded += OnSceneLoaded;
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
-        spawnPoints = new Vector3[15];
-        SetSpawnPoints();
-
-
+        //DEBUG:
+        DebugSetSpawnPoints();
+        //SetSpawnPoints();
     }
+
     public void SetSpawnPoints()
     {
-        spawnPoints[0] = new Vector3(-9.47f, -7.67f, -0.09f);
-        spawnPoints[1] = new Vector3(-24.64f, -7.67f, -0.09f);
-        spawnPoints[2] = new Vector3(-55.2f, -10.23f, -0.09f);
-        spawnPoints[3] = new Vector3(1.45f, -7.45f, -0.09f);
-        spawnPoints[4] = new Vector3(27.48f, -10.42f, -0.09f);
-        spawnPoints[5] = new Vector3(59.72f, -11.65f, -0.09f);
-        spawnPoints[6] = new Vector3(79.61f, 5.92f, -0.09f);
-        spawnPoints[7] = new Vector3(79.61f, -11.67f, -0.09f);
-        spawnPoints[8] = new Vector3(-2.97f, 5.81f, -0.09f);
-        spawnPoints[9] = new Vector3(23.74f, -6.68f, -0.09f);
-        spawnPoints[10] = new Vector3(59.44f, -1.08f, -0.09f);
-        spawnPoints[11] = new Vector3(46.3f, -11.26f, -0.09f);
-        spawnPoints[12] = new Vector3(37.16f, -13.11f, -0.09f);
-        spawnPoints[13] = new Vector3(-35.86f, 6.62f, -0.09f);
-        spawnPoints[14] = new Vector3(-62.84f, -10.09f, -0.09f);
+        spawnPoints.Clear();
+        spawnPoints.Add(new Vector3(-9.47f, -7.67f, -0.09f));
+        spawnPoints.Add(new Vector3(-24.64f, -7.67f, -0.09f));
+        spawnPoints.Add(new Vector3(-55.2f, -10.23f, -0.09f));
+        spawnPoints.Add(new Vector3(1.45f, -7.45f, -0.09f));
+        spawnPoints.Add(new Vector3(27.48f, -10.42f, -0.09f));
+        spawnPoints.Add(new Vector3(59.72f, -11.65f, -0.09f));
+        spawnPoints.Add(new Vector3(79.61f, 5.92f, -0.09f));
+        spawnPoints.Add(new Vector3(79.61f, -11.67f, -0.09f));
+        spawnPoints.Add(new Vector3(-2.97f, 5.81f, -0.09f));
+        spawnPoints.Add(new Vector3(23.74f, -6.68f, -0.09f));
+        spawnPoints.Add(new Vector3(59.44f, -1.08f, -0.09f));
+        spawnPoints.Add(new Vector3(46.3f, -11.26f, -0.09f));
+        spawnPoints.Add(new Vector3(37.16f, -13.11f, -0.09f));
+        spawnPoints.Add(new Vector3(-35.86f, 6.62f, -0.09f));
+        spawnPoints.Add(new Vector3(-62.84f, -10.09f, -0.09f));
     }
+
+    public void DebugSetSpawnPoints()
+    {
+        spawnPoints.Clear();
+        spawnPoints.Add(new Vector3(-26f, 15f, -0.09f));
+        spawnPoints.Add(new Vector3(-24f, 15f, -0.09f));
+        spawnPoints.Add(new Vector3(-22f, 15f, -0.09f));
+        spawnPoints.Add(new Vector3(-20f, 15f, -0.09f));
+        spawnPoints.Add(new Vector3(-18f, 15f, -0.09f));
+        spawnPoints.Add(new Vector3(-16f, 15f, -0.09f));
+        spawnPoints.Add(new Vector3(-14f, 15f, -0.09f));
+        spawnPoints.Add(new Vector3(-12f, 15f, -0.09f));
+        spawnPoints.Add(new Vector3(-10f, 15f, -0.09f));
+    }
+
     void Awake ()
     {
         if (instance == null)
@@ -98,30 +115,33 @@ public class GameManager : MonoBehaviour {
         PauseGame();
         upgraded2radar();
         upgraded2claw();
-        diverspawnonupdate();
         treasurespawnonupdate();
-        CheckForDivers();
         CheckForDebugMode();
         TurnOnDebug();
     }
-    private void CheckForDivers()
-    {
-        diversleft = GameObject.FindGameObjectsWithTag("Diver").Length;
-    }
 
     // Tells divers to spawn in random locations
-    private void spawnDiverIntro()
+    private void spawnDivers()
     {
-        do
-        {
-            diverrandom = Random.Range(0, spawnPoints.Length);
-        }
-        while (usedIds.IndexOf(diverrandom) != -1);
+        //make a copy of the spawnpoints
+        remainingSpawnPoints = spawnPoints;
 
-        usedIds.Add(diverrandom);
-        Instantiate(diver, spawnPoints[diverrandom], Quaternion.Euler(0, -90, 0));
-        maxDivers = maxDivers - 1;
+        while (currentDivers.Count < maxDivers)
+        {
+            //find a random spawn point from remaining spawn points
+            Vector3 selectedSpawnPoint = remainingSpawnPoints[Random.Range(0, remainingSpawnPoints.Count)];
+
+            //create a diver
+            GameObject selectedDiver = Instantiate(diver, selectedSpawnPoint, Quaternion.Euler(0, -90, 0));
+
+            //add selected diver to currentDivers
+            currentDivers.Add(selectedDiver);
+
+            //remove chosen spawn point from list of possible spawns
+            remainingSpawnPoints.Remove(selectedSpawnPoint);
+        }
     }
+
     private void spawnTreasureIntro()
     {
         do
@@ -161,6 +181,7 @@ public class GameManager : MonoBehaviour {
             radarpic.SetActive(false);
         }
     }
+
     public void upgraded2claw()
     {
         if (upgradedtoclaw == true)
@@ -172,17 +193,7 @@ public class GameManager : MonoBehaviour {
             theClaw.SetActive(false);
         }
     }
-    public void diverspawnonupdate()
-    {
-        if (maxDivers < 1)
-        {
-            return;
-        }
-        else
-        {
-            spawnDiverIntro();
-        }
-    }
+
     public void treasurespawnonupdate()
     {
         if (maxTreasures < 1)
@@ -194,6 +205,8 @@ public class GameManager : MonoBehaviour {
             spawnTreasureIntro();
         }
     }
+
+    // sets up the level, creat
     public void LevelLogic()
     {
         if (level == 1)
@@ -216,12 +229,10 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 4)
         {
-            spawnPoints = new Vector3[19];
-            SetSpawnPoints();
-            spawnPoints[15] = new Vector3(29.88f, -29.51f, -0.09f);
-            spawnPoints[16] = new Vector3(8.97f, -23.98f, -0.09f);
-            spawnPoints[17] = new Vector3(-11.41f, -24.92f, -0.09f);
-            spawnPoints[18] = new Vector3(-21.11f, -20.2f, -0.09f);
+            spawnPoints.Add(new Vector3(29.88f, -29.51f, -0.09f));
+            spawnPoints.Add(new Vector3(8.97f, -23.98f, -0.09f));
+            spawnPoints.Add(new Vector3(-11.41f, -24.92f, -0.09f));
+            spawnPoints.Add(new Vector3(-21.11f, -20.2f, -0.09f));
             maxDivers = 6;
             maxTreasures = 3;
             Destroy(GameObject.Find("CutSceneRockLeftG"));
@@ -254,7 +265,10 @@ public class GameManager : MonoBehaviour {
             maxTreasures = 3;
             timer.timeLeft = 120f;
         }
+
+        spawnDivers();
     }
+
     public void BeatingLevel()
     {
             ResettingMap();
@@ -262,6 +276,7 @@ public class GameManager : MonoBehaviour {
             SpawnWinScreen();
             LevelLogic();
     }
+
     IEnumerator WaitingForScript()
     {
         ui.SetActive(false);
@@ -270,6 +285,8 @@ public class GameManager : MonoBehaviour {
         ui.SetActive(true);
         timer.timeLeft = 120f;
     }
+
+    // clears map of all randomly spawned objects and rescued divers
     public void ResettingMap()
     {
         GameObject[] savedDivers = GameObject.FindGameObjectsWithTag("Friendly");
@@ -288,6 +305,7 @@ public class GameManager : MonoBehaviour {
             Destroy(savedDivers[d]);
         }
     }
+
     public void PauseGame()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) 
@@ -295,6 +313,7 @@ public class GameManager : MonoBehaviour {
             Pause.SetActive(true);
         }
     }
+
     public void ResetGameManager()
     {
         maxDivers = 0;
@@ -305,10 +324,12 @@ public class GameManager : MonoBehaviour {
         upgradedtoboost = false;
         level = 0;
     }
+
     public void SpawnWinScreen()
     {
         Instantiate(WinScreen, ui.transform);
     }
+
     public void TurnOnDebug()
     {
         if (Input.GetKey(KeyCode.F12))
@@ -321,6 +342,7 @@ public class GameManager : MonoBehaviour {
             }
         }
     }
+
     public void CheckForDebugMode()
     {
         if (DebugBool == true)
@@ -332,11 +354,13 @@ public class GameManager : MonoBehaviour {
             DebugMode.SetActive(false);
         }
     }
+
     void OnSceneLoaded (Scene scene, LoadSceneMode mode)
     {
         if (scene.buildIndex != 0)
         {
-            level = 3;
+            //DEBUG: pick starting level
+            level = 1;
             ui = GameObject.Find("UI");
             Pause = GameObject.Find("PauseScreen");
             po = GameObject.Find("popo");
