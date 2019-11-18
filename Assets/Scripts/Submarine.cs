@@ -77,8 +77,6 @@ public class Submarine : MonoBehaviour {
             RespondToThrustInput();
             RespondToRotateInput();
             lightsOnOff();
-            //add pickup scubadiver method
-            print(score);
         }
 	}
 
@@ -103,7 +101,6 @@ public class Submarine : MonoBehaviour {
             leftLight.gameObject.SetActive(false);
         }
     }
-
     // Controls
     private void RespondToThrustInput()
     {
@@ -116,7 +113,6 @@ public class Submarine : MonoBehaviour {
             mainThrust = 20f;
             audioSource1.pitch = 1.6f;
         }
-
         else if (engineOff == false)
         {
             mainThrust = 10f;
@@ -124,7 +120,6 @@ public class Submarine : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.W))
             ApplyThrust();
-
         else
         {
             audioSource1.Stop();
@@ -136,7 +131,6 @@ public class Submarine : MonoBehaviour {
         }
     }
     // THRUST STRENGTH
-
     private void RespondToRotateInput()
     {
         // Freezing rotation as soon as we rotate
