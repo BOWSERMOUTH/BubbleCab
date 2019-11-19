@@ -91,12 +91,14 @@ public class Submarine : MonoBehaviour {
             lightControl = !lightControl;
             audioSource2.PlayOneShot(flashlight);
         }
+
         if (lightControl == true)
-            {
-                topLight.gameObject.SetActive(true);
-                rightLight.gameObject.SetActive(true);
-                leftLight.gameObject.SetActive(true);
-            }
+        {
+            topLight.gameObject.SetActive(true);
+            rightLight.gameObject.SetActive(true);
+            leftLight.gameObject.SetActive(true);
+        }
+
         if (lightControl == false)
         {
             topLight.gameObject.SetActive(false);
@@ -112,25 +114,28 @@ public class Submarine : MonoBehaviour {
         {
             mainThrust = 0f;
         }
+
         if (Input.GetKey(KeyCode.LeftShift) && engineOff == false && GameManager.instance.upgradedtoboost == true)
         {
             mainThrust = 20f;
             audioSource1.pitch = 1.6f;
         }
-
         else if (engineOff == false)
         {
             mainThrust = 10f;
             audioSource1.pitch = .6f;
         }
-        if (Input.GetKey(KeyCode.W))
-            ApplyThrust();
 
+        if (Input.GetKey(KeyCode.W))
+        {
+            ApplyThrust();
+        }
         else
         {
             audioSource1.Stop();
             audioSource1.pitch = 1;
         }
+
         if (Input.GetKey(KeyCode.S))
         {
             rigidBody.AddRelativeForce(Vector3.down * mainThrust);
@@ -166,6 +171,7 @@ public class Submarine : MonoBehaviour {
         {
             return;
         }
+
         switch (collision.gameObject.tag)
         {
             case "Friendly":
