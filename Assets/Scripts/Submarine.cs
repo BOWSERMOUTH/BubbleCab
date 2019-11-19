@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class Submarine : MonoBehaviour {
 
-    public static Submarine instance = null;
     Rigidbody rigidBody;
     public AudioSource audioSource1;
     public AudioSource audioSource2;
@@ -30,15 +29,13 @@ public class Submarine : MonoBehaviour {
     public GameObject penny;
     
     //DAMAGE LOGIC
-    public static bool invincibility;
+    public bool invincibility;
     public bool bubbleBoost;
-    public static int hull = 3;
-    public static int hulllimit = 3;
+
     //CARRYING LOGIC
     public bool isCarrying = false;
-    public static int carryingCapacity = 1;
-    public static int score = 0;
-    public static int cargoCount = 0;
+    //public int carryingCapacity = 1;
+    public int cargoCount = 0;
 
     //LIGHT CONTROLS
     public bool lightControl;
@@ -57,7 +54,6 @@ public class Submarine : MonoBehaviour {
     void Start ()
     {
         rigidBody = GetComponent<Rigidbody>();
-        hull = 3;
         mufflesound = maincamera.GetComponent<AudioHighPassFilter>();
     }
 
@@ -78,8 +74,6 @@ public class Submarine : MonoBehaviour {
             RespondToThrustInput();
             RespondToRotateInput();
             lightsOnOff();
-            //add pickup scubadiver method
-            print(score);
         }
 	}
 
@@ -186,9 +180,9 @@ public class Submarine : MonoBehaviour {
                 break;
             default:
                 audioSource2.PlayOneShot(hurt);
-                hull = hull - 1;
+                GameManager.instance.subHull -= 1;
                 //hullshake.cameraShake();
-                if (hull < 1)
+                if (GameManager.instance.subHull < 1)
                 {
                     DeathSequence();
                 }
@@ -207,9 +201,12 @@ public class Submarine : MonoBehaviour {
             ScoreValueDiver();
             cargoCount = 0;
             isCarrying = false;
-            carryingCapacity = carryingCapacity + 1;
+            //FIXME: instead of adding to carrying capacity, have a list for divers held.
+            GameManager.instance.subCarryingCapacity += 1;
             timer.timeLeft = timer.timeLeft + 30f;
             scoreboard.makePopUpOnScore();
+            //FIXME: currentDivers only counts divers in playfield
+            //not divers that have not been cashed in for points
             if (GameManager.instance.currentDivers.Count < 1)
             {
                 GameManager.instance.BeatingLevel();
@@ -217,31 +214,34 @@ public class Submarine : MonoBehaviour {
         }
     }
 
+    // Add 200 points for each diver in cargo
     public void ScoreValueDiver()
     {
-        score = score + 200 * cargoCount;
+        GameManager.instance.score = GameManager.instance.score + 200 * cargoCount;
     }
 
     // COLLIDING WITH SCUBA DIVER
     private void OnTriggerEnter(Collider collidedwith)
     {
-        if (collidedwith.gameObject.tag == "Diver" && carryingCapacity >= 1f)
+        //FIXME: instead of adding to carrying capacity, have a list for divers held.
+        if (collidedwith.gameObject.tag == "Diver" && GameManager.instance.subCarryingCapacity >= 1f)
         {
             // Pick Up Diver
             collidedwith.transform.parent = dome.transform;
             collidedwith.gameObject.transform.position = dome.transform.position + dome.transform.right * .3f;
             collidedwith.transform.rotation = Quaternion.identity;
             isCarrying = true;
-            carryingCapacity = carryingCapacity - 1;
+            GameManager.instance.subCarryingCapacity -= 1;
             cargoCount = cargoCount + 1;
             audioSource1.PlayOneShot(grabbedScuba, 1);
+            //FIXME: remove the diver from currentDivers when cashing in points
             //remove diver from playing field
             GameManager.instance.currentDivers.Remove(collidedwith.gameObject);
         }
         else if (collidedwith.gameObject.tag == "Treasure")
         {
             Destroy(collidedwith.gameObject);
-            score = score + 100;
+            GameManager.instance.score = GameManager.instance.score + 100;
             scoreboard.makePopUpOnScore();
             //remove treasure from playing field
             GameManager.instance.currentTreasures.Remove(collidedwith.gameObject);

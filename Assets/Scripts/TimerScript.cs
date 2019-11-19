@@ -29,24 +29,19 @@ public class TimerScript : MonoBehaviour
         bubbles.enableEmission = false;
     }
 
-
     void Update()
     {
         timeLeft -= Time.deltaTime;
         timer.text = timeLeft.ToString("F0");
+        if (timeLeft < 11 && timeLeft > 0 && pop.isPlaying == false)
         {
-            if (timeLeft < 11 && timeLeft > 0 && pop.isPlaying == false)
-            {
-                pop.Play();
-            }
-            
+            pop.Play();
         }
+            
+        if (timeLeft < 0)
         {
-            if (timeLeft < 0)
-            {
-                timer.text = "Game Over!";
-                TimerEnd();
-            }
+            timer.text = "Game Over!";
+            TimerEnd();
         }
     }
 }

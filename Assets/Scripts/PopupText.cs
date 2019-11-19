@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PopupText : MonoBehaviour
 {
-    public Submarine submarine;
     private Text scoreText;
 
     void Start()
@@ -14,6 +13,6 @@ public class PopupText : MonoBehaviour
 
     void Update()
     {
-        scoreText.text = "+ " + Submarine.score.ToString();
+        scoreText.text = "+ " + GameManager.instance.score.ToString();
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ScoreScript : MonoBehaviour
 {
+    //FIXME: remove static
     public static ScoreScript instance = null;
     private Text scoreText;
     public GameObject popupscore;
@@ -23,6 +24,6 @@ public class ScoreScript : MonoBehaviour
 
 	void Update ()
     {
-        scoreText.text = Submarine.score.ToString();
+        scoreText.text = GameManager.instance.score.ToString();
     }
 }

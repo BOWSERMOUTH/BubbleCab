@@ -28,6 +28,6 @@ public class HullScript : MonoBehaviour
 
 	void Update ()
     {
-        hullText.text = "HULL: " + Submarine.hull.ToString();
+        hullText.text = "HULL: " + GameManager.instance.subHull.ToString();
 	}
 }

@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TheStore : MonoBehaviour {
-
-    public static TheStore instance = null;
     public GameObject panel;
     public GameObject openstoreon;
     private bool openstorebool;
@@ -13,6 +11,7 @@ public class TheStore : MonoBehaviour {
     public Button upgrade2flashlight;
     public Button upgrade2boost;
     public Button upgrade2claw;
+    //FIXME: Make this NOT static!
     public Button upgrade2radar;
     public Button repairhull;
     public Button upgrade2hull;
@@ -37,66 +36,66 @@ public class TheStore : MonoBehaviour {
 
     public void carrying2ship()
     {
-        if (Submarine.score >= secondupgrade)
+        if (GameManager.instance.score >= secondupgrade)
         {
-            Submarine.carryingCapacity = Submarine.carryingCapacity + 1;
-            Submarine.score = Submarine.score - secondupgrade;
+            GameManager.instance.subCarryingCapacity += 1;
+            GameManager.instance.score -= secondupgrade;
         }
     }
 
     public void hull2ship()
     {
-        if (Submarine.score >= firstupgrade)
+        if (GameManager.instance.score >= firstupgrade)
         {
-            Submarine.hulllimit = Submarine.hulllimit + 1;
-            Submarine.score = Submarine.score - firstupgrade;
+            GameManager.instance.subHullLimit += 1;
+            GameManager.instance.score -= firstupgrade;
         }
     }
 
     public void flashlight2gamemanager()
     {
-        if (Submarine.score >= firstupgrade)
+        if (GameManager.instance.score >= firstupgrade)
         {
             GameManager.instance.upgradedtolights = true;
-            Submarine.score = Submarine.score - firstupgrade;
+            GameManager.instance.score -= firstupgrade;
         }
     }
 
     public void boost2gamemanager()
     {
-        if (Submarine.score >= firstupgrade)
+        if (GameManager.instance.score >= firstupgrade)
         {
             GameManager.instance.upgradedtoboost = true;
-            Submarine.score = Submarine.score - firstupgrade;
+            GameManager.instance.score -= firstupgrade;
         }
     }
 
     public void claw2gamemanager()
     {
-        if (Submarine.score >= firstupgrade)
+        if (GameManager.instance.score >= firstupgrade)
         {
             
             GameManager.instance.upgradedtoclaw = true;
-            Submarine.score = Submarine.score - firstupgrade;
+            GameManager.instance.score -= firstupgrade;
         }
     }
 
     public void radar2gamemanager()
     {
-        if (Submarine.score >= firstupgrade)
+        if (GameManager.instance.score >= firstupgrade)
         {
             GameManager.instance.upgradedtoradar = true;
-            Submarine.score = Submarine.score - firstupgrade;
+            GameManager.instance.score -= firstupgrade;
 
         }
     }
 
     public void repair2ship()
     {
-        if (Submarine.score >= repaircost)
+        if (GameManager.instance.score >= repaircost)
         {
-            Submarine.hull = Submarine.hull + 1;
-            Submarine.score = Submarine.score - repaircost;
+            GameManager.instance.subHull += 1;
+            GameManager.instance.score -= repaircost;
         }
     }
 
@@ -131,23 +130,23 @@ public class TheStore : MonoBehaviour {
 
     public void ButtonDisabler400()
     {
-        if (Submarine.score >= firstupgrade && GameManager.instance.upgradedtoboost == false)
+        if (GameManager.instance.score >= firstupgrade && GameManager.instance.upgradedtoboost == false)
         {
             upgrade2boost.interactable = true;
         }
-        if (Submarine.score >= firstupgrade && GameManager.instance.upgradedtoclaw == false)
+        if (GameManager.instance.score >= firstupgrade && GameManager.instance.upgradedtoclaw == false)
         {
             upgrade2claw.interactable = true;
         }
-        if (Submarine.score >= firstupgrade && GameManager.instance.upgradedtolights == false)
+        if (GameManager.instance.score >= firstupgrade && GameManager.instance.upgradedtolights == false)
         {
             upgrade2flashlight.interactable = true;
         }
-        if (Submarine.score >= firstupgrade && GameManager.instance.upgradedtoradar == false)
+        if (GameManager.instance.score >= firstupgrade && GameManager.instance.upgradedtoradar == false)
         {
             upgrade2radar.interactable = true;
         }
-        if (Submarine.score >= firstupgrade && Submarine.hulllimit < 6)
+        if (GameManager.instance.score >= firstupgrade && GameManager.instance.subHullLimit < 6)
         {
             upgrade2hull.interactable = true;
         }
@@ -163,7 +162,7 @@ public class TheStore : MonoBehaviour {
 
     private void ButtonDisabler100()
     {
-        if (Submarine.score >= repaircost && Submarine.hull < Submarine.hulllimit)
+        if (GameManager.instance.score >= repaircost && GameManager.instance.subHull < GameManager.instance.subHullLimit)
         {
             repairhull.interactable = true;
         }
@@ -175,7 +174,7 @@ public class TheStore : MonoBehaviour {
 
     private void ButtonDisabler800()
     {
-        if (Submarine.score >= secondupgrade && Submarine.carryingCapacity <= 2)
+        if (GameManager.instance.score >= secondupgrade && GameManager.instance.subCarryingCapacity <= 2)
         {
             upgrade2carrying.interactable = true;
         }

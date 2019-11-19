@@ -42,6 +42,12 @@ public class GameManager : MonoBehaviour {
     public bool upgradedtoboost;
     public bool upgradedtoclaw;
 
+    // SCORE AND CAPACITY   
+    public int score = 0;
+    public int subHull = 3;
+    public int subHullLimit = 3;
+    public int subCarryingCapacity = 1;
+
     // LEVEL LOGIC
     public int level;
     public bool levelwinbool = false;
@@ -55,6 +61,7 @@ public class GameManager : MonoBehaviour {
         SceneManager.sceneLoaded += OnSceneLoaded;
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
+        //FIXME: Make this dependent on when in debug mode
         //DEBUG:
         DebugSetDiverSpawnPoints();
         //SetDiverSpawnPoints();
@@ -173,7 +180,8 @@ public class GameManager : MonoBehaviour {
         {
             radar.SetActive(true);
             radarpic.SetActive(true);
-            TheStore.instance.upgrade2radar.interactable = false;
+            //FIXME
+            //TheStore.upgrade2radar.interactable = false;
         }
         else if (upgradedtoradar == false)
         {
@@ -260,10 +268,10 @@ public class GameManager : MonoBehaviour {
 
     public void BeatingLevel()
     {
-            ResettingMap();
-            level = level + 1;
-            SpawnWinScreen();
-            LevelLogic();
+        ResettingMap();
+        level += 1;
+        SpawnWinScreen();
+        LevelLogic();
     }
 
     IEnumerator WaitingForScript()
@@ -312,6 +320,7 @@ public class GameManager : MonoBehaviour {
         upgradedtoradar = false;
         upgradedtoboost = false;
         level = 0;
+        score = 0;
     }
 
     public void SpawnWinScreen()
