@@ -233,6 +233,8 @@ public class Submarine : MonoBehaviour {
             Destroy(collidedwith.gameObject);
             score = score + 100;
             scoreboard.makePopUpOnScore();
+            //remove treasure from playing field
+            GameManager.instance.currentTreasures.Remove(collidedwith.gameObject);
         }
         else if (collidedwith.gameObject.tag == "Surface")
         {

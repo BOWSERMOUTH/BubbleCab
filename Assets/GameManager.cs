@@ -29,14 +29,12 @@ public class GameManager : MonoBehaviour {
     // SPAWN DIVER LOGIC
     public List<Vector3> spawnPoints;
     public List<GameObject> currentDivers;
-    public Vector3[] treasureSpawnPoints;
+    public List<Vector3> treasureSpawnPointsList;
+    public List<GameObject> currentTreasures;
     public int maxDivers = 4;
     public int maxTreasures = 3;
     public GameObject diver;
     public GameObject treasurechest;
-    public List<int> treasureIds;
-    int diverrandom;
-    int treasurerandom;
 
     // ABILITY UPGRADES
     public bool upgradedtolights;
@@ -58,12 +56,14 @@ public class GameManager : MonoBehaviour {
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
         //DEBUG:
-        DebugSetSpawnPoints();
-        //SetSpawnPoints();
+        DebugSetDiverSpawnPoints();
+        //SetDiverSpawnPoints();
     }
 
-    public void SetSpawnPoints()
+    public void SetDiverSpawnPoints()
     {
+        //TODO: We can use the spawnpoints created in the editor
+        //rather than clear them and set them in code. 
         spawnPoints.Clear();
         spawnPoints.Add(new Vector3(-9.47f, -7.67f, -0.09f));
         spawnPoints.Add(new Vector3(-24.64f, -7.67f, -0.09f));
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour {
         spawnPoints.Add(new Vector3(-62.84f, -10.09f, -0.09f));
     }
 
-    public void DebugSetSpawnPoints()
+    public void DebugSetDiverSpawnPoints()
     {
         spawnPoints.Clear();
         spawnPoints.Add(new Vector3(-26f, 15f, -0.09f));
@@ -108,13 +108,13 @@ public class GameManager : MonoBehaviour {
         }
         DontDestroyOnLoad(gameObject);
     }
+
     void Update()
     {
         whosplaying();
         PauseGame();
         upgraded2radar();
         upgraded2claw();
-        treasurespawnonupdate();
         CheckForDebugMode();
         TurnOnDebug();
     }
@@ -141,18 +141,22 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private void spawnTreasureIntro()
+    private void spawnTreasure()
     {
-        do
-        {
-            treasurerandom = Random.Range(0, treasureSpawnPoints.Length);
-        }
-        while (treasureIds.IndexOf(treasurerandom) != -1);
+        List<Vector3> remainingSpawnPoints = treasureSpawnPointsList;
 
-        treasureIds.Add(treasurerandom);
-        Instantiate(treasurechest, treasureSpawnPoints[treasurerandom], Quaternion.Euler(-90, -90, 0));
-        maxTreasures = maxTreasures - 1;
+        while (currentTreasures.Count < maxTreasures)
+        {
+            Vector3 selectedSpawnPoint = remainingSpawnPoints[Random.Range(0, remainingSpawnPoints.Count)];
+
+            GameObject selectedTreasure = Instantiate(treasurechest, selectedSpawnPoint, Quaternion.Euler(-90, -90, 0));
+
+            currentTreasures.Add(selectedTreasure);
+
+            remainingSpawnPoints.Remove(selectedSpawnPoint);
+        }
     }
+
     public void whosplaying()
     {
         if (charactertoggle == true)
@@ -166,6 +170,7 @@ public class GameManager : MonoBehaviour {
             penny.SetActive(true);
         }
     }
+
     public void upgraded2radar()
     {
         if (upgradedtoradar == true)
@@ -190,18 +195,6 @@ public class GameManager : MonoBehaviour {
         else if (upgradedtoclaw == false)
         {
             theClaw.SetActive(false);
-        }
-    }
-
-    public void treasurespawnonupdate()
-    {
-        if (maxTreasures < 1)
-        {
-            return;
-        }
-        else
-        {
-            spawnTreasureIntro();
         }
     }
 
@@ -266,6 +259,7 @@ public class GameManager : MonoBehaviour {
         }
 
         spawnDivers();
+        spawnTreasure();
     }
 
     public void BeatingLevel()
