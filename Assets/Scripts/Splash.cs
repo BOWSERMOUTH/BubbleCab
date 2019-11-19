@@ -8,18 +8,17 @@ public class Splash : MonoBehaviour {
     AudioSource audiosource;
     public AudioClip sploosh;
 
-	// Use this for initialization
 	void Start ()
     {
         audiosource = gameObject.GetComponent<AudioSource>();
         splash = gameObject.GetComponent<ParticleSystem>();
 	}
 	
-	// Update is called once per frame
 	void Update ()
     {
         TimeToSplash();
 	}
+
     private void OnTriggerEnter(Collider splashing)
     {
         if (splashing.gameObject.tag == "Surface" && !audiosource.isPlaying)
@@ -30,10 +29,12 @@ public class Splash : MonoBehaviour {
                     
         }
     }
+
     private void OnTriggerExit(Collider notSplashing)
     {
         isSplashing = false;
     }
+
     public void TimeToSplash()
     {
         if (isSplashing == true)

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Grabbing : MonoBehaviour
 {
-
     private GameObject touchingObject;
     private bool grabbing;
 
@@ -12,6 +11,7 @@ public class Grabbing : MonoBehaviour
     {
 
     }
+
     private void isGrabbing()
     {
         if (grabbing == true && (Input.GetMouseButton(0) && touchingObject.tag == "Grippable"))
@@ -38,10 +38,12 @@ public class Grabbing : MonoBehaviour
     {
         touchingObject = targetCollider.gameObject;
     }
+
     private void OnTriggerExit(Collider targetCollider)
     {
         touchingObject = null;
     }
+
     void Update()
     {
         if (Input.GetMouseButton(0) && touchingObject.tag == "Grippable")

@@ -6,17 +6,18 @@ public class BubblesOnThrust : MonoBehaviour {
 
     ParticleSystem bubbleThrust;
     public bool isColliding;
-	// Use this for initialization
+
 	void Start ()
     {
         bubbleThrust = GetComponent<ParticleSystem>();
     }
-    // Update is called once per frame
+
     void Update ()
     {
         BubblesGo();
         TurnOffBubblesIfColliding();
     }
+
     private void BubblesGo()
     {
         if (Input.GetKey(KeyCode.W))
@@ -38,6 +39,7 @@ public class BubblesOnThrust : MonoBehaviour {
         
         else bubbleThrust.enableEmission = false;
     }
+
     // Once you exit the water, toggle bubbles off
     public void OnTriggerEnter(Collider nobubsoutside)
     {
@@ -46,11 +48,13 @@ public class BubblesOnThrust : MonoBehaviour {
             isColliding = true;
             }
     }
+
     // Once you land back in water, toggle bubbles on
     public void OnTriggerExit(Collider returntowater)
     {
         isColliding = false;
     }
+
     // Toggle between bubbles on and off 
     public void TurnOffBubblesIfColliding()
     {

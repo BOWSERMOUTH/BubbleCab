@@ -13,6 +13,7 @@ public class ScubasLeftScript : MonoBehaviour
         howManyLeft = gameObject.GetComponent<Text>();
 
     }
+
     void Update()
     {
         diver = GameObject.FindGameObjectsWithTag("Diver").Length;

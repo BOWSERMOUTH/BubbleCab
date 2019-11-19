@@ -10,33 +10,40 @@ public class Pause : MonoBehaviour
     public AudioClip starthighlight;
     public AudioClip startclick;
     public Submarine submarine;
+
     void Start()
     {
         gameObject.SetActive(false);
     }
+
     private void OnEnable()
     {
         audio = gameObject.GetComponent<AudioSource>();
         Time.timeScale = 0;
         submarine.engineOff = true;
     }
+
     private void OnDisable()
     {
         Time.timeScale = 1;
         submarine.engineOff = false;
     }
+
     public void HoverSound()
     {
         audio.PlayOneShot(starthighlight);
     }
+
     public void ClickSound()
     {
         audio.PlayOneShot(startclick);
     }
+
     public void QuitGame()
     {
         Application.Quit();
     }
+
     public void ReturnToMenu()
     {
         Time.timeScale = 1;
@@ -44,10 +51,12 @@ public class Pause : MonoBehaviour
         Destroy(GameManager.instance);
         SceneManager.LoadScene(0);
     }
+
     public void UnPause()
     {
         gameObject.SetActive(false);
     }
+
     public void MuteMusic()
     {
         if (musicaudio.mute == false)
@@ -63,10 +72,5 @@ public class Pause : MonoBehaviour
     public void UnMuteMusic()
     {
         musicaudio.mute = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 }

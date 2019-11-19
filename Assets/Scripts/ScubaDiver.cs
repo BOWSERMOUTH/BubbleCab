@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class DiverSpawnPoints : MonoBehaviour
 {
-
     public Vector3[] spawnPoints;
-
     private Quaternion upRight = Quaternion.Euler(-50,-90,0);
-
-	void Start ()
-    {
-	}
 
     private void OnCollisionEnter(Collision surface)
     {
@@ -21,7 +15,4 @@ public class DiverSpawnPoints : MonoBehaviour
             print("I'm trying to turn him upright");
         }
     }
-    void Update ()
-    {
-	}
 }

@@ -14,14 +14,17 @@ public class StartButton : MonoBehaviour
     {
         audio.PlayOneShot(starthighlight);
     }
+
     public void ClickSound()
     {
         audio.PlayOneShot(startclick);
     }
+
     public void QuitGame()
     {
         Application.Quit();
     }
+
     public void ReturnToMenu()
     {
         Destroy(GameManager.instance);

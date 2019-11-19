@@ -23,9 +23,6 @@ public class TheStore : MonoBehaviour {
     [SerializeField] int secondupgrade = 800;
     [SerializeField] int thirdupgrade = 1600;
     
-    
-
-	// Use this for initialization
 	void Start ()
     {
         upgrade2carrying.onClick.AddListener(carrying2ship);
@@ -37,6 +34,7 @@ public class TheStore : MonoBehaviour {
         repairhull.onClick.AddListener(repair2ship);
         leavestore.onClick.AddListener(exitstore);
 	}
+
     public void carrying2ship()
     {
         if (Submarine.score >= secondupgrade)
@@ -45,6 +43,7 @@ public class TheStore : MonoBehaviour {
             Submarine.score = Submarine.score - secondupgrade;
         }
     }
+
     public void hull2ship()
     {
         if (Submarine.score >= firstupgrade)
@@ -53,6 +52,7 @@ public class TheStore : MonoBehaviour {
             Submarine.score = Submarine.score - firstupgrade;
         }
     }
+
     public void flashlight2gamemanager()
     {
         if (Submarine.score >= firstupgrade)
@@ -61,6 +61,7 @@ public class TheStore : MonoBehaviour {
             Submarine.score = Submarine.score - firstupgrade;
         }
     }
+
     public void boost2gamemanager()
     {
         if (Submarine.score >= firstupgrade)
@@ -69,6 +70,7 @@ public class TheStore : MonoBehaviour {
             Submarine.score = Submarine.score - firstupgrade;
         }
     }
+
     public void claw2gamemanager()
     {
         if (Submarine.score >= firstupgrade)
@@ -78,6 +80,7 @@ public class TheStore : MonoBehaviour {
             Submarine.score = Submarine.score - firstupgrade;
         }
     }
+
     public void radar2gamemanager()
     {
         if (Submarine.score >= firstupgrade)
@@ -87,6 +90,7 @@ public class TheStore : MonoBehaviour {
 
         }
     }
+
     public void repair2ship()
     {
         if (Submarine.score >= repaircost)
@@ -95,6 +99,7 @@ public class TheStore : MonoBehaviour {
             Submarine.score = Submarine.score - repaircost;
         }
     }
+
     public void exitstore()
     {
         panel.SetActive(false);
@@ -106,11 +111,13 @@ public class TheStore : MonoBehaviour {
         openstoreon.SetActive(true);
         openstorebool = true;
     }
+
     private void OnTriggerExit(Collider subleftstore)
     {
         openstoreon.SetActive(false);
         openstorebool = !openstorebool;
     }
+
     private void OpenStoreBooleon()
     {
         if (openstorebool == true && (Input.GetMouseButtonDown(0)))
@@ -121,6 +128,7 @@ public class TheStore : MonoBehaviour {
             openstoreon.SetActive(false);
         }
     }
+
     public void ButtonDisabler400()
     {
         if (Submarine.score >= firstupgrade && GameManager.instance.upgradedtoboost == false)
@@ -152,6 +160,7 @@ public class TheStore : MonoBehaviour {
             upgrade2hull.interactable = false;
         }
     }
+
     private void ButtonDisabler100()
     {
         if (Submarine.score >= repaircost && Submarine.hull < Submarine.hulllimit)
@@ -163,6 +172,7 @@ public class TheStore : MonoBehaviour {
             repairhull.interactable = false;
         }
     }
+
     private void ButtonDisabler800()
     {
         if (Submarine.score >= secondupgrade && Submarine.carryingCapacity <= 2)
@@ -174,7 +184,7 @@ public class TheStore : MonoBehaviour {
             upgrade2carrying.interactable = false;
         }
     }
-    // Update is called once per frame
+
     void Update ()
     {
         OpenStoreBooleon();

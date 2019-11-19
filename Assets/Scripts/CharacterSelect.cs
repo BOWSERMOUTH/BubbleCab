@@ -9,11 +9,12 @@ public class CharacterSelect : MonoBehaviour
     public GameManager gamemanager;
     public AudioClip clickNoise;
     private AudioSource audio;
-    // Use this for initialization
+
     void Start()
     {
         audio = gameObject.GetComponent<AudioSource>();
     }
+
     public void switchToPo()
     {
         audio.PlayOneShot(clickNoise);
@@ -22,6 +23,7 @@ public class CharacterSelect : MonoBehaviour
         gamemanager.charactertoggle = true;
 
     }
+
     public void switchToPenny()
     {
         audio.PlayOneShot(clickNoise);

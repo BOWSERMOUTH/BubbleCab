@@ -53,6 +53,7 @@ public class Submarine : MonoBehaviour {
 
     //SCUBA MAN UPRIGHT
     private Quaternion upRight = Quaternion.Euler(-50, -90, 0);
+
     void Start ()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -135,8 +136,8 @@ public class Submarine : MonoBehaviour {
             rigidBody.AddRelativeForce(Vector3.down * mainThrust);
         }
     }
-    // THRUST STRENGTH
 
+    // THRUST STRENGTH
     private void RespondToRotateInput()
     {
         // Freezing rotation as soon as we rotate
@@ -157,6 +158,7 @@ public class Submarine : MonoBehaviour {
         // Allowing rotation to resume after rotating
         //rigidBody.freezeRotation = false;
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         // If we're not alive, return
@@ -187,6 +189,7 @@ public class Submarine : MonoBehaviour {
                 break;
         }
     }
+
     // SCORING A POINT WITH A SCUBA GUY
     private void ScoringPoint()
     {
@@ -207,6 +210,7 @@ public class Submarine : MonoBehaviour {
             }
         }
     }
+
     public void ScoreValueDiver()
     {
         score = score + 200 * cargoCount;
@@ -247,6 +251,7 @@ public class Submarine : MonoBehaviour {
             ScoringPoint();
         }
     }
+
     private void OnTriggerExit(Collider backinwater)
     {
         if (backinwater.gameObject.tag == "Surface")
@@ -259,6 +264,7 @@ public class Submarine : MonoBehaviour {
             rigidBody.freezeRotation = true;
         }
     }
+
     private void DeathSequence()
     {
         state = State.Dying;
@@ -269,6 +275,7 @@ public class Submarine : MonoBehaviour {
         GameManager.instance.ResetGameManager();
         Invoke("LoadFirstLevel", levelLoadDelay);
     }
+
     private void SuccessSequence()
     {
         audioSource1.Stop();
@@ -276,10 +283,12 @@ public class Submarine : MonoBehaviour {
         state = State.Transcending;
         Invoke("LoadNextLevel", 2.5f); // parameterise time
     }
+
     private void LoadNextLevel()
     {
         SceneManager.LoadScene(1);
     }
+
     private void LoadFirstLevel()
     {
         SceneManager.LoadScene(0);

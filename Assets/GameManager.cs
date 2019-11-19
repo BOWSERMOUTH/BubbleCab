@@ -144,15 +144,11 @@ public class GameManager : MonoBehaviour {
     private void spawnTreasure()
     {
         List<Vector3> remainingSpawnPoints = treasureSpawnPointsList;
-
         while (currentTreasures.Count < maxTreasures)
         {
             Vector3 selectedSpawnPoint = remainingSpawnPoints[Random.Range(0, remainingSpawnPoints.Count)];
-
             GameObject selectedTreasure = Instantiate(treasurechest, selectedSpawnPoint, Quaternion.Euler(-90, -90, 0));
-
             currentTreasures.Add(selectedTreasure);
-
             remainingSpawnPoints.Remove(selectedSpawnPoint);
         }
     }

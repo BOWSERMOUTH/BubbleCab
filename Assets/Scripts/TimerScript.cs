@@ -14,7 +14,6 @@ public class TimerScript : MonoBehaviour
     private Text timer;
     public float timeLeft;
 
-
     void Start()
     {
         pop = gameObject.GetComponent<AudioSource>();
@@ -22,6 +21,7 @@ public class TimerScript : MonoBehaviour
         rb = submarine.GetComponent<Rigidbody>();
         bubbles = bubblesoff.GetComponent<ParticleSystem>();
     }
+
     private void TimerEnd()
     {
         rb.isKinematic = true;

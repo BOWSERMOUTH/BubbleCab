@@ -13,6 +13,7 @@ public class ScoreScript : MonoBehaviour
     {
         scoreText = gameObject.GetComponent<Text>();
 	}
+
     public void makePopUpOnScore()
     {
         var go = Instantiate(popupscore) as GameObject;
@@ -24,5 +25,4 @@ public class ScoreScript : MonoBehaviour
     {
         scoreText.text = Submarine.score.ToString();
     }
-    
 }

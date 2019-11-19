@@ -11,6 +11,7 @@ public class PopupText : MonoBehaviour
     {
         scoreText = GetComponent<Text>();
     }
+
     void Update()
     {
         scoreText.text = "+ " + Submarine.score.ToString();

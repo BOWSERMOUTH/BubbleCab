@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Radar : MonoBehaviour {
-
+public class Radar : MonoBehaviour
+{
     private ParticleSystem ps;
     public GameObject submarine;
     private SphereCollider radarcollider;
@@ -15,7 +15,6 @@ public class Radar : MonoBehaviour {
     public GameObject radarpic;
     public Text radarResultText;
     
-	// Use this for initialization
 	void Awake ()
     {
         submarine = GameObject.Find("Submarine");
@@ -26,6 +25,7 @@ public class Radar : MonoBehaviour {
         audioSource = GetComponent<AudioSource>();
         beep = audioSource.clip;
     }
+
     public void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.tag == "Diver")
@@ -34,6 +34,7 @@ public class Radar : MonoBehaviour {
             radarResultText.text = dist.ToString();
         }
     }
+
     public void RadarOn()
     {
         if (radarcooldowntoggle == true)
@@ -53,6 +54,7 @@ public class Radar : MonoBehaviour {
             }
         }
     }
+
     public void ResetRadarPosition()
     {
         if (radarcooldowntoggle == false)
@@ -60,7 +62,7 @@ public class Radar : MonoBehaviour {
             transform.position = submarine.transform.position;
         }
     }
-	// Update is called once per frame
+
 	void Update () 
     {
         if (Input.GetKeyDown(KeyCode.Space) && radarcooldowntoggle == false)

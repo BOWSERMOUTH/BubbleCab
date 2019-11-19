@@ -11,19 +11,21 @@ public class HullScript : MonoBehaviour
     //public float shakeDuration = 0f;
     //public float shakeAmount = 0.7f;
     //public float decreaseFactor = 1.0f;
-   // Vector3 originalPos;
-	// Use this for initialization
-	void Start ()
+    //Vector3 originalPos;
+    //Use this for initialization
+
+   void Start ()
     {
 		hullText = gameObject.GetComponent<Text>();
         //originalPos = camTransform.localPosition;
     }
+
 	//public void cameraShake()
-   // {
-        //camTransform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
-       // shakeDuration -= Time.deltaTime * decreaseFactor;
-    //}
-	// Update is called once per frame
+ //   {
+ //       camTransform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
+ //       shakeDuration -= Time.deltaTime * decreaseFactor;
+ //   }
+
 	void Update ()
     {
         hullText.text = "HULL: " + Submarine.hull.ToString();

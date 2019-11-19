@@ -5,7 +5,6 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class Oscillator : MonoBehaviour
 {
-
     [SerializeField] Vector3 movementVector = new Vector3(10f, 10f, 10f);
     public float oscSpeed = 2f;
     [Range(0,1)] [SerializeField] float movementFactor; // 0 for not moved, 1 for fully moved.
