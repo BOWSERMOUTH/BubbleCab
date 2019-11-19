@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour {
 
     // SPAWN DIVER LOGIC
     public List<Vector3> spawnPoints;
-    private List<Vector3> remainingSpawnPoints;
     public List<GameObject> currentDivers;
     public Vector3[] treasureSpawnPoints;
     public int maxDivers = 4;
@@ -124,7 +123,7 @@ public class GameManager : MonoBehaviour {
     private void spawnDivers()
     {
         //make a copy of the spawnpoints
-        remainingSpawnPoints = spawnPoints;
+        List<Vector3> remainingSpawnPoints = spawnPoints;
 
         while (currentDivers.Count < maxDivers)
         {
