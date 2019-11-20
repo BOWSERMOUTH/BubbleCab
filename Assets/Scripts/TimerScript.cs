@@ -10,6 +10,7 @@ public class TimerScript : MonoBehaviour
     public Rigidbody rb;
     public BubblesOnThrust bubblesoff;
     public ParticleSystem bubbles;
+    public GameObject RestartGame;
     private AudioSource pop;
     private Text timer;
     public float timeLeft;
@@ -21,6 +22,8 @@ public class TimerScript : MonoBehaviour
         timer = gameObject.GetComponent<Text>();
         rb = submarine.GetComponent<Rigidbody>();
         bubbles = bubblesoff.GetComponent<ParticleSystem>();
+        RestartGame.SetActive(false);
+
     }
     private void TimerEnd()
     {
@@ -46,6 +49,8 @@ public class TimerScript : MonoBehaviour
             {
                 timer.text = "Game Over!";
                 TimerEnd();
+                RestartGame.SetActive(true);
+                
             }
         }
     }
