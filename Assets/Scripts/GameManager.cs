@@ -213,13 +213,13 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 2)
         {
-            maxDivers = 3;
+            maxDivers = 4;
             maxTreasures = 3;
             timer.timeLeft = 120f;
         }
         else if (level == 3)
         {
-            maxDivers = 1;
+            maxDivers = 5;
             maxTreasures = 3;
             timer.timeLeft = 120f;
         }

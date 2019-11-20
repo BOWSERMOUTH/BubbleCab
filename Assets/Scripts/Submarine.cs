@@ -100,7 +100,6 @@ public class Submarine : MonoBehaviour {
             leftLight.gameObject.SetActive(false);
         }
     }
-
     // Controls
     private void RespondToThrustInput()
     {
@@ -135,7 +134,6 @@ public class Submarine : MonoBehaviour {
             rigidBody.AddRelativeForce(Vector3.down * mainThrust);
         }
     }
-
     // THRUST STRENGTH
     private void RespondToRotateInput()
     {
