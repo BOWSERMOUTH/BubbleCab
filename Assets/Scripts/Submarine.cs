@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Submarine : MonoBehaviour {
 
+    public List<GameObject> collectedDivers;
     Rigidbody rigidBody;
     public AudioSource audioSource1;
     public AudioSource audioSource2;
@@ -193,29 +195,26 @@ public class Submarine : MonoBehaviour {
     {
         if (isCarrying == true)
         {
-            dome.transform.Find("ScubaDiver(Clone)").transform.rotation = upRight;
-            dome.transform.Find("ScubaDiver(Clone)").transform.gameObject.tag = "Friendly";
-            dome.transform.Find("ScubaDiver(Clone)").transform.parent = null;
-            ScoreValueDiver();
-            cargoCount = 0;
-            isCarrying = false;
-            //FIXME: instead of adding to carrying capacity, have a list for divers held.
-            GameManager.instance.subCarryingCapacity += 1;
-            timer.timeLeft = timer.timeLeft + 30f;
-            scoreboard.makePopUpOnScore();
-            //FIXME: currentDivers only counts divers in playfield
-            //not divers that have not been cashed in for points
+            foreach (GameObject gameObject in collectedDivers)
+            {
+                print("i've done this once");
+                dome.transform.Find("ScubaDiver(Clone)").transform.rotation = upRight;
+                dome.transform.Find("ScubaDiver(Clone)").transform.gameObject.tag = "Friendly";
+                dome.transform.Find("ScubaDiver(Clone)").transform.parent = null;
+                GameManager.instance.score = GameManager.instance.score + (GameManager.instance.divervalue * cargoCount);
+                GameManager.instance.currentvalueforpopup = GameManager.instance.divervalue;
+                isCarrying = false;
+                GameManager.instance.subCarryingCapacity += cargoCount;
+                cargoCount = 0;
+                timer.timeLeft = timer.timeLeft + 30f;
+                scoreboard.makePopUpOnScore();
+                collectedDivers = new List<GameObject>();
+            }
             if (GameManager.instance.currentDivers.Count < 1)
             {
                 GameManager.instance.BeatingLevel();
             }
         }
-    }
-
-    // Add 200 points for each diver in cargo
-    public void ScoreValueDiver()
-    {
-        GameManager.instance.score = GameManager.instance.score + 200 * cargoCount;
     }
 
     // COLLIDING WITH SCUBA DIVER
@@ -225,12 +224,17 @@ public class Submarine : MonoBehaviour {
         if (collidedwith.gameObject.tag == "Diver" && GameManager.instance.subCarryingCapacity >= 1f)
         {
             // Pick Up Diver
+            collectedDivers.Add(collidedwith.gameObject);
+            print(collectedDivers.Count);
             collidedwith.transform.parent = dome.transform;
             collidedwith.gameObject.transform.position = dome.transform.position + dome.transform.right * .3f;
             collidedwith.transform.rotation = Quaternion.identity;
+            collidedwith.enabled = false;
             isCarrying = true;
             GameManager.instance.subCarryingCapacity -= 1;
-            cargoCount = cargoCount + 1;
+            print("i've removed 1 cargocount");
+            cargoCount += 1;
+            print("ive collected 1 cargocount");
             audioSource1.PlayOneShot(grabbedScuba, 1);
             //FIXME: remove the diver from currentDivers when cashing in points
             //remove diver from playing field
@@ -239,20 +243,21 @@ public class Submarine : MonoBehaviour {
         else if (collidedwith.gameObject.tag == "Treasure")
         {
             Destroy(collidedwith.gameObject);
-            GameManager.instance.score = GameManager.instance.score + 100;
+            GameManager.instance.score = GameManager.instance.score + GameManager.instance.treasurevalue;
+            GameManager.instance.currentvalueforpopup = GameManager.instance.treasurevalue;
             scoreboard.makePopUpOnScore();
             //remove treasure from playing field
             GameManager.instance.currentTreasures.Remove(collidedwith.gameObject);
         }
         else if (collidedwith.gameObject.tag == "Surface")
         {
-            mufflesound.enabled = true;
-            rigidBody.useGravity = true;
-            rigidBody.mass = 3;
-            rigidBody.drag = 1;
-            engineOff = true;
-            rigidBody.freezeRotation = false;
-            ScoringPoint();
+                mufflesound.enabled = true;
+                rigidBody.useGravity = true;
+                rigidBody.mass = 3;
+                rigidBody.drag = 1;
+                engineOff = true;
+                rigidBody.freezeRotation = false;
+                ScoringPoint();
         }
     }
 

@@ -12,7 +12,10 @@ public class GameManager : MonoBehaviour {
     //GAME LOGIC
     public GameObject ui;
     public static GameManager instance = null;
-    
+    public int divervalue = 200;
+    public int treasurevalue = 100;
+    public int currentvalueforpopup;
+
     //OBJECT REFERENCES
     public GameObject po;
     public GameObject penny;
@@ -25,6 +28,7 @@ public class GameManager : MonoBehaviour {
     public GameObject Pause;
     public GameObject WinScreen;
     public GameObject CaveCutScene;
+    public AudioSource music;
 
     // SPAWN DIVER LOGIC
     public List<Vector3> spawnPoints;
@@ -180,8 +184,6 @@ public class GameManager : MonoBehaviour {
         {
             radar.SetActive(true);
             radarpic.SetActive(true);
-            //FIXME
-            //TheStore.upgrade2radar.interactable = false;
         }
         else if (upgradedtoradar == false)
         {
@@ -202,12 +204,12 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    // sets up the level, creat
+// Level Logic - Adjust how many divers / treasures spawn per level / Time limit per level
     public void LevelLogic()
     {
         if (level == 1)
         {
-            maxDivers = 3;
+            maxDivers = 1;
             maxTreasures = 3;
             timer.timeLeft = 120f;
         }
@@ -268,12 +270,22 @@ public class GameManager : MonoBehaviour {
 
     public void BeatingLevel()
     {
+        StartCoroutine(DimMusicDuringWin());
         ResettingMap();
         level += 1;
         SpawnWinScreen();
         LevelLogic();
-    }
 
+    }
+    // Mutes the game music during the win music, then unmutes after it's finished. 
+    IEnumerator DimMusicDuringWin()
+    {
+        music.volume = 0.02f;
+        print("ive dimmed volume in script");
+        yield return new WaitForSeconds(4f);
+        music.volume = 0.386f;
+    }
+    // Pauses the game and removes the UI during the CaveCutScene, then resets the timer. 
     IEnumerator WaitingForScript()
     {
         ui.SetActive(false);
@@ -372,6 +384,7 @@ public class GameManager : MonoBehaviour {
             theClaw = GameObject.Find("ArmPivotPoint");
             upgradedtoclaw = false;
             timer = GameObject.FindObjectOfType<TimerScript>();
+            music = Camera.main.GetComponent<AudioSource>();
             LevelLogic();
         }
     }

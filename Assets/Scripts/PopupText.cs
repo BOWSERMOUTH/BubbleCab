@@ -13,6 +13,6 @@ public class PopupText : MonoBehaviour
 
     void Update()
     {
-        scoreText.text = "+ " + GameManager.instance.score.ToString();
+        scoreText.text = "+ " + GameManager.instance.currentvalueforpopup.ToString();
     }
 }
