@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
 
 public class Submarine : MonoBehaviour {
 
@@ -29,6 +30,8 @@ public class Submarine : MonoBehaviour {
     public GameObject dome;
     public GameObject popo;
     public GameObject penny;
+    private GameObject rightFloaty;
+    private GameObject leftFloaty;
     
     //DAMAGE LOGIC
     public bool invincibility;
@@ -57,6 +60,8 @@ public class Submarine : MonoBehaviour {
     {
         rigidBody = GetComponent<Rigidbody>();
         mufflesound = maincamera.GetComponent<AudioHighPassFilter>();
+        rightFloaty = GameObject.Find("RightFloaty");
+        leftFloaty = GameObject.Find("LeftFloaty");
     }
 
     private void ApplyThrust()
@@ -179,9 +184,15 @@ public class Submarine : MonoBehaviour {
                 SuccessSequence();
                 break;
             default:
-                audioSource2.PlayOneShot(hurt);
-                GameManager.instance.subHull -= 1;
-                //hullshake.cameraShake();
+                if (invincibility == false)
+                {
+                    invincibility = true;
+                    audioSource2.PlayOneShot(hurt);
+                    GameManager.instance.subHull -= 1;
+                    //hullshake.cameraShake();
+                    StartCoroutine(HurtFlicker());
+                    Invoke("TurnInvincibilityOff", 2f);
+                }
                 if (GameManager.instance.subHull < 1)
                 {
                     DeathSequence();
@@ -189,7 +200,25 @@ public class Submarine : MonoBehaviour {
                 break;
         }
     }
-
+    private void TurnInvincibilityOff()
+    {
+        invincibility = false;
+    }
+    // Makes your ship flicker when injured for the duration of the i-frames
+    IEnumerator HurtFlicker()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            yield return new WaitForSeconds(.075f);
+            dome.GetComponent<Renderer>().enabled = false;
+            leftFloaty.GetComponent<Renderer>().enabled = false;
+            rightFloaty.GetComponent<Renderer>().enabled = false;
+            yield return new WaitForSeconds(.075f);
+            dome.GetComponent<Renderer>().enabled = true;
+            leftFloaty.GetComponent<Renderer>().enabled = true;
+            rightFloaty.GetComponent<Renderer>().enabled = true;
+        }
+    }
     // SCORING A POINT WITH A SCUBA GUY
     private void ScoringPoint()
     {

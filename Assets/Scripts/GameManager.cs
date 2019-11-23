@@ -67,8 +67,9 @@ public class GameManager : MonoBehaviour {
         penny = GameObject.Find("PennyModel");
         //FIXME: Make this dependent on when in debug mode
         //DEBUG:
-        DebugSetDiverSpawnPoints();
-        //SetDiverSpawnPoints();
+        //DebugSetDiverSpawnPoints();
+        SetDiverSpawnPoints();
+        SetTreasurePoints();
     }
 
     public void SetDiverSpawnPoints()
@@ -91,6 +92,23 @@ public class GameManager : MonoBehaviour {
         spawnPoints.Add(new Vector3(37.16f, -13.11f, -0.09f));
         spawnPoints.Add(new Vector3(-35.86f, 6.62f, -0.09f));
         spawnPoints.Add(new Vector3(-62.84f, -10.09f, -0.09f));
+    }
+    public void SetTreasurePoints()
+    {
+        treasureSpawnPointsList.Clear();
+        treasureSpawnPointsList.Add(new Vector3(7.98f, -10.01f, -0.09f));
+        treasureSpawnPointsList.Add(new Vector3(23.07f, -7.55f, -0.09f));
+        treasureSpawnPointsList.Add(new Vector3(27.73f, -12.54f, -0.09f));
+        treasureSpawnPointsList.Add(new Vector3(36.7f, -14.36f, -0.09f));
+        treasureSpawnPointsList.Add(new Vector3(57.89f, -13.58f, -0.09f));
+        treasureSpawnPointsList.Add(new Vector3(66.22f, -12.71f, -0.09f));
+        treasureSpawnPointsList.Add(new Vector3(53.44f, 5f, -0.09f));
+        treasureSpawnPointsList.Add(new Vector3(79.53f, -14.25f, -0.09f));
+        treasureSpawnPointsList.Add(new Vector3(21.73f, 4.45f, -0.09f));
+        treasureSpawnPointsList.Add(new Vector3(-3.41f, 4.63f, -0.09f));
+        treasureSpawnPointsList.Add(new Vector3(-40.76f,-13.87f, -0.09f));
+        treasureSpawnPointsList.Add(new Vector3(-54.42f, -12.91f, -0.09f));
+        treasureSpawnPointsList.Add(new Vector3(-37.89f, 8.63f, -0.09f));
     }
 
     public void DebugSetDiverSpawnPoints()
@@ -210,7 +228,7 @@ public class GameManager : MonoBehaviour {
         if (level == 1)
         {
             maxDivers = 1;
-            maxTreasures = 3;
+            maxTreasures = 13;
             timer.timeLeft = 120f;
         }
         else if (level == 2)
@@ -227,7 +245,7 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 4)
         {
-            spawnPoints.Add(new Vector3(29.88f, -29.51f, -0.09f));
+            spawnPoints.Add(new Vector3(29.88f, -24.22f, -0.09f));
             spawnPoints.Add(new Vector3(8.97f, -23.98f, -0.09f));
             spawnPoints.Add(new Vector3(-11.41f, -24.92f, -0.09f));
             spawnPoints.Add(new Vector3(-21.11f, -20.2f, -0.09f));
@@ -317,9 +335,13 @@ public class GameManager : MonoBehaviour {
 
     public void PauseGame()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) 
+        if (Input.GetKeyDown(KeyCode.Escape) && Pause.activeSelf == false)
         {
             Pause.SetActive(true);
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && Pause.activeSelf == true)
+        {
+            Pause.SetActive(false);
         }
     }
 
