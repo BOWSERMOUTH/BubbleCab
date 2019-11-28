@@ -67,8 +67,8 @@ public class GameManager : MonoBehaviour {
         penny = GameObject.Find("PennyModel");
         //FIXME: Make this dependent on when in debug mode
         //DEBUG:
-        //DebugSetDiverSpawnPoints();
-        SetDiverSpawnPoints();
+        DebugSetDiverSpawnPoints();
+        //SetDiverSpawnPoints();
         SetTreasurePoints();
     }
 
@@ -228,7 +228,7 @@ public class GameManager : MonoBehaviour {
         if (level == 1)
         {
             maxDivers = 1;
-            maxTreasures = 13;
+            maxTreasures = 3;
             timer.timeLeft = 120f;
         }
         else if (level == 2)
@@ -239,6 +239,7 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 3)
         {
+            SceneManager.LoadScene(2);
             maxDivers = 5;
             maxTreasures = 3;
             timer.timeLeft = 120f;
@@ -331,6 +332,8 @@ public class GameManager : MonoBehaviour {
         {
             Destroy(savedDivers[d]);
         }
+        // Removes CurrentTreasures from the list, so it can repopulate based on line 176
+        currentTreasures.Clear();
     }
 
     public void PauseGame()

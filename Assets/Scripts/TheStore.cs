@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TheStore : MonoBehaviour {
     public GameObject panel;
     public GameObject openstoreon;
-    private bool openstorebool;
+    public bool openstorebool;
     public Button openstore;
     public Button upgrade2flashlight;
     public Button upgrade2boost;
@@ -20,7 +20,6 @@ public class TheStore : MonoBehaviour {
     [SerializeField] int repaircost = 100;
     [SerializeField] int firstupgrade = 400;
     [SerializeField] int secondupgrade = 800;
-    [SerializeField] int thirdupgrade = 1600;
     
 	void Start ()
     {
@@ -114,7 +113,7 @@ public class TheStore : MonoBehaviour {
     private void OnTriggerExit(Collider subleftstore)
     {
         openstoreon.SetActive(false);
-        openstorebool = !openstorebool;
+        openstorebool = false;
     }
 
     private void OpenStoreBooleon()

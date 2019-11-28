@@ -254,16 +254,13 @@ public class Submarine : MonoBehaviour {
         {
             // Pick Up Diver
             collectedDivers.Add(collidedwith.gameObject);
-            print(collectedDivers.Count);
             collidedwith.transform.parent = dome.transform;
             collidedwith.gameObject.transform.position = dome.transform.position + dome.transform.right * .3f;
             collidedwith.transform.rotation = Quaternion.identity;
             collidedwith.enabled = false;
             isCarrying = true;
             GameManager.instance.subCarryingCapacity -= 1;
-            print("i've removed 1 cargocount");
             cargoCount += 1;
-            print("ive collected 1 cargocount");
             audioSource1.PlayOneShot(grabbedScuba, 1);
             //FIXME: remove the diver from currentDivers when cashing in points
             //remove diver from playing field
