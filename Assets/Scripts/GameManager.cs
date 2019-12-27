@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
-
     //DEBUG
     public bool DebugBool;
     public GameObject DebugMode;
@@ -46,14 +45,15 @@ public class GameManager : MonoBehaviour {
     public bool upgradedtoboost;
     public bool upgradedtoclaw;
 
-    // SCORE AND CAPACITY   
+    // SCORE / CAPACITY / LIVES
     public int score = 0;
     public int subHull = 3;
     public int subHullLimit = 3;
     public int subCarryingCapacity = 1;
+    public int playerlives = 3;
 
     // LEVEL LOGIC
-    public int level;
+    public int level = 1;
     public bool levelwinbool = false;
     public bool paused = false;
     public TimerScript timer;
@@ -62,16 +62,16 @@ public class GameManager : MonoBehaviour {
 
     void Start ()
     {
+        level = 1;
         SceneManager.sceneLoaded += OnSceneLoaded;
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
         //FIXME: Make this dependent on when in debug mode
         //DEBUG:
-        DebugSetDiverSpawnPoints();
-        //SetDiverSpawnPoints();
+        //DebugSetDiverSpawnPoints();
+        SetDiverSpawnPoints();
         SetTreasurePoints();
     }
-
     public void SetDiverSpawnPoints()
     {
         //TODO: We can use the spawnpoints created in the editor
@@ -151,9 +151,10 @@ public class GameManager : MonoBehaviour {
     // Tells divers to spawn in random locations
     private void spawnDivers()
     {
-        //make a copy of the spawnpoints
+        //Create a list called RemainingSpawnPoints and set it to whatever you've set SpawnPoints locations to.
         List<Vector3> remainingSpawnPoints = spawnPoints;
 
+        //As long as currentdivers list is less than the max divers count.. do the following.
         while (currentDivers.Count < maxDivers)
         {
             //find a random spawn point from remaining spawn points
@@ -230,19 +231,20 @@ public class GameManager : MonoBehaviour {
             maxDivers = 1;
             maxTreasures = 3;
             timer.timeLeft = 120f;
+            spawnDivers();
+            spawnTreasure();
         }
         else if (level == 2)
         {
-            maxDivers = 4;
-            maxTreasures = 3;
-            timer.timeLeft = 120f;
+            SceneManager.LoadScene(2);
         }
         else if (level == 3)
         {
-            SceneManager.LoadScene(2);
-            maxDivers = 5;
+            maxDivers = 3;
             maxTreasures = 3;
             timer.timeLeft = 120f;
+            spawnDivers();
+            spawnTreasure();
         }
         else if (level == 4)
         {
@@ -263,28 +265,33 @@ public class GameManager : MonoBehaviour {
             maxDivers = 7;
             maxTreasures = 3;
             timer.timeLeft = 120f;
+            spawnDivers();
+            spawnTreasure();
         }
         else if (level == 6)
         {
             maxDivers = 8;
             maxTreasures = 3;
             timer.timeLeft = 120f;
+            spawnDivers();
+            spawnTreasure();
         }
         else if (level == 7)
         {
             maxDivers = 8;
             maxTreasures = 3;
             timer.timeLeft = 120f;
+            spawnDivers();
+            spawnTreasure();
         }
         else if (level == 8)
         {
             maxDivers = 8;
             maxTreasures = 3;
             timer.timeLeft = 120f;
+            spawnDivers();
+            spawnTreasure();
         }
-
-        spawnDivers();
-        spawnTreasure();
     }
 
     public void BeatingLevel()
@@ -294,7 +301,21 @@ public class GameManager : MonoBehaviour {
         level += 1;
         SpawnWinScreen();
         LevelLogic();
+    }
+    public void CurrentLevel()
+    {
+        playerlives = playerlives - 1;
+        StartCoroutine(DimMusicDuringWin());
+        ResettingMap();
+        SpawnWinScreen();
+        LevelLogic();
+        subHull = subHullLimit;
 
+        if (playerlives == 0)
+        {
+            ResetGameManager();
+            SceneManager.LoadScene(0);
+        }
     }
     // Mutes the game music during the win music, then unmutes after it's finished. 
     IEnumerator DimMusicDuringWin()
@@ -312,28 +333,34 @@ public class GameManager : MonoBehaviour {
         Destroy(GameObject.Find("CaveCutScene(Clone)"));
         ui.SetActive(true);
         timer.timeLeft = 120f;
+        spawnDivers();
+        spawnTreasure();
     }
 
     // clears map of all randomly spawned objects and rescued divers
     public void ResettingMap()
     {
-        GameObject[] savedDivers = GameObject.FindGameObjectsWithTag("Friendly");
+        GameObject[] savedDivers = GameObject.FindGameObjectsWithTag("DiverSaved");
         GameObject[] divers = GameObject.FindGameObjectsWithTag("Diver");
         GameObject[] treasures = GameObject.FindGameObjectsWithTag("Treasure");
         for (var i = 0; i < divers.Length; i ++)
         {
             Destroy(divers[i]);
+            // Removes CurrentTreasures from the list, so it can repopulate based on line 176
+            currentDivers.Clear();
         }
         for (var o = 0; o < treasures.Length; o ++)
         {
             Destroy(treasures[o]);
+            // Removes CurrentDivers from the list, so it can repopulate based on line 176
+            currentTreasures.Clear();
         }
         for (var d = 0; d < savedDivers.Length; d ++)
         {
             Destroy(savedDivers[d]);
         }
-        // Removes CurrentTreasures from the list, so it can repopulate based on line 176
-        currentTreasures.Clear();
+        SetDiverSpawnPoints();
+        SetTreasurePoints();
     }
 
     public void PauseGame()
@@ -356,7 +383,7 @@ public class GameManager : MonoBehaviour {
         upgradedtoclaw = false;
         upgradedtoradar = false;
         upgradedtoboost = false;
-        level = 0;
+        level = 1;
         score = 0;
     }
 
@@ -373,7 +400,6 @@ public class GameManager : MonoBehaviour {
             {
                 DebugBool = true;
                 CheckForDebugMode();
-
             }
         }
     }
@@ -389,13 +415,21 @@ public class GameManager : MonoBehaviour {
             DebugMode.SetActive(false);
         }
     }
-
+    void LevelTwoLoad()
+    {
+        ResettingMap();
+        maxDivers = 5;
+        maxTreasures = 3;
+        timer.timeLeft = 120f;
+        SetDiverSpawnPoints();
+        SetTreasurePoints();
+        spawnDivers();
+        spawnTreasure();
+    }
     void OnSceneLoaded (Scene scene, LoadSceneMode mode)
     {
         if (scene.buildIndex != 0)
         {
-            //DEBUG: pick starting level
-            level = 1;
             ui = GameObject.Find("UI");
             Pause = GameObject.Find("PauseScreen");
             po = GameObject.Find("popo");
@@ -410,7 +444,22 @@ public class GameManager : MonoBehaviour {
             upgradedtoclaw = false;
             timer = GameObject.FindObjectOfType<TimerScript>();
             music = Camera.main.GetComponent<AudioSource>();
+        }
+        if (scene.buildIndex == 1)
+        {
             LevelLogic();
+        }
+        if (scene.buildIndex == 2)
+        {
+            ResettingMap();
+            maxDivers = 5;
+            maxTreasures = 3;
+            timer.timeLeft = 120f;
+            SetDiverSpawnPoints();
+            SetTreasurePoints();
+            spawnDivers();
+            spawnTreasure();
+            //Invoke("LevelTwoLoad", 1.5f);
         }
     }
 }

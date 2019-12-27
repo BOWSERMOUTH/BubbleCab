@@ -176,6 +176,8 @@ public class Submarine : MonoBehaviour {
             case "Friendly":
                 // Do Nothing
                 break;
+            case "DiverFriendly":
+                break;
             case "Surface":
                 break;
             case "Grippable":
@@ -228,7 +230,7 @@ public class Submarine : MonoBehaviour {
             {
                 print("i've done this once");
                 dome.transform.Find("ScubaDiver(Clone)").transform.rotation = upRight;
-                dome.transform.Find("ScubaDiver(Clone)").transform.gameObject.tag = "Friendly";
+                dome.transform.Find("ScubaDiver(Clone)").transform.gameObject.tag = "DiverSaved";
                 dome.transform.Find("ScubaDiver(Clone)").transform.parent = null;
                 GameManager.instance.score = GameManager.instance.score + (GameManager.instance.divervalue * cargoCount);
                 GameManager.instance.currentvalueforpopup = GameManager.instance.divervalue;
@@ -305,10 +307,9 @@ public class Submarine : MonoBehaviour {
         state = State.Dying;
         audioSource1.Stop();
         audioSource1.PlayOneShot(deathSound);
-        dome.transform.parent = null;
-        popo.transform.parent = null;
-        GameManager.instance.ResetGameManager();
-        Invoke("LoadFirstLevel", levelLoadDelay);
+        dome.transform.position = dome.transform.position;
+        popo.transform.position = popo.transform.position;
+        Invoke("LoadCurrentLevel", levelLoadDelay);
     }
 
     private void SuccessSequence()
@@ -327,5 +328,10 @@ public class Submarine : MonoBehaviour {
     private void LoadFirstLevel()
     {
         SceneManager.LoadScene(0);
+    }
+    private void LoadCurrentLevel()
+    {
+        SceneManager.LoadScene(1);
+        GameManager.instance.CurrentLevel();
     }
 }
