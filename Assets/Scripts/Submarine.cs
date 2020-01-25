@@ -55,7 +55,6 @@ public class Submarine : MonoBehaviour {
 
     //SCUBA MAN UPRIGHT
     private Quaternion upRight = Quaternion.Euler(-50, -90, 0);
-
     void Start ()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -64,7 +63,7 @@ public class Submarine : MonoBehaviour {
         leftFloaty = GameObject.Find("LeftFloaty");
     }
 
-    private void ApplyThrust()
+    public void ApplyThrust()
     {
         rigidBody.AddRelativeForce(Vector3.up * mainThrust);
         // So audio doesn't layer

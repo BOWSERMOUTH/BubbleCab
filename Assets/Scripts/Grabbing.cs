@@ -4,33 +4,39 @@ using UnityEngine;
 
 public class Grabbing : MonoBehaviour
 {
-    private GameObject touchingObject;
-    private bool grabbing;
+    public GameObject touchingObject;
+    public bool grabbing;
 
     void Start()
     {
 
     }
-
+    void Update()
+    {
+        isGrabbing();
+    }
     private void isGrabbing()
     {
-        if (grabbing == true && (Input.GetMouseButton(0) && touchingObject.tag == "Grippable"))
+        if (Input.GetMouseButton(0) && grabbing == false && touchingObject.tag == "Grippable")
         {
             print("I am touching " + touchingObject);
+            touchingObject.transform.SetParent(transform);
             Vector3 scale = touchingObject.transform.localScale;
-            touchingObject.transform.parent = transform;
             Rigidbody rb = touchingObject.GetComponent<Rigidbody>();
             MeshCollider cc = touchingObject.GetComponent<MeshCollider>();
-            cc.isTrigger = true;
             rb.isKinematic = true;
+            cc.isTrigger = true;
+            grabbing = true;
         }
-        else if (grabbing == false && touchingObject.tag == "Grippable")
+        else if (Input.GetMouseButtonUp(0)) 
         {
+            print("i've released the mouse");
             Rigidbody rb = touchingObject.GetComponent<Rigidbody>();
             MeshCollider cc = touchingObject.GetComponent<MeshCollider>();
             rb.isKinematic = false;
             cc.isTrigger = false;
             transform.DetachChildren();
+            grabbing = false;
         }
     }
 
@@ -42,18 +48,5 @@ public class Grabbing : MonoBehaviour
     private void OnTriggerExit(Collider targetCollider)
     {
         touchingObject = null;
-    }
-
-    void Update()
-    {
-        if (Input.GetMouseButton(0) && touchingObject.tag == "Grippable")
-        {
-            grabbing = true;
-        }
-        else
-        {
-            grabbing = false;
-        }
-        isGrabbing();
     }
 }

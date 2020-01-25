@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class TheStore : MonoBehaviour {
     public GameObject panel;
     public GameObject openstoreon;
+    public GameObject submarine;
     public bool openstorebool;
     public Button openstore;
     public Button upgrade2flashlight;
@@ -20,9 +21,12 @@ public class TheStore : MonoBehaviour {
     [SerializeField] int repaircost = 100;
     [SerializeField] int firstupgrade = 400;
     [SerializeField] int secondupgrade = 800;
+    private float solidDistance = 3f;
     
 	void Start ()
     {
+        var outsiderims = gameObject.GetComponent<Renderer>();
+        var outsidewall = gameObject.GetComponent<Renderer>();
         upgrade2carrying.onClick.AddListener(carrying2ship);
         upgrade2hull.onClick.AddListener(hull2ship);
         upgrade2flashlight.onClick.AddListener(flashlight2gamemanager);
@@ -182,7 +186,6 @@ public class TheStore : MonoBehaviour {
             upgrade2carrying.interactable = false;
         }
     }
-
     void Update ()
     {
         OpenStoreBooleon();

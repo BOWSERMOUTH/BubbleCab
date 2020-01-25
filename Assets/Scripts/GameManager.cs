@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour {
     //OBJECT REFERENCES
     public GameObject po;
     public GameObject penny;
+    public GameObject polab;
+    public GameObject pennylab;
     private GameObject toplightbulb;
     private GameObject rearrightbulb;
     private GameObject rearleftbulb;
@@ -63,11 +65,11 @@ public class GameManager : MonoBehaviour {
     void Start ()
     {
         level = 1;
-        SceneManager.sceneLoaded += OnSceneLoaded;
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
-        //FIXME: Make this dependent on when in debug mode
-        //DEBUG:
+        penny.SetActive(false);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        // DEBUG MODE
         //DebugSetDiverSpawnPoints();
         SetDiverSpawnPoints();
         SetTreasurePoints();
@@ -140,7 +142,6 @@ public class GameManager : MonoBehaviour {
 
     void Update()
     {
-        whosplaying();
         PauseGame();
         upgraded2radar();
         upgraded2claw();
@@ -189,11 +190,15 @@ public class GameManager : MonoBehaviour {
         {
             po.SetActive(true);
             penny.SetActive(false);
+            pennylab.SetActive(true);
+            polab.SetActive(false);
         }
         else
         {
             po.SetActive(false);
             penny.SetActive(true);
+            pennylab.SetActive(false);
+            polab.SetActive(true);
         }
     }
 
@@ -228,7 +233,7 @@ public class GameManager : MonoBehaviour {
     {
         if (level == 1)
         {
-            maxDivers = 1;
+            maxDivers = 3;
             maxTreasures = 3;
             timer.timeLeft = 120f;
             spawnDivers();
@@ -236,7 +241,11 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 2)
         {
-            SceneManager.LoadScene(2);
+            maxDivers = 3;
+            maxTreasures = 3;
+            timer.timeLeft = 120f;
+            spawnDivers();
+            spawnTreasure();
         }
         else if (level == 3)
         {
@@ -262,11 +271,7 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 5)
         {
-            maxDivers = 7;
-            maxTreasures = 3;
-            timer.timeLeft = 120f;
-            spawnDivers();
-            spawnTreasure();
+            SceneManager.LoadScene(2);
         }
         else if (level == 6)
         {
@@ -415,17 +420,6 @@ public class GameManager : MonoBehaviour {
             DebugMode.SetActive(false);
         }
     }
-    void LevelTwoLoad()
-    {
-        ResettingMap();
-        maxDivers = 5;
-        maxTreasures = 3;
-        timer.timeLeft = 120f;
-        SetDiverSpawnPoints();
-        SetTreasurePoints();
-        spawnDivers();
-        spawnTreasure();
-    }
     void OnSceneLoaded (Scene scene, LoadSceneMode mode)
     {
         if (scene.buildIndex != 0)
@@ -434,6 +428,8 @@ public class GameManager : MonoBehaviour {
             Pause = GameObject.Find("PauseScreen");
             po = GameObject.Find("popo");
             penny = GameObject.Find("PennyModel");
+            polab = GameObject.Find("PopoLab");
+            pennylab = GameObject.Find("PennyLab");
             toplightbulb = GameObject.Find("TopLightBulb");
             rearleftbulb = GameObject.Find("LeftLightBulb");
             rearrightbulb = GameObject.Find("RightLightBulb");
@@ -444,6 +440,7 @@ public class GameManager : MonoBehaviour {
             upgradedtoclaw = false;
             timer = GameObject.FindObjectOfType<TimerScript>();
             music = Camera.main.GetComponent<AudioSource>();
+            whosplaying();
         }
         if (scene.buildIndex == 1)
         {
@@ -451,6 +448,7 @@ public class GameManager : MonoBehaviour {
         }
         if (scene.buildIndex == 2)
         {
+            whosplaying();
             ResettingMap();
             maxDivers = 5;
             maxTreasures = 3;
@@ -459,7 +457,6 @@ public class GameManager : MonoBehaviour {
             SetTreasurePoints();
             spawnDivers();
             spawnTreasure();
-            //Invoke("LevelTwoLoad", 1.5f);
         }
     }
 }
