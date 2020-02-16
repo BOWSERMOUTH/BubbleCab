@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
     public bool DebugBool;
     public GameObject DebugMode;
     //GAME LOGIC
+    public string chosencharacter;
+    private Vector3 playerPosition;
     public GameObject ui;
     public static GameManager instance = null;
     public int divervalue = 200;
@@ -16,8 +18,10 @@ public class GameManager : MonoBehaviour {
     public int currentvalueforpopup;
 
     //OBJECT REFERENCES
+    public GameObject submarine = null;
     public GameObject po;
     public GameObject penny;
+    public GameObject crumbs;
     public GameObject polab;
     public GameObject pennylab;
     private GameObject toplightbulb;
@@ -28,6 +32,7 @@ public class GameManager : MonoBehaviour {
     public GameObject theClaw;
     public GameObject Pause;
     public GameObject WinScreen;
+    public GameObject WinScreenPlaceHolder;
     public GameObject CaveCutScene;
     public AudioSource music;
 
@@ -52,6 +57,7 @@ public class GameManager : MonoBehaviour {
     public int subHull = 3;
     public int subHullLimit = 3;
     public int subCarryingCapacity = 1;
+    public int subUpgradedCapacity = 1;
     public int playerlives = 3;
 
     // LEVEL LOGIC
@@ -67,7 +73,9 @@ public class GameManager : MonoBehaviour {
         level = 1;
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
+        crumbs = GameObject.Find("Crumbs");
         penny.SetActive(false);
+        crumbs.SetActive(false);
         SceneManager.sceneLoaded += OnSceneLoaded;
         // DEBUG MODE
         //DebugSetDiverSpawnPoints();
@@ -98,7 +106,7 @@ public class GameManager : MonoBehaviour {
     public void SetTreasurePoints()
     {
         treasureSpawnPointsList.Clear();
-        treasureSpawnPointsList.Add(new Vector3(7.98f, -10.01f, -0.09f));
+        treasureSpawnPointsList.Add(new Vector3(6.55f, -9.45f, -0.09f));
         treasureSpawnPointsList.Add(new Vector3(23.07f, -7.55f, -0.09f));
         treasureSpawnPointsList.Add(new Vector3(27.73f, -12.54f, -0.09f));
         treasureSpawnPointsList.Add(new Vector3(36.7f, -14.36f, -0.09f));
@@ -186,20 +194,34 @@ public class GameManager : MonoBehaviour {
 
     public void whosplaying()
     {
-        if (charactertoggle == true)
+        if (chosencharacter == "Popo")
         {
             po.SetActive(true);
             penny.SetActive(false);
+            crumbs.SetActive(false);
             pennylab.SetActive(true);
             polab.SetActive(false);
         }
-        else
+        else if (chosencharacter == "Penny")
         {
             po.SetActive(false);
             penny.SetActive(true);
+            crumbs.SetActive(false);
             pennylab.SetActive(false);
             polab.SetActive(true);
         }
+        else if (chosencharacter == "Crumbs")
+        {
+            po.SetActive(false);
+            penny.SetActive(false);
+            crumbs.SetActive(true);
+            pennylab.SetActive(false);
+            polab.SetActive(true);
+        }
+    }
+    public void ChosenCharacter()
+    {
+        chosencharacter = null;
     }
 
     public void upgraded2radar()
@@ -233,7 +255,7 @@ public class GameManager : MonoBehaviour {
     {
         if (level == 1)
         {
-            maxDivers = 3;
+            maxDivers = 1;
             maxTreasures = 3;
             timer.timeLeft = 120f;
             spawnDivers();
@@ -301,6 +323,7 @@ public class GameManager : MonoBehaviour {
 
     public void BeatingLevel()
     {
+        playerPosition = submarine.transform.position;
         StartCoroutine(DimMusicDuringWin());
         ResettingMap();
         level += 1;
@@ -310,10 +333,13 @@ public class GameManager : MonoBehaviour {
     public void CurrentLevel()
     {
         playerlives = playerlives - 1;
+        submarine.GetComponent<Submarine>().ClearCollectedDivers();
+        currentDivers.Clear();
         StartCoroutine(DimMusicDuringWin());
         ResettingMap();
         SpawnWinScreen();
         LevelLogic();
+        subCarryingCapacity = subUpgradedCapacity;
         subHull = subHullLimit;
 
         if (playerlives == 0)
@@ -394,7 +420,7 @@ public class GameManager : MonoBehaviour {
 
     public void SpawnWinScreen()
     {
-        Instantiate(WinScreen, ui.transform);
+        Instantiate(WinScreen, WinScreenPlaceHolder.transform);
     }
 
     public void TurnOnDebug()
@@ -424,10 +450,13 @@ public class GameManager : MonoBehaviour {
     {
         if (scene.buildIndex != 0)
         {
+            submarine = GameObject.Find("Submarine");
             ui = GameObject.Find("UI");
+            WinScreenPlaceHolder = GameObject.Find("WinScreen");
             Pause = GameObject.Find("PauseScreen");
             po = GameObject.Find("popo");
             penny = GameObject.Find("PennyModel");
+            crumbs = GameObject.Find("Crumbs");
             polab = GameObject.Find("PopoLab");
             pennylab = GameObject.Find("PennyLab");
             toplightbulb = GameObject.Find("TopLightBulb");
@@ -435,9 +464,7 @@ public class GameManager : MonoBehaviour {
             rearrightbulb = GameObject.Find("RightLightBulb");
             radar = GameObject.Find("Radar");
             radarpic = GameObject.Find("radarpic");
-            upgradedtoradar = false;
             theClaw = GameObject.Find("ArmPivotPoint");
-            upgradedtoclaw = false;
             timer = GameObject.FindObjectOfType<TimerScript>();
             music = Camera.main.GetComponent<AudioSource>();
             whosplaying();
@@ -448,6 +475,7 @@ public class GameManager : MonoBehaviour {
         }
         if (scene.buildIndex == 2)
         {
+            submarine.transform.position = playerPosition;
             whosplaying();
             ResettingMap();
             maxDivers = 5;

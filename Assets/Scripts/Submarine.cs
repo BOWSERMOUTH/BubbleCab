@@ -30,6 +30,7 @@ public class Submarine : MonoBehaviour {
     public GameObject dome;
     public GameObject popo;
     public GameObject penny;
+    public GameObject crumbs;
     private GameObject rightFloaty;
     private GameObject leftFloaty;
     
@@ -220,32 +221,6 @@ public class Submarine : MonoBehaviour {
             rightFloaty.GetComponent<Renderer>().enabled = true;
         }
     }
-    // SCORING A POINT WITH A SCUBA GUY
-    private void ScoringPoint()
-    {
-        if (isCarrying == true)
-        {
-            foreach (GameObject gameObject in collectedDivers)
-            {
-                print("i've done this once");
-                dome.transform.Find("ScubaDiver(Clone)").transform.rotation = upRight;
-                dome.transform.Find("ScubaDiver(Clone)").transform.gameObject.tag = "DiverSaved";
-                dome.transform.Find("ScubaDiver(Clone)").transform.parent = null;
-                GameManager.instance.score = GameManager.instance.score + (GameManager.instance.divervalue * cargoCount);
-                GameManager.instance.currentvalueforpopup = GameManager.instance.divervalue;
-                isCarrying = false;
-                GameManager.instance.subCarryingCapacity += cargoCount;
-                cargoCount = 0;
-                timer.timeLeft = timer.timeLeft + 30f;
-                scoreboard.makePopUpOnScore();
-                collectedDivers = new List<GameObject>();
-            }
-            if (GameManager.instance.currentDivers.Count < 1)
-            {
-                GameManager.instance.BeatingLevel();
-            }
-        }
-    }
 
     // COLLIDING WITH SCUBA DIVER
     private void OnTriggerEnter(Collider collidedwith)
@@ -269,7 +244,6 @@ public class Submarine : MonoBehaviour {
         }
         else if (collidedwith.gameObject.tag == "Treasure")
         {
-            Destroy(collidedwith.gameObject);
             GameManager.instance.score = GameManager.instance.score + GameManager.instance.treasurevalue;
             GameManager.instance.currentvalueforpopup = GameManager.instance.treasurevalue;
             scoreboard.makePopUpOnScore();
@@ -286,6 +260,35 @@ public class Submarine : MonoBehaviour {
                 rigidBody.freezeRotation = false;
                 ScoringPoint();
         }
+    }
+    // SCORING A POINT WITH A SCUBA GUY
+    private void ScoringPoint()
+    {
+        if (isCarrying == true)
+        {
+            foreach (GameObject gameObject in collectedDivers)
+            {
+                dome.transform.Find("ScubaDiver(Clone)").transform.rotation = upRight;
+                dome.transform.Find("ScubaDiver(Clone)").transform.gameObject.tag = "DiverSaved";
+                dome.transform.Find("ScubaDiver(Clone)").transform.parent = null;
+                GameManager.instance.score = GameManager.instance.score + (GameManager.instance.divervalue * cargoCount);
+                GameManager.instance.currentvalueforpopup = GameManager.instance.divervalue;
+                isCarrying = false;
+                GameManager.instance.subCarryingCapacity += cargoCount;
+                cargoCount = 0;
+                timer.timeLeft = timer.timeLeft + 30f;
+                scoreboard.makePopUpOnScore();
+                collectedDivers = new List<GameObject>();
+            }
+            if (GameManager.instance.currentDivers.Count < 1)
+            {
+                GameManager.instance.BeatingLevel();
+            }
+        }
+    }
+    public void ClearCollectedDivers()
+    {
+        collectedDivers = new List<GameObject>();
     }
 
     private void OnTriggerExit(Collider backinwater)
@@ -330,7 +333,8 @@ public class Submarine : MonoBehaviour {
     }
     private void LoadCurrentLevel()
     {
-        SceneManager.LoadScene(1);
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
         GameManager.instance.CurrentLevel();
     }
 }

@@ -13,6 +13,7 @@ public class Disappear : MonoBehaviour
     void Start()
     {
         mat = outsiderim.materials;
+        submarine = GameObject.Find("Nipple");
     }
 
     public void MakeObjectDisappear()

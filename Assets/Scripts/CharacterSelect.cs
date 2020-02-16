@@ -6,6 +6,7 @@ public class CharacterSelect : MonoBehaviour
 {
     public GameObject penny;
     public GameObject po;
+    public GameObject crumbs;
     public GameManager gamemanager;
     public AudioClip clickNoise;
     private AudioSource audio;
@@ -20,7 +21,8 @@ public class CharacterSelect : MonoBehaviour
         audio.PlayOneShot(clickNoise);
         po.SetActive(true);
         penny.SetActive(false);
-        gamemanager.charactertoggle = true;
+        crumbs.SetActive(false);
+        gamemanager.chosencharacter = "Popo";
 
     }
 
@@ -29,6 +31,15 @@ public class CharacterSelect : MonoBehaviour
         audio.PlayOneShot(clickNoise);
         po.SetActive(false);
         penny.SetActive(true);
-        gamemanager.charactertoggle = false;
+        crumbs.SetActive(false);
+        gamemanager.chosencharacter = "Penny";
+    }
+    public void switchToCrumbs()
+    {
+        audio.PlayOneShot(clickNoise);
+        po.SetActive(false);
+        penny.SetActive(false);
+        crumbs.SetActive(true);
+        gamemanager.chosencharacter = "Crumbs";
     }
 }

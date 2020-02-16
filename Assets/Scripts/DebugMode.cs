@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DebugMode : MonoBehaviour
 {
-    public ScoreScript scorescript;
     public bool upgradetoclawD;
     public bool upgradetoradarD;
     public bool upgradetoboostD;
@@ -14,9 +14,7 @@ public class DebugMode : MonoBehaviour
 
     public void addhundredpoints()
     {
-        scorescript = ScoreScript.instance;
         GameManager.instance.score = GameManager.instance.score + 100;
-        scorescript.makePopUpOnScore();
     }
 
     public void addradar()
@@ -54,5 +52,9 @@ public class DebugMode : MonoBehaviour
     public void addrepair()
     {
         GameManager.instance.subHull += 1;
+    }
+    public void nextLevel()
+    {
+        SceneManager.LoadScene(2);
     }
 }

@@ -6,6 +6,7 @@ public class Grabbing : MonoBehaviour
 {
     public GameObject touchingObject;
     public bool grabbing;
+    public List<GameObject> grabbedobject;
 
     void Start()
     {
@@ -13,40 +14,47 @@ public class Grabbing : MonoBehaviour
     }
     void Update()
     {
-        isGrabbing();
+            isGrabbing();
+        print(grabbedobject.Count);
     }
     private void isGrabbing()
     {
-        if (Input.GetMouseButton(0) && grabbing == false && touchingObject.tag == "Grippable")
+        if (Input.GetMouseButton(0) && grabbedobject.Count == 0 && touchingObject.tag == "Grippable")
         {
-            print("I am touching " + touchingObject);
+            grabbing = true;
+            grabbedobject.Add(touchingObject);
             touchingObject.transform.SetParent(transform);
             Vector3 scale = touchingObject.transform.localScale;
             Rigidbody rb = touchingObject.GetComponent<Rigidbody>();
             MeshCollider cc = touchingObject.GetComponent<MeshCollider>();
             rb.isKinematic = true;
             cc.isTrigger = true;
-            grabbing = true;
         }
         else if (Input.GetMouseButtonUp(0)) 
         {
-            print("i've released the mouse");
+            grabbing = false;
+            grabbedobject.Remove(touchingObject);
             Rigidbody rb = touchingObject.GetComponent<Rigidbody>();
             MeshCollider cc = touchingObject.GetComponent<MeshCollider>();
             rb.isKinematic = false;
             cc.isTrigger = false;
             transform.DetachChildren();
-            grabbing = false;
         }
     }
 
     private void OnTriggerEnter(Collider targetCollider)
     {
-        touchingObject = targetCollider.gameObject;
+        if (grabbing == false && grabbedobject.Count == 0)
+        {
+            touchingObject = targetCollider.gameObject;
+        }
     }
 
     private void OnTriggerExit(Collider targetCollider)
     {
-        touchingObject = null;
+        if ( grabbing == false)
+        {
+            touchingObject = null;
+        }
     }
 }

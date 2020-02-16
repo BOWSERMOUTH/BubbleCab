@@ -12,7 +12,6 @@ public class TheStore : MonoBehaviour {
     public Button upgrade2flashlight;
     public Button upgrade2boost;
     public Button upgrade2claw;
-    //FIXME: Make this NOT static!
     public Button upgrade2radar;
     public Button repairhull;
     public Button upgrade2hull;
@@ -41,8 +40,16 @@ public class TheStore : MonoBehaviour {
     {
         if (GameManager.instance.score >= secondupgrade)
         {
+            GameManager.instance.subUpgradedCapacity += 1;
             GameManager.instance.subCarryingCapacity += 1;
             GameManager.instance.score -= secondupgrade;
+            ClawButtonDisabler();
+            BoostButtonDisabler();
+            FlashlightButtonDisabler();
+            RadarButtonDisabler();
+            RepairButtonDisabler();
+            CapicityButtonDisabler();
+            UpgradeHullButtonDisabler();
         }
     }
 
@@ -52,6 +59,13 @@ public class TheStore : MonoBehaviour {
         {
             GameManager.instance.subHullLimit += 1;
             GameManager.instance.score -= firstupgrade;
+            ClawButtonDisabler();
+            BoostButtonDisabler();
+            FlashlightButtonDisabler();
+            RadarButtonDisabler();
+            RepairButtonDisabler();
+            CapicityButtonDisabler();
+            UpgradeHullButtonDisabler();
         }
     }
 
@@ -61,25 +75,43 @@ public class TheStore : MonoBehaviour {
         {
             GameManager.instance.upgradedtolights = true;
             GameManager.instance.score -= firstupgrade;
+            ClawButtonDisabler();
+            BoostButtonDisabler();
+            FlashlightButtonDisabler();
+            RadarButtonDisabler();
+            RepairButtonDisabler();
+            CapicityButtonDisabler();
+            UpgradeHullButtonDisabler();
         }
     }
-
     public void boost2gamemanager()
     {
         if (GameManager.instance.score >= firstupgrade)
         {
             GameManager.instance.upgradedtoboost = true;
             GameManager.instance.score -= firstupgrade;
+            ClawButtonDisabler();
+            BoostButtonDisabler();
+            FlashlightButtonDisabler();
+            RadarButtonDisabler();
+            RepairButtonDisabler();
+            CapicityButtonDisabler();
+            UpgradeHullButtonDisabler();
         }
     }
-
     public void claw2gamemanager()
     {
         if (GameManager.instance.score >= firstupgrade)
         {
-            
             GameManager.instance.upgradedtoclaw = true;
             GameManager.instance.score -= firstupgrade;
+            ClawButtonDisabler();
+            BoostButtonDisabler();
+            FlashlightButtonDisabler();
+            RadarButtonDisabler();
+            RepairButtonDisabler();
+            CapicityButtonDisabler();
+            UpgradeHullButtonDisabler();
         }
     }
 
@@ -89,19 +121,30 @@ public class TheStore : MonoBehaviour {
         {
             GameManager.instance.upgradedtoradar = true;
             GameManager.instance.score -= firstupgrade;
-
+            ClawButtonDisabler();
+            BoostButtonDisabler();
+            FlashlightButtonDisabler();
+            RadarButtonDisabler();
+            RepairButtonDisabler();
+            CapicityButtonDisabler();
+            UpgradeHullButtonDisabler();
         }
     }
-
     public void repair2ship()
     {
         if (GameManager.instance.score >= repaircost)
         {
             GameManager.instance.subHull += 1;
             GameManager.instance.score -= repaircost;
+            ClawButtonDisabler();
+            BoostButtonDisabler();
+            FlashlightButtonDisabler();
+            RadarButtonDisabler();
+            RepairButtonDisabler();
+            CapicityButtonDisabler();
+            UpgradeHullButtonDisabler();
         }
     }
-
     public void exitstore()
     {
         panel.SetActive(false);
@@ -128,42 +171,72 @@ public class TheStore : MonoBehaviour {
             panel.SetActive(true);
             openstorebool = false;
             openstoreon.SetActive(false);
+            ClawButtonDisabler();
+            BoostButtonDisabler();
+            FlashlightButtonDisabler();
+            RadarButtonDisabler();
+            RepairButtonDisabler();
+            CapicityButtonDisabler();
+            UpgradeHullButtonDisabler();
         }
     }
-
-    public void ButtonDisabler400()
+    public void ClawButtonDisabler()
+    {
+        if (GameManager.instance.score >= firstupgrade && GameManager.instance.upgradedtoclaw == false)
+        {
+            upgrade2claw.interactable = true;
+        }
+        else
+        {
+            upgrade2claw.interactable = false;
+        }
+    }
+    public void BoostButtonDisabler()
     {
         if (GameManager.instance.score >= firstupgrade && GameManager.instance.upgradedtoboost == false)
         {
             upgrade2boost.interactable = true;
         }
-        if (GameManager.instance.score >= firstupgrade && GameManager.instance.upgradedtoclaw == false)
+        else
         {
-            upgrade2claw.interactable = true;
+            upgrade2boost.interactable = false;
         }
-        if (GameManager.instance.score >= firstupgrade && GameManager.instance.upgradedtolights == false)
-        {
-            upgrade2flashlight.interactable = true;
-        }
+    }
+    public void RadarButtonDisabler()
+    {
         if (GameManager.instance.score >= firstupgrade && GameManager.instance.upgradedtoradar == false)
         {
             upgrade2radar.interactable = true;
         }
+        else
+        {
+            upgrade2radar.interactable = false;
+        }
+    }
+    public void FlashlightButtonDisabler()
+    {
+        if (GameManager.instance.score >= firstupgrade && GameManager.instance.upgradedtolights == false)
+        {
+            upgrade2flashlight.interactable = true;
+        }
+        else
+        {
+            upgrade2flashlight.interactable = false;
+        }
+    }
+    public void UpgradeHullButtonDisabler()
+    {
         if (GameManager.instance.score >= firstupgrade && GameManager.instance.subHullLimit < 6)
         {
             upgrade2hull.interactable = true;
         }
         else
         {
-            upgrade2boost.interactable = false;
-            upgrade2claw.interactable = false;
-            upgrade2flashlight.interactable = false;
-            upgrade2radar.interactable = false;
             upgrade2hull.interactable = false;
         }
     }
 
-    private void ButtonDisabler100()
+    private void RepairButtonDisabler()
     {
         if (GameManager.instance.score >= repaircost && GameManager.instance.subHull < GameManager.instance.subHullLimit)
         {
@@ -175,9 +248,9 @@ public class TheStore : MonoBehaviour {
         }
     }
 
-    private void ButtonDisabler800()
+    private void CapicityButtonDisabler()
     {
-        if (GameManager.instance.score >= secondupgrade && GameManager.instance.subCarryingCapacity <= 2)
+        if (GameManager.instance.score >= secondupgrade && GameManager.instance.subCarryingCapacity < 2)
         {
             upgrade2carrying.interactable = true;
         }
@@ -189,8 +262,5 @@ public class TheStore : MonoBehaviour {
     void Update ()
     {
         OpenStoreBooleon();
-        ButtonDisabler100();
-        ButtonDisabler400();
-        ButtonDisabler800();
-	}
+    }
 }
