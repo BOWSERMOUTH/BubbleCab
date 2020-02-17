@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour {
     //DEBUG
     public bool DebugBool;
     public GameObject DebugMode;
+    // STATS
+    public float timePlayed;
+    public float diversSaved;
     //GAME LOGIC
     public string chosencharacter;
     private Vector3 playerPosition;
@@ -102,6 +105,13 @@ public class GameManager : MonoBehaviour {
         spawnPoints.Add(new Vector3(37.16f, -13.11f, -0.09f));
         spawnPoints.Add(new Vector3(-35.86f, 6.62f, -0.09f));
         spawnPoints.Add(new Vector3(-62.84f, -10.09f, -0.09f));
+        if (level >= 4)
+        {
+            spawnPoints.Add(new Vector3(29.88f, -24.22f, -0.09f));
+            spawnPoints.Add(new Vector3(8.97f, -23.98f, -0.09f));
+            spawnPoints.Add(new Vector3(-11.41f, -24.92f, -0.09f));
+            spawnPoints.Add(new Vector3(-21.11f, -20.2f, -0.09f));
+        }
     }
     public void SetTreasurePoints()
     {
@@ -249,7 +259,6 @@ public class GameManager : MonoBehaviour {
             theClaw.SetActive(false);
         }
     }
-
 // Level Logic - Adjust how many divers / treasures spawn per level / Time limit per level
     public void LevelLogic()
     {
@@ -260,6 +269,7 @@ public class GameManager : MonoBehaviour {
             timer.timeLeft = 120f;
             spawnDivers();
             spawnTreasure();
+
         }
         else if (level == 2)
         {
@@ -279,10 +289,6 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 4)
         {
-            spawnPoints.Add(new Vector3(29.88f, -24.22f, -0.09f));
-            spawnPoints.Add(new Vector3(8.97f, -23.98f, -0.09f));
-            spawnPoints.Add(new Vector3(-11.41f, -24.92f, -0.09f));
-            spawnPoints.Add(new Vector3(-21.11f, -20.2f, -0.09f));
             maxDivers = 6;
             maxTreasures = 3;
             Destroy(GameObject.Find("CutSceneRockLeftG"));
@@ -318,6 +324,10 @@ public class GameManager : MonoBehaviour {
             timer.timeLeft = 120f;
             spawnDivers();
             spawnTreasure();
+        }
+        else if (level == 9)
+        {
+            SceneManager.LoadScene(3);
         }
     }
 
