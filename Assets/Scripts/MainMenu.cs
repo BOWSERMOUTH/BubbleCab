@@ -16,6 +16,11 @@ public class MainMenu : MonoBehaviour
         //startgamebool = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+    public void ReturnToMenu()
+    {
+        GameManager.instance.ResetGameManager();
+        SceneManager.LoadScene(0);
+    }
     //IEnumerator LoadTheLevel()
     //{
         //AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(1);
