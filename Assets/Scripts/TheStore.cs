@@ -18,8 +18,8 @@ public class TheStore : MonoBehaviour {
     public Button upgrade2carrying;
     public Button leavestore;
     [SerializeField] int repaircost = 100;
-    [SerializeField] int firstupgrade = 400;
-    [SerializeField] int secondupgrade = 800;
+    [SerializeField] int firstupgrade = 500;
+    [SerializeField] int secondupgrade = 1000;
     private float solidDistance = 3f;
     
 	void Start ()

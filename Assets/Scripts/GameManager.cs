@@ -25,8 +25,9 @@ public class GameManager : MonoBehaviour {
     public GameObject po;
     public GameObject penny;
     public GameObject crumbs;
-    public GameObject polab;
-    public GameObject pennylab;
+    private GameObject polab;
+    private GameObject pennylab;
+    private GameObject crumbslab;
     private GameObject toplightbulb;
     private GameObject rearrightbulb;
     private GameObject rearleftbulb;
@@ -64,21 +65,19 @@ public class GameManager : MonoBehaviour {
     public int playerlives = 3;
 
     // LEVEL LOGIC
+    public FishTank fishtank;
     public int level = 1;
     public bool levelwinbool = false;
     public bool paused = false;
     public TimerScript timer;
     public int diversleft;
-    public bool charactertoggle;
 
-    void Start ()
+    void OnEnable ()
     {
         level = 1;
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
         crumbs = GameObject.Find("Crumbs");
-        penny.SetActive(false);
-        crumbs.SetActive(false);
         SceneManager.sceneLoaded += OnSceneLoaded;
         // DEBUG MODE
         //DebugSetDiverSpawnPoints();
@@ -211,6 +210,7 @@ public class GameManager : MonoBehaviour {
             crumbs.SetActive(false);
             pennylab.SetActive(true);
             polab.SetActive(false);
+            crumbslab.SetActive(false);
         }
         else if (chosencharacter == "Penny")
         {
@@ -218,7 +218,8 @@ public class GameManager : MonoBehaviour {
             penny.SetActive(true);
             crumbs.SetActive(false);
             pennylab.SetActive(false);
-            polab.SetActive(true);
+            polab.SetActive(false);
+            crumbslab.SetActive(true);
         }
         else if (chosencharacter == "Crumbs")
         {
@@ -227,6 +228,7 @@ public class GameManager : MonoBehaviour {
             crumbs.SetActive(true);
             pennylab.SetActive(false);
             polab.SetActive(true);
+            crumbslab.SetActive(false);
         }
     }
     public void ChosenCharacter()
@@ -264,7 +266,7 @@ public class GameManager : MonoBehaviour {
     {
         if (level == 1)
         {
-            maxDivers = 1;
+            maxDivers = 2;
             maxTreasures = 3;
             timer.timeLeft = 120f;
             spawnDivers();
@@ -289,7 +291,7 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 4)
         {
-            maxDivers = 6;
+            maxDivers = 4;
             maxTreasures = 3;
             Destroy(GameObject.Find("CutSceneRockLeftG"));
             Destroy(GameObject.Find("CutSceneRockRightG"));
@@ -303,7 +305,7 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 6)
         {
-            maxDivers = 8;
+            maxDivers = 5;
             maxTreasures = 3;
             timer.timeLeft = 120f;
             spawnDivers();
@@ -311,7 +313,7 @@ public class GameManager : MonoBehaviour {
         }
         else if (level == 7)
         {
-            maxDivers = 8;
+            maxDivers = 6;
             maxTreasures = 3;
             timer.timeLeft = 120f;
             spawnDivers();
@@ -329,12 +331,16 @@ public class GameManager : MonoBehaviour {
         {
             SceneManager.LoadScene(3);
         }
+        fishtank.ChangeFishOnLevel();
     }
 
     public void BeatingLevel()
     {
+        if (level <= 8)
+        {
+            StartCoroutine(DimMusicDuringWin());
+        }
         playerPosition = submarine.transform.position;
-        StartCoroutine(DimMusicDuringWin());
         ResettingMap();
         level += 1;
         SpawnWinScreen();
@@ -426,6 +432,8 @@ public class GameManager : MonoBehaviour {
         upgradedtoboost = false;
         level = 1;
         score = 0;
+        currentDivers.Clear();
+        currentTreasures.Clear();
     }
 
     public void SpawnWinScreen()
@@ -456,35 +464,47 @@ public class GameManager : MonoBehaviour {
             DebugMode.SetActive(false);
         }
     }
+    public void ObjectReferences()
+    {
+        submarine = GameObject.Find("Submarine");
+        ui = GameObject.Find("UI");
+        WinScreenPlaceHolder = GameObject.Find("WinScreen");
+        Pause = GameObject.Find("PauseScreen");
+        po = GameObject.Find("popo");
+        penny = GameObject.Find("PennyModel");
+        crumbs = GameObject.Find("Crumbs");
+        polab = GameObject.Find("PopoLab");
+        pennylab = GameObject.Find("PennyLab");
+        crumbslab = GameObject.Find("CrumbsLab");
+        toplightbulb = GameObject.Find("TopLightBulb");
+        rearleftbulb = GameObject.Find("LeftLightBulb");
+        rearrightbulb = GameObject.Find("RightLightBulb");
+        radar = GameObject.Find("Radar");
+        radarpic = GameObject.Find("radarpic");
+        theClaw = GameObject.Find("ArmPivotPoint");
+        timer = GameObject.FindObjectOfType<TimerScript>();
+        music = Camera.main.GetComponent<AudioSource>();
+        fishtank = GameObject.Find("FishTank").GetComponent<FishTank>();
+    }
     void OnSceneLoaded (Scene scene, LoadSceneMode mode)
     {
-        if (scene.buildIndex != 0)
+        if (scene.buildIndex == 0)
         {
-            submarine = GameObject.Find("Submarine");
-            ui = GameObject.Find("UI");
-            WinScreenPlaceHolder = GameObject.Find("WinScreen");
-            Pause = GameObject.Find("PauseScreen");
             po = GameObject.Find("popo");
             penny = GameObject.Find("PennyModel");
             crumbs = GameObject.Find("Crumbs");
-            polab = GameObject.Find("PopoLab");
-            pennylab = GameObject.Find("PennyLab");
-            toplightbulb = GameObject.Find("TopLightBulb");
-            rearleftbulb = GameObject.Find("LeftLightBulb");
-            rearrightbulb = GameObject.Find("RightLightBulb");
-            radar = GameObject.Find("Radar");
-            radarpic = GameObject.Find("radarpic");
-            theClaw = GameObject.Find("ArmPivotPoint");
-            timer = GameObject.FindObjectOfType<TimerScript>();
-            music = Camera.main.GetComponent<AudioSource>();
+            penny.SetActive(false);
+            crumbs.SetActive(false);
+        }
+        else if (scene.buildIndex == 1)
+        {
+            ObjectReferences();
+            LevelLogic();
             whosplaying();
         }
-        if (scene.buildIndex == 1)
+        else if (scene.buildIndex == 2)
         {
-            LevelLogic();
-        }
-        if (scene.buildIndex == 2)
-        {
+            ObjectReferences();
             submarine.transform.position = playerPosition;
             whosplaying();
             ResettingMap();
@@ -495,6 +515,8 @@ public class GameManager : MonoBehaviour {
             SetTreasurePoints();
             spawnDivers();
             spawnTreasure();
+            SpawnWinScreen();
+            StartCoroutine(DimMusicDuringWin());
         }
     }
 }

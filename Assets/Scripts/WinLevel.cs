@@ -19,6 +19,10 @@ public class WinLevel : MonoBehaviour
 
     void Update()
     {
-        text.text = "LEVEL " + GameManager.instance.level;
+        if (GameManager.instance.level == 8)
+        {
+            text.text = "FINAL LEVEL";
+        }
+        else text.text = "LEVEL " + GameManager.instance.level;
     }
 }

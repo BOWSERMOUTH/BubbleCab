@@ -191,13 +191,13 @@ public class Submarine : MonoBehaviour {
                     invincibility = true;
                     audioSource2.PlayOneShot(hurt);
                     GameManager.instance.subHull -= 1;
-                    //hullshake.cameraShake();
                     StartCoroutine(HurtFlicker());
                     Invoke("TurnInvincibilityOff", 2f);
                 }
                 if (GameManager.instance.subHull < 1)
                 {
-                    DeathSequence();
+                    TimerScript time = GameObject.Find("Timer").GetComponent<TimerScript>();
+                    time.TimerEnd();
                 }
                 break;
         }

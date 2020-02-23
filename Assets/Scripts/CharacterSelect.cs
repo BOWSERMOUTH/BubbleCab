@@ -13,9 +13,9 @@ public class CharacterSelect : MonoBehaviour
 
     void Start()
     {
+        gamemanager = GameManager.instance;
         audio = gameObject.GetComponent<AudioSource>();
     }
-
     public void switchToPo()
     {
         audio.PlayOneShot(clickNoise);
@@ -25,7 +25,6 @@ public class CharacterSelect : MonoBehaviour
         gamemanager.chosencharacter = "Popo";
 
     }
-
     public void switchToPenny()
     {
         audio.PlayOneShot(clickNoise);

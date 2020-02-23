@@ -53,8 +53,14 @@ public class DebugMode : MonoBehaviour
     {
         GameManager.instance.subHull += 1;
     }
+    public void addlevel()
+    {
+        GameManager.instance.level = GameManager.instance.level + 1;
+        GameManager.instance.ResettingMap();
+        GameManager.instance.LevelLogic();
+    }
     public void nextLevel()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

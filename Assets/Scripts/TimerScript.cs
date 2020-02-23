@@ -25,8 +25,9 @@ public class TimerScript : MonoBehaviour
         bubbles = bubblesoff.GetComponent<ParticleSystem>();
     }
 
-    private void TimerEnd()
+    public void TimerEnd()
     {
+        Time.timeScale = 0f;
         retrylevel.SetActive(true);
         rb.isKinematic = true;
         submarine.rotationThrust = 0;
@@ -34,11 +35,18 @@ public class TimerScript : MonoBehaviour
     }
     public void retryLevel()
     {
+        Time.timeScale = 1f;
         GameManager.instance.CurrentLevel();
         rb.isKinematic = false;
         submarine.rotationThrust = 150;
         bubbles.enableEmission = true;
         retrylevel.SetActive(false);
+        submarine.invincibility = true;
+        Invoke("TurnInvincibilityOff", 5f);
+    }
+    private void TurnInvincibilityOff()
+    {
+        submarine.invincibility = false;
     }
     void Update()
     {
