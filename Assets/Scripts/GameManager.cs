@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
+
     //DEBUG
     public bool DebugBool;
     public GameObject DebugMode;
@@ -71,7 +72,7 @@ public class GameManager : MonoBehaviour {
     public bool paused = false;
     public TimerScript timer;
     public int diversleft;
-
+    
     void OnEnable ()
     {
         level = 1;
@@ -434,6 +435,7 @@ public class GameManager : MonoBehaviour {
         score = 0;
         currentDivers.Clear();
         currentTreasures.Clear();
+        playerlives = 3;
     }
 
     public void SpawnWinScreen()

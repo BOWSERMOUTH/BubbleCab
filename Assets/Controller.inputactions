@@ -1,0 +1,185 @@
+{
+    "name": "Controller",
+    "maps": [
+        {
+            "name": "Gameplay",
+            "id": "9aa73afd-9e7f-46dd-ac7c-1f04f842ef3d",
+            "actions": [
+                {
+                    "name": "Forward",
+                    "type": "Button",
+                    "id": "5a2c9b0d-4bd5-4a2f-8f37-92ae92aac959",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Backward",
+                    "type": "Button",
+                    "id": "2fa48e81-2335-4794-8246-0277a8f613cf",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Right",
+                    "type": "Button",
+                    "id": "2d4dc5bb-ddca-4e8d-8f3a-5bc29aa4f248",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Left",
+                    "type": "Button",
+                    "id": "1e92c4f7-142c-4857-9a08-56078e2e4d04",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Radar",
+                    "type": "Button",
+                    "id": "7b7497df-8076-4084-b138-74b636ffd5a4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Sonar",
+                    "type": "Button",
+                    "id": "46edbeb6-6380-4b0d-9045-e72695703a04",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Flashlight",
+                    "type": "Button",
+                    "id": "1d8338f0-b02e-42c6-8118-02a33fbd1320",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Claw",
+                    "type": "Button",
+                    "id": "03baf8b7-a4b1-4cfd-9bfa-d2a8c0ad2fda",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ClawGrab",
+                    "type": "Button",
+                    "id": "7f5962fc-7d05-43ad-93c8-9684dd36a0ea",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6fde516a-25e2-49c1-bbcc-9f31bc71763b",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "Hold(duration=0.01,pressPoint=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "64ac469b-fb74-4d57-acc6-5f68d04b5879",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "Hold(duration=0.01,pressPoint=0.1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Backward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d4b4c521-f21b-4cd0-be21-651f5a2c58c7",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0872b7f6-d93e-4c56-9ee2-3ffea15225f1",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f39dc3ca-302e-4151-aa9b-872264b9a3a3",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Radar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0c3e5708-1432-4bd1-b172-7e3d08ec89b7",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sonar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "298bc9e1-6d16-4729-9699-f28fd26b5414",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Flashlight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "301674a3-473f-4342-90d3-1149d8c18905",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Claw",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "81ddce5c-605a-49ef-973e-555a2e252f19",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "Hold(duration=0.1,pressPoint=0.5)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClawGrab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

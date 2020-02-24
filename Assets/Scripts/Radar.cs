@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class Radar : MonoBehaviour
 {
+    // CONTROLLER SUPPORT
+    Controller controls;
+    // OBJECT REFERENCES
     private ParticleSystem ps;
     public GameObject submarine;
     private SphereCollider radarcollider;
@@ -25,7 +29,10 @@ public class Radar : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         beep = audioSource.clip;
     }
-
+    void OnEnable()
+    {
+        transform.position = submarine.transform.position;
+    }
     public void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.tag == "Diver")
@@ -62,13 +69,25 @@ public class Radar : MonoBehaviour
             transform.position = submarine.transform.position;
         }
     }
-
-	void Update () 
+    public void RadarButton()
     {
         if (Input.GetKeyDown(KeyCode.Space) && radarcooldowntoggle == false)
         {
             radarcooldowntoggle = true;
         }
+    }
+    public void C_RadarButton()
+    {
+        print("i've hit radar buttons");
+        if (radarcooldowntoggle == false)
+        {
+            radarcooldowntoggle = true;
+        }
+    }
+
+    void Update () 
+    {
+        RadarButton();
         RadarOn();
         ResetRadarPosition();
 	}

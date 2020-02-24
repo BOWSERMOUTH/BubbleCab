@@ -1,25 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Grabbing : MonoBehaviour
 {
     public GameObject touchingObject;
     public bool grabbing;
     public List<GameObject> grabbedobject;
+    public Submarine submarine;
+    Controller clawcontrols;
+    public bool c_grabbing;
 
-    void Start()
-    {
-
-    }
     void Update()
     {
-            isGrabbing();
-        print(grabbedobject.Count);
+        isGrabbing();
     }
-    private void isGrabbing()
+    public void isGrabbing()
     {
-        if (Input.GetMouseButton(0) && grabbedobject.Count == 0 && touchingObject.tag == "Grippable")
+        print("I've grabbed");
+        if (Input.GetMouseButton(0) && grabbedobject.Count == 0 && touchingObject.tag == "Grippable" ||
+            c_grabbing == true && grabbedobject.Count == 0 && touchingObject.tag == "Grippable")
         {
             grabbing = true;
             grabbedobject.Add(touchingObject);
@@ -30,7 +31,8 @@ public class Grabbing : MonoBehaviour
             rb.isKinematic = true;
             cc.isTrigger = true;
         }
-        else if (Input.GetMouseButtonUp(0)) 
+
+        else if (Input.GetMouseButtonUp(0) || c_grabbing == false) 
         {
             grabbing = false;
             grabbedobject.Remove(touchingObject);
@@ -41,8 +43,16 @@ public class Grabbing : MonoBehaviour
             transform.DetachChildren();
         }
     }
+    public void C_isGrabbing()
+    {
+        c_grabbing = true;
+    }
+    public void C_releasingGrab()
+    {
+        c_grabbing = false;
+    }
 
-    private void OnTriggerEnter(Collider targetCollider)
+        private void OnTriggerEnter(Collider targetCollider)
     {
         if (grabbing == false && grabbedobject.Count == 0)
         {

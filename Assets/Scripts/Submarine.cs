@@ -3,15 +3,17 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class Submarine : MonoBehaviour {
 
+    
     public List<GameObject> collectedDivers;
     Rigidbody rigidBody;
     public AudioSource audioSource1;
     public AudioSource audioSource2;
     public ScoreScript scoreboard;
-    
+    public GameObject claw;
     [SerializeField] AudioClip mainEngine;
     [SerializeField] AudioClip deathSound;
     [SerializeField] AudioClip winSound;
@@ -19,10 +21,23 @@ public class Submarine : MonoBehaviour {
     [SerializeField] AudioClip flashlight;
     [SerializeField] AudioClip hurt;
     // CONTROLS
-    public float rotationThrust = 150f;
+    Vector2 mousePos;
+    Vector3 screenPos;
+    public float rotationThrust = 150;
+    public float rotationThrustright;
+    public float rotationThrustleft;
     [SerializeField] float mainThrust = 1f;
     [SerializeField] float levelLoadDelay = 2f;
+    // CONTROLLER SUPPORT
 
+    Vector3 lastMousePosition;
+    private bool mouseorgamepad;
+    Grabbing c_grabbing;
+    Radar radar;
+    Controller controls;
+    private bool controllerforwardbool = false;
+    private bool controllerbackwardbool = false;
+    Vector2 clawdirection;
     enum State {  Alive, Dying, Transcending }
     State state = State.Alive;
     public TimerScript timer;
@@ -56,15 +71,40 @@ public class Submarine : MonoBehaviour {
 
     //SCUBA MAN UPRIGHT
     private Quaternion upRight = Quaternion.Euler(-50, -90, 0);
+    void Awake()
+    {
+        controls = new Controller();
+        controls.Gameplay.Forward.performed += ctx => controllerforwardbool = true;
+        controls.Gameplay.Forward.canceled += ctx => controllerforwardbool = false;
+        controls.Gameplay.Backward.performed += ctx => controllerbackwardbool = true;
+        controls.Gameplay.Backward.canceled += ctx => controllerbackwardbool = false;
+        controls.Gameplay.Right.performed += ctx => rotationThrustright = ctx.ReadValue<float>();
+        controls.Gameplay.Left.performed += ctx => rotationThrustleft = ctx.ReadValue<float>();
+        controls.Gameplay.Flashlight.performed += ctx => C_lightsOnOff();
+        controls.Gameplay.Radar.performed += ctx => radar.C_RadarButton();
+        controls.Gameplay.Claw.performed += ctx => clawdirection = ctx.ReadValue<Vector2>();
+        controls.Gameplay.ClawGrab.performed += ctx => c_grabbing.C_isGrabbing();
+        controls.Gameplay.ClawGrab.canceled += ctx => c_grabbing.C_releasingGrab();
+    }
+    void OnEnable()
+    {
+        controls.Gameplay.Enable();
+    }
+    void OnDisable()
+    {
+        controls.Gameplay.Disable();
+    }
     void Start ()
     {
+        radar = GameObject.Find("Radar").GetComponent<Radar>();
+        c_grabbing = GameObject.Find("GripPoint").GetComponent<Grabbing>();
         rigidBody = GetComponent<Rigidbody>();
         mufflesound = maincamera.GetComponent<AudioHighPassFilter>();
         rightFloaty = GameObject.Find("RightFloaty");
         leftFloaty = GameObject.Find("LeftFloaty");
     }
 
-    public void ApplyThrust()
+    public void MoveForward()
     {
         rigidBody.AddRelativeForce(Vector3.up * mainThrust);
         // So audio doesn't layer
@@ -73,21 +113,106 @@ public class Submarine : MonoBehaviour {
             audioSource1.PlayOneShot(mainEngine);
         }
     }
+    public void C_MoveForward()
+    {
+        if (controllerforwardbool == true)
+        {
+            print("I have applied force");
+            rigidBody.AddRelativeForce(Vector3.up * mainThrust);
+            // So audio doesn't layer
+            if (!audioSource1.isPlaying)
+            {
+                audioSource1.PlayOneShot(mainEngine);
+            }
+        }
+    }
+    public void MoveBackward()
+    {
+        rigidBody.AddRelativeForce(Vector3.down * mainThrust);
+    }
+    public void C_MoveBackward()
+    {
+        if (controllerbackwardbool == true)
+        {
+            rigidBody.AddRelativeForce(Vector3.down * mainThrust);
+        }
+    }
+
 
     void Update ()
     {
         if (state == State.Alive)
         {
+            switchingmouseorgamepad();
+            C_MoveForward();
+            C_MoveBackward();
+            C_TurnRight();
+            C_TurnLeft();
             RespondToThrustInput();
             RespondToRotateInput();
             lightsOnOff();
+            ClawMovement();
         }
 	}
+    void switchingmouseorgamepad()
+    {
+        if (Input.mousePosition!=lastMousePosition)
+        {
+            lastMousePosition = Input.mousePosition;
+            mouseorgamepad = false;
+        }
+        else
+        {
+            mouseorgamepad = true;
+        }
+    }
+    // CLAW MOVEMENT
+    void ClawMovement()
+    {
+        if (mouseorgamepad == false)
+        {
+            mousePos = Input.mousePosition;
+            screenPos = Camera.main.ScreenToWorldPoint(
+                new Vector3(mousePos.x, mousePos.y, transform.position.z - Camera.main.transform.position.z));
+            var currentRot = transform.eulerAngles;
+            currentRot.z = Mathf.Atan2(
+                (screenPos.y - transform.position.y), (screenPos.x - transform.position.x)) * Mathf.Rad2Deg - 90;
+            claw.transform.eulerAngles = currentRot;
+        }
+        else if (mouseorgamepad == true)
+        {
+            float lookDirection = Mathf.Atan2((clawdirection.x), (clawdirection.y));
+            claw.transform.rotation = Quaternion.Euler(0f, 0f, -lookDirection * Mathf.Rad2Deg);
+        }
+    }
+    // CLAW GRABBING
 
     // CONTROLS LIGHTS WITH F
     private void lightsOnOff()
     {
         if (Input.GetKeyDown(KeyCode.F) && GameManager.instance.upgradedtolights)
+        {
+            lightControl = !lightControl;
+            audioSource2.PlayOneShot(flashlight);
+        }
+
+        if (lightControl == true)
+        {
+            topLight.gameObject.SetActive(true);
+            rightLight.gameObject.SetActive(true);
+            leftLight.gameObject.SetActive(true);
+        }
+
+        if (lightControl == false)
+        {
+            topLight.gameObject.SetActive(false);
+            rightLight.gameObject.SetActive(false);
+            leftLight.gameObject.SetActive(false);
+        }
+    }
+    private void C_lightsOnOff()
+    {
+        if (GameManager.instance.upgradedtolights)
         {
             lightControl = !lightControl;
             audioSource2.PlayOneShot(flashlight);
@@ -128,9 +253,9 @@ public class Submarine : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.W))
         {
-            ApplyThrust();
+            MoveForward();
         }
-        else
+        else if (controllerforwardbool != true)
         {
             audioSource1.Stop();
             audioSource1.pitch = 1;
@@ -138,7 +263,7 @@ public class Submarine : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.S))
         {
-            rigidBody.AddRelativeForce(Vector3.down * mainThrust);
+            MoveBackward();
         }
     }
     // THRUST STRENGTH
@@ -152,6 +277,7 @@ public class Submarine : MonoBehaviour {
         // Rotating Left
         if (Input.GetKey(KeyCode.A))
         {
+            print("i'm turning left");
             transform.Rotate(Vector3.forward * rotationThisFrame);
         }
         // Rotating Right
@@ -159,10 +285,34 @@ public class Submarine : MonoBehaviour {
         {
             transform.Rotate(Vector3.back * rotationThisFrame);
         }
+
         // Allowing rotation to resume after rotating
         //rigidBody.freezeRotation = false;
     }
-
+    private void C_TurnRight()
+    {
+        if (rotationThrustright >= .3)
+        {
+            float rotationThisFrame = rotationThrustright * Time.deltaTime * 150;
+            transform.Rotate(Vector3.back * rotationThisFrame);
+        }
+        else
+        {
+            rotationThrustright = 0f;
+        }
+    }
+    private void C_TurnLeft()
+    {
+        if (rotationThrustleft >= .3)
+        {
+            float rotationThisFrame = rotationThrustleft * Time.deltaTime * 150;
+            transform.Rotate(Vector3.forward * rotationThisFrame);
+        }
+        else
+        {
+            rotationThrustleft = 0f;
+        }
+    }
     private void OnCollisionEnter(Collision collision)
     {
         // If we're not alive, return

@@ -5,7 +5,12 @@ public class JawsOfLife : MonoBehaviour
     Vector2 mousePos;
     Vector3 screenPos;
 
+
     void Update()
+    {
+        ClawMovement();
+    }
+    void ClawMovement()
     {
         mousePos = Input.mousePosition;
         screenPos = Camera.main.ScreenToWorldPoint(
@@ -18,5 +23,9 @@ public class JawsOfLife : MonoBehaviour
             (screenPos.y - transform.position.y), (screenPos.x - transform.position.x)) * Mathf.Rad2Deg - 90;
 
         transform.eulerAngles = currentRot;
+    }
+    void C_ClawMovement()
+    {
+
     }
 }
