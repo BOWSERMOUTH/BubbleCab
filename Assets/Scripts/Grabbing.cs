@@ -18,7 +18,6 @@ public class Grabbing : MonoBehaviour
     }
     public void isGrabbing()
     {
-        print("I've grabbed");
         if (Input.GetMouseButton(0) && grabbedobject.Count == 0 && touchingObject.tag == "Grippable" ||
             c_grabbing == true && grabbedobject.Count == 0 && touchingObject.tag == "Grippable")
         {
@@ -32,7 +31,7 @@ public class Grabbing : MonoBehaviour
             cc.isTrigger = true;
         }
 
-        else if (Input.GetMouseButtonUp(0) || c_grabbing == false) 
+        else if (Input.GetMouseButtonUp(0) || c_grabbing == false && submarine.mouseorgamepad == true) 
         {
             grabbing = false;
             grabbedobject.Remove(touchingObject);
@@ -45,11 +44,17 @@ public class Grabbing : MonoBehaviour
     }
     public void C_isGrabbing()
     {
-        c_grabbing = true;
+        if (submarine.mouseorgamepad == true)
+        {
+            c_grabbing = true;
+        }
     }
     public void C_releasingGrab()
     {
-        c_grabbing = false;
+        if (submarine.mouseorgamepad == true)
+        {
+            c_grabbing = false;
+        }
     }
 
         private void OnTriggerEnter(Collider targetCollider)

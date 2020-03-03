@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour {
 
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour {
     public float diversSaved;
     //GAME LOGIC
     public string chosencharacter;
-    private Vector3 playerPosition;
+    public Vector3 playerPosition;
     public GameObject ui;
     public static GameManager instance = null;
     public int divervalue = 200;
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviour {
     public int currentvalueforpopup;
 
     //OBJECT REFERENCES
+    public EventSystem eventSystem;
+    public GameObject resumeGameButton;
     public GameObject submarine = null;
     public GameObject po;
     public GameObject penny;
@@ -36,6 +39,7 @@ public class GameManager : MonoBehaviour {
     public GameObject radarpic;
     public GameObject theClaw;
     public GameObject Pause;
+    public GameObject Panel;
     public GameObject WinScreen;
     public GameObject WinScreenPlaceHolder;
     public GameObject CaveCutScene;
@@ -75,6 +79,7 @@ public class GameManager : MonoBehaviour {
     
     void OnEnable ()
     {
+        eventSystem = UnityEngine.EventSystems.EventSystem.current;
         level = 1;
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
@@ -163,8 +168,8 @@ public class GameManager : MonoBehaviour {
         PauseGame();
         upgraded2radar();
         upgraded2claw();
-        CheckForDebugMode();
         TurnOnDebug();
+        print("my first selected is on " + eventSystem.firstSelectedGameObject);
     }
 
     // Tells divers to spawn in random locations
@@ -413,11 +418,24 @@ public class GameManager : MonoBehaviour {
 
     public void PauseGame()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && Pause.activeSelf == false)
+        if (Input.GetKeyDown(KeyCode.Escape) && Pause.activeSelf == false && Panel.activeSelf == false)
         {
+
             Pause.SetActive(true);
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && Pause.activeSelf == true)
+        {
+            Pause.SetActive(false);
+        }
+    }
+    public void C_PauseGame()
+    {
+        if (Pause.activeSelf == false && Panel.activeSelf == false)
+        {
+            Pause.SetActive(true);
+            eventSystem.SetSelectedGameObject(resumeGameButton);
+        }
+        else if (Pause.activeSelf == true)
         {
             Pause.SetActive(false);
         }
@@ -447,10 +465,13 @@ public class GameManager : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.F12))
         {
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.D) && (DebugMode.activeSelf == false))
             {
-                DebugBool = true;
-                CheckForDebugMode();
+                DebugMode.SetActive(true);
+            }
+            else if (Input.GetKeyDown(KeyCode.D) && (DebugMode.activeSelf == true))
+            {
+                DebugMode.SetActive(false);
             }
         }
     }
@@ -468,10 +489,14 @@ public class GameManager : MonoBehaviour {
     }
     public void ObjectReferences()
     {
+        resumeGameButton = GameObject.Find("ResumeGameButton");
+        eventSystem = UnityEngine.EventSystems.EventSystem.current;
         submarine = GameObject.Find("Submarine");
         ui = GameObject.Find("UI");
         WinScreenPlaceHolder = GameObject.Find("WinScreen");
         Pause = GameObject.Find("PauseScreen");
+        Panel = GameObject.Find("Panel");
+        Panel.SetActive(false);
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
         crumbs = GameObject.Find("Crumbs");
@@ -492,6 +517,7 @@ public class GameManager : MonoBehaviour {
     {
         if (scene.buildIndex == 0)
         {
+            eventSystem = UnityEngine.EventSystems.EventSystem.current;
             po = GameObject.Find("popo");
             penny = GameObject.Find("PennyModel");
             crumbs = GameObject.Find("Crumbs");

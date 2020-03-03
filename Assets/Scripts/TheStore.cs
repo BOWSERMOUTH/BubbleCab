@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class TheStore : MonoBehaviour {
+
+    public EventSystem eventSystem;
     public GameObject panel;
     public GameObject openstoreon;
     public GameObject submarine;
+    public GameObject exitstoregameobject;
     public bool openstorebool;
+    public bool openstorebooldown;
     public Button openstore;
-    public Button upgrade2flashlight;
+    public Button upgrade2flashlightbutton;
     public Button upgrade2boost;
     public Button upgrade2claw;
     public Button upgrade2radar;
@@ -21,14 +26,14 @@ public class TheStore : MonoBehaviour {
     [SerializeField] int firstupgrade = 500;
     [SerializeField] int secondupgrade = 1000;
     private float solidDistance = 3f;
-    
-	void Start ()
+
+    void Start ()
     {
         var outsiderims = gameObject.GetComponent<Renderer>();
         var outsidewall = gameObject.GetComponent<Renderer>();
         upgrade2carrying.onClick.AddListener(carrying2ship);
         upgrade2hull.onClick.AddListener(hull2ship);
-        upgrade2flashlight.onClick.AddListener(flashlight2gamemanager);
+        upgrade2flashlightbutton.onClick.AddListener(flashlight2gamemanager);
         upgrade2boost.onClick.AddListener(boost2gamemanager);
         upgrade2claw.onClick.AddListener(claw2gamemanager);
         upgrade2radar.onClick.AddListener(radar2gamemanager);
@@ -52,7 +57,6 @@ public class TheStore : MonoBehaviour {
             UpgradeHullButtonDisabler();
         }
     }
-
     public void hull2ship()
     {
         if (GameManager.instance.score >= firstupgrade)
@@ -68,7 +72,6 @@ public class TheStore : MonoBehaviour {
             UpgradeHullButtonDisabler();
         }
     }
-
     public void flashlight2gamemanager()
     {
         if (GameManager.instance.score >= firstupgrade)
@@ -145,16 +148,14 @@ public class TheStore : MonoBehaviour {
             UpgradeHullButtonDisabler();
         }
     }
-    public void exitstore()
-    {
-        panel.SetActive(false);
-        Time.timeScale = 1f;
-    }
 
     private void OnTriggerEnter(Collider subenteredstore)
     {
-        openstoreon.SetActive(true);
-        openstorebool = true;
+        if (panel.activeSelf == false)
+        {
+            openstoreon.SetActive(true);
+            openstorebool = true;
+        }
     }
 
     private void OnTriggerExit(Collider subleftstore)
@@ -163,23 +164,60 @@ public class TheStore : MonoBehaviour {
         openstorebool = false;
     }
 
+        public void exitstore()
+    {
+        if (panel.activeSelf == true && openstorebooldown == false)
+        {
+            panel.SetActive(false);
+            Time.timeScale = 1f;
+            submarine.GetComponent<Rigidbody>().isKinematic = false;
+            print("i have exited the store");
+        }
+    }
+    public void C_OpenStoreBooleon()
+    {
+        if (openstorebool == true && openstorebooldown == false)
+        {
+            openstoreon.SetActive(false);
+            openstorebooldown = true;
+            print("i've opened the store");
+            submarine.GetComponent<Rigidbody>().isKinematic = true;
+            panel.SetActive(true);
+            eventSystem.SetSelectedGameObject(exitstoregameobject);
+            openstorebool = false;
+            CombinedButtonDisablers();
+            Invoke("waitforcooldown", .1f);
+        }
+    }
     private void OpenStoreBooleon()
     {
         if (openstorebool == true && (Input.GetMouseButtonDown(0)))
         {
             Time.timeScale = 0f;
+            submarine.GetComponent<Rigidbody>().isKinematic = true;
+            eventSystem.SetSelectedGameObject(exitstoregameobject);
             panel.SetActive(true);
             openstorebool = false;
             openstoreon.SetActive(false);
-            ClawButtonDisabler();
-            BoostButtonDisabler();
-            FlashlightButtonDisabler();
-            RadarButtonDisabler();
-            RepairButtonDisabler();
-            CapicityButtonDisabler();
-            UpgradeHullButtonDisabler();
+            CombinedButtonDisablers();
         }
     }
+    private void waitforcooldown()
+    {
+        openstorebooldown = false;
+        Time.timeScale = 0f;
+    }
+    private void CombinedButtonDisablers()
+    {
+        ClawButtonDisabler();
+        BoostButtonDisabler();
+        FlashlightButtonDisabler();
+        RadarButtonDisabler();
+        RepairButtonDisabler();
+        CapicityButtonDisabler();
+        UpgradeHullButtonDisabler();
+    }
+
     public void ClawButtonDisabler()
     {
         if (GameManager.instance.score >= firstupgrade && GameManager.instance.upgradedtoclaw == false)
@@ -217,11 +255,11 @@ public class TheStore : MonoBehaviour {
     {
         if (GameManager.instance.score >= firstupgrade && GameManager.instance.upgradedtolights == false)
         {
-            upgrade2flashlight.interactable = true;
+            upgrade2flashlightbutton.interactable = true;
         }
         else
         {
-            upgrade2flashlight.interactable = false;
+            upgrade2flashlightbutton.interactable = false;
         }
     }
     public void UpgradeHullButtonDisabler()
@@ -235,7 +273,6 @@ public class TheStore : MonoBehaviour {
             upgrade2hull.interactable = false;
         }
     }
-
     private void RepairButtonDisabler()
     {
         if (GameManager.instance.score >= repaircost && GameManager.instance.subHull < GameManager.instance.subHullLimit)
@@ -247,7 +284,6 @@ public class TheStore : MonoBehaviour {
             repairhull.interactable = false;
         }
     }
-
     private void CapicityButtonDisabler()
     {
         if (GameManager.instance.score >= secondupgrade && GameManager.instance.subCarryingCapacity < 2)

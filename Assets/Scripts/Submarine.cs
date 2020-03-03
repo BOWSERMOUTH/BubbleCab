@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class Submarine : MonoBehaviour {
 
@@ -15,8 +16,6 @@ public class Submarine : MonoBehaviour {
     public ScoreScript scoreboard;
     public GameObject claw;
     [SerializeField] AudioClip mainEngine;
-    [SerializeField] AudioClip deathSound;
-    [SerializeField] AudioClip winSound;
     [SerializeField] AudioClip grabbedScuba;
     [SerializeField] AudioClip flashlight;
     [SerializeField] AudioClip hurt;
@@ -26,18 +25,21 @@ public class Submarine : MonoBehaviour {
     public float rotationThrust = 150;
     public float rotationThrustright;
     public float rotationThrustleft;
-    [SerializeField] float mainThrust = 1f;
+    public float mainThrust = 1f;
     [SerializeField] float levelLoadDelay = 2f;
     // CONTROLLER SUPPORT
-
+    
+    TheStore thestore;
     Vector3 lastMousePosition;
-    private bool mouseorgamepad;
+    Vector2 clawdirection;
+    Vector2 lastclawdirection;
+    public bool mouseorgamepad;
     Grabbing c_grabbing;
     Radar radar;
     Controller controls;
     private bool controllerforwardbool = false;
     private bool controllerbackwardbool = false;
-    Vector2 clawdirection;
+    private bool boostybool;
     enum State {  Alive, Dying, Transcending }
     State state = State.Alive;
     public TimerScript timer;
@@ -74,6 +76,7 @@ public class Submarine : MonoBehaviour {
     void Awake()
     {
         controls = new Controller();
+        controls.Gameplay.Submit.performed += ctx => thestore.C_OpenStoreBooleon();
         controls.Gameplay.Forward.performed += ctx => controllerforwardbool = true;
         controls.Gameplay.Forward.canceled += ctx => controllerforwardbool = false;
         controls.Gameplay.Backward.performed += ctx => controllerbackwardbool = true;
@@ -81,10 +84,14 @@ public class Submarine : MonoBehaviour {
         controls.Gameplay.Right.performed += ctx => rotationThrustright = ctx.ReadValue<float>();
         controls.Gameplay.Left.performed += ctx => rotationThrustleft = ctx.ReadValue<float>();
         controls.Gameplay.Flashlight.performed += ctx => C_lightsOnOff();
-        controls.Gameplay.Radar.performed += ctx => radar.C_RadarButton();
+        controls.Gameplay.Sonar.performed += ctx => radar.C_RadarButton();
         controls.Gameplay.Claw.performed += ctx => clawdirection = ctx.ReadValue<Vector2>();
         controls.Gameplay.ClawGrab.performed += ctx => c_grabbing.C_isGrabbing();
         controls.Gameplay.ClawGrab.canceled += ctx => c_grabbing.C_releasingGrab();
+        controls.Gameplay.Start.performed += ctx => GameManager.instance.C_PauseGame();
+        controls.Gameplay.Boost.performed += ctx => C_Boost();
+        controls.Gameplay.Boost.canceled += ctx => C_BoostOff();
+
     }
     void OnEnable()
     {
@@ -96,6 +103,7 @@ public class Submarine : MonoBehaviour {
     }
     void Start ()
     {
+        thestore = GameObject.Find("TheStore").GetComponent<TheStore>();
         radar = GameObject.Find("Radar").GetComponent<Radar>();
         c_grabbing = GameObject.Find("GripPoint").GetComponent<Grabbing>();
         rigidBody = GetComponent<Rigidbody>();
@@ -117,7 +125,6 @@ public class Submarine : MonoBehaviour {
     {
         if (controllerforwardbool == true)
         {
-            print("I have applied force");
             rigidBody.AddRelativeForce(Vector3.up * mainThrust);
             // So audio doesn't layer
             if (!audioSource1.isPlaying)
@@ -161,8 +168,9 @@ public class Submarine : MonoBehaviour {
             lastMousePosition = Input.mousePosition;
             mouseorgamepad = false;
         }
-        else
+        else if (clawdirection!=lastclawdirection)
         {
+            lastclawdirection = clawdirection;
             mouseorgamepad = true;
         }
     }
@@ -235,23 +243,24 @@ public class Submarine : MonoBehaviour {
     // Controls
     private void RespondToThrustInput()
     {
-        if (engineOff == true)
+        if (engineOff == true && mouseorgamepad == false)
         {
             mainThrust = 0f;
         }
 
-        if (Input.GetKey(KeyCode.LeftShift) && engineOff == false && GameManager.instance.upgradedtoboost == true)
+        if (Input.GetKey(KeyCode.LeftShift) && engineOff == false && GameManager.instance.upgradedtoboost == true
+            || engineOff == false && boostybool == true && GameManager.instance.upgradedtoboost == true)
         {
             mainThrust = 20f;
             audioSource1.pitch = 1.6f;
         }
-        else if (engineOff == false)
+        else if (engineOff == false && mouseorgamepad == false || engineOff == false && boostybool == false)
         {
             mainThrust = 10f;
             audioSource1.pitch = .6f;
         }
 
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) && mouseorgamepad == false)
         {
             MoveForward();
         }
@@ -266,34 +275,45 @@ public class Submarine : MonoBehaviour {
             MoveBackward();
         }
     }
+    private void C_Boost()
+    {
+        if (GameManager.instance.upgradedtoboost == true)
+        {
+            boostybool = true;
+        }
+    }
+    private void C_BoostOff()
+    {
+        boostybool = false;
+    }
     // THRUST STRENGTH
     private void RespondToRotateInput()
     {
-        // Freezing rotation as soon as we rotate
-        rigidBody.freezeRotation = true;
-        // Turning Power
-        float rotationThisFrame = rotationThrust * Time.deltaTime;
-
-        // Rotating Left
-        if (Input.GetKey(KeyCode.A))
+        if (mouseorgamepad == false)
         {
-            print("i'm turning left");
-            transform.Rotate(Vector3.forward * rotationThisFrame);
-        }
-        // Rotating Right
-        else if (Input.GetKey(KeyCode.D))
-        {
-            transform.Rotate(Vector3.back * rotationThisFrame);
-        }
+            // Freezing rotation as soon as we rotate
+            rigidBody.freezeRotation = true;
+            // Turning Power
+            float rotationThisFrame = rotationThrust * Time.deltaTime;
 
-        // Allowing rotation to resume after rotating
-        //rigidBody.freezeRotation = false;
+            // Rotating Left
+            if (Input.GetKey(KeyCode.A))
+            {
+                print("i'm turning left");
+                transform.Rotate(Vector3.forward * rotationThisFrame);
+            }
+            // Rotating Right
+            else if (Input.GetKey(KeyCode.D))
+            {
+                transform.Rotate(Vector3.back * rotationThisFrame);
+            }
+        }
     }
     private void C_TurnRight()
     {
-        if (rotationThrustright >= .3)
+        if (rotationThrustright >= .5f)
         {
-            float rotationThisFrame = rotationThrustright * Time.deltaTime * 150;
+            float rotationThisFrame = rotationThrustright * Time.deltaTime * 150f;
             transform.Rotate(Vector3.back * rotationThisFrame);
         }
         else
@@ -303,9 +323,9 @@ public class Submarine : MonoBehaviour {
     }
     private void C_TurnLeft()
     {
-        if (rotationThrustleft >= .3)
+        if (rotationThrustleft >= .5f)
         {
-            float rotationThisFrame = rotationThrustleft * Time.deltaTime * 150;
+            float rotationThisFrame = rotationThrustleft * Time.deltaTime * 150f;
             transform.Rotate(Vector3.forward * rotationThisFrame);
         }
         else
@@ -458,7 +478,6 @@ public class Submarine : MonoBehaviour {
     {
         state = State.Dying;
         audioSource1.Stop();
-        audioSource1.PlayOneShot(deathSound);
         dome.transform.position = dome.transform.position;
         popo.transform.position = popo.transform.position;
         Invoke("LoadCurrentLevel", levelLoadDelay);
@@ -467,7 +486,6 @@ public class Submarine : MonoBehaviour {
     private void SuccessSequence()
     {
         audioSource1.Stop();
-        audioSource1.PlayOneShot(winSound);
         state = State.Transcending;
         Invoke("LoadNextLevel", 2.5f); // parameterise time
     }

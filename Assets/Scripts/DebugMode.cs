@@ -11,6 +11,12 @@ public class DebugMode : MonoBehaviour
     public bool upgradetoboostD;
     public bool upgradetohull;
     public bool upgradetolights;
+    private GameObject submarine;
+
+    private void OnEnable()
+    {
+        submarine = GameObject.Find("Submarine");
+    }
 
     public void addhundredpoints()
     {
@@ -58,6 +64,7 @@ public class DebugMode : MonoBehaviour
         GameManager.instance.level = GameManager.instance.level + 1;
         GameManager.instance.ResettingMap();
         GameManager.instance.LevelLogic();
+        GameManager.instance.playerPosition = submarine.transform.position;
     }
     public void nextLevel()
     {

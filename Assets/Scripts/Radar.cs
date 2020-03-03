@@ -78,7 +78,6 @@ public class Radar : MonoBehaviour
     }
     public void C_RadarButton()
     {
-        print("i've hit radar buttons");
         if (radarcooldowntoggle == false)
         {
             radarcooldowntoggle = true;
