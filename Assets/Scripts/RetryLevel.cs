@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class RetryLevel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    EventSystem eventSystem;
+    private void OnEnable()
     {
-        
+        eventSystem = UnityEngine.EventSystems.EventSystem.current;
+        eventSystem.SetSelectedGameObject(gameObject);
     }
     public void retryLevel()
     {

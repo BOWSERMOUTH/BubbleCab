@@ -22,6 +22,9 @@ public class TheStore : MonoBehaviour {
     public Button upgrade2hull;
     public Button upgrade2carrying;
     public Button leavestore;
+    private AudioSource audiosource;
+    public AudioClip upgradenoise;
+    public AudioClip repairnoise;
     [SerializeField] int repaircost = 100;
     [SerializeField] int firstupgrade = 500;
     [SerializeField] int secondupgrade = 1000;
@@ -29,6 +32,7 @@ public class TheStore : MonoBehaviour {
 
     void Start ()
     {
+        audiosource = gameObject.GetComponent<AudioSource>();
         var outsiderims = gameObject.GetComponent<Renderer>();
         var outsidewall = gameObject.GetComponent<Renderer>();
         upgrade2carrying.onClick.AddListener(carrying2ship);
@@ -45,6 +49,7 @@ public class TheStore : MonoBehaviour {
     {
         if (GameManager.instance.score >= secondupgrade)
         {
+            audiosource.PlayOneShot(upgradenoise);
             GameManager.instance.subUpgradedCapacity += 1;
             GameManager.instance.subCarryingCapacity += 1;
             GameManager.instance.score -= secondupgrade;
@@ -61,6 +66,7 @@ public class TheStore : MonoBehaviour {
     {
         if (GameManager.instance.score >= firstupgrade)
         {
+            audiosource.PlayOneShot(upgradenoise);
             GameManager.instance.subHullLimit += 1;
             GameManager.instance.score -= firstupgrade;
             ClawButtonDisabler();
@@ -76,6 +82,7 @@ public class TheStore : MonoBehaviour {
     {
         if (GameManager.instance.score >= firstupgrade)
         {
+            audiosource.PlayOneShot(upgradenoise);
             GameManager.instance.upgradedtolights = true;
             GameManager.instance.score -= firstupgrade;
             ClawButtonDisabler();
@@ -91,6 +98,7 @@ public class TheStore : MonoBehaviour {
     {
         if (GameManager.instance.score >= firstupgrade)
         {
+            audiosource.PlayOneShot(upgradenoise);
             GameManager.instance.upgradedtoboost = true;
             GameManager.instance.score -= firstupgrade;
             ClawButtonDisabler();
@@ -106,6 +114,7 @@ public class TheStore : MonoBehaviour {
     {
         if (GameManager.instance.score >= firstupgrade)
         {
+            audiosource.PlayOneShot(upgradenoise);
             GameManager.instance.upgradedtoclaw = true;
             GameManager.instance.score -= firstupgrade;
             ClawButtonDisabler();
@@ -122,6 +131,7 @@ public class TheStore : MonoBehaviour {
     {
         if (GameManager.instance.score >= firstupgrade)
         {
+            audiosource.PlayOneShot(upgradenoise);
             GameManager.instance.upgradedtoradar = true;
             GameManager.instance.score -= firstupgrade;
             ClawButtonDisabler();
@@ -137,6 +147,7 @@ public class TheStore : MonoBehaviour {
     {
         if (GameManager.instance.score >= repaircost)
         {
+            audiosource.PlayOneShot(repairnoise);
             GameManager.instance.subHull += 1;
             GameManager.instance.score -= repaircost;
             ClawButtonDisabler();
@@ -193,7 +204,7 @@ public class TheStore : MonoBehaviour {
     {
         if (openstorebool == true && (Input.GetMouseButtonDown(0)))
         {
-            Time.timeScale = 0f;
+            //Time.timeScale = 0f;
             submarine.GetComponent<Rigidbody>().isKinematic = true;
             eventSystem.SetSelectedGameObject(exitstoregameobject);
             panel.SetActive(true);
@@ -205,7 +216,7 @@ public class TheStore : MonoBehaviour {
     private void waitforcooldown()
     {
         openstorebooldown = false;
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
     }
     private void CombinedButtonDisablers()
     {

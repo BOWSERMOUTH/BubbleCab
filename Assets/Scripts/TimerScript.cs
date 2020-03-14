@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class TimerScript : MonoBehaviour
 {
+    public GameObject panel;
     public Submarine submarine;
     public Rigidbody rb;
     public BubblesOnThrust bubblesoff;
@@ -13,6 +14,7 @@ public class TimerScript : MonoBehaviour
     public GameObject retrylevel;
     private AudioSource pop;
     private Text timer;
+    public bool timepausedforstore = false;
     public float timeLeft;
 
     void Start()
@@ -48,10 +50,25 @@ public class TimerScript : MonoBehaviour
     {
         submarine.invincibility = false;
     }
+    private void PauseTimerAtStore()
+    {
+        if (panel.activeSelf)
+        {
+            timepausedforstore = true;
+        }
+        else
+        {
+            timepausedforstore = false;
+        }
+    }
     void Update()
     {
-        timeLeft -= Time.deltaTime;
-        timer.text = timeLeft.ToString("F0");
+        PauseTimerAtStore();
+        if (timepausedforstore == false)
+        {
+            timeLeft -= Time.deltaTime;
+            timer.text = timeLeft.ToString("F0");
+        }
         if (timeLeft < 11 && timeLeft > 0 && pop.isPlaying == false)
         {
             pop.Play();
@@ -65,7 +82,6 @@ public class TimerScript : MonoBehaviour
             {
                 timer.text = "Game Over!";
                 TimerEnd();
-                
             }
         }
     }

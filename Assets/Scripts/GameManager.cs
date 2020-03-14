@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour {
     //OBJECT REFERENCES
     public EventSystem eventSystem;
     public GameObject resumeGameButton;
+    public GameObject retryGameButton;
     public GameObject submarine = null;
     public GameObject po;
     public GameObject penny;
@@ -169,7 +170,6 @@ public class GameManager : MonoBehaviour {
         upgraded2radar();
         upgraded2claw();
         TurnOnDebug();
-        print("my first selected is on " + eventSystem.firstSelectedGameObject);
     }
 
     // Tells divers to spawn in random locations
@@ -274,7 +274,7 @@ public class GameManager : MonoBehaviour {
         {
             maxDivers = 2;
             maxTreasures = 3;
-            timer.timeLeft = 120f;
+            timer.timeLeft = 180f;
             spawnDivers();
             spawnTreasure();
 
@@ -321,7 +321,7 @@ public class GameManager : MonoBehaviour {
         {
             maxDivers = 6;
             maxTreasures = 3;
-            timer.timeLeft = 120f;
+            timer.timeLeft = 100f;
             spawnDivers();
             spawnTreasure();
         }
@@ -329,7 +329,7 @@ public class GameManager : MonoBehaviour {
         {
             maxDivers = 8;
             maxTreasures = 3;
-            timer.timeLeft = 120f;
+            timer.timeLeft = 60f;
             spawnDivers();
             spawnTreasure();
         }
@@ -374,7 +374,6 @@ public class GameManager : MonoBehaviour {
     IEnumerator DimMusicDuringWin()
     {
         music.volume = 0.02f;
-        print("ive dimmed volume in script");
         yield return new WaitForSeconds(4f);
         music.volume = 0.386f;
     }
@@ -490,6 +489,7 @@ public class GameManager : MonoBehaviour {
     public void ObjectReferences()
     {
         resumeGameButton = GameObject.Find("ResumeGameButton");
+        retryGameButton = GameObject.Find("RetryLevel");
         eventSystem = UnityEngine.EventSystems.EventSystem.current;
         submarine = GameObject.Find("Submarine");
         ui = GameObject.Find("UI");

@@ -299,7 +299,6 @@ public class Submarine : MonoBehaviour {
             // Rotating Left
             if (Input.GetKey(KeyCode.A))
             {
-                print("i'm turning left");
                 transform.Rotate(Vector3.forward * rotationThisFrame);
             }
             // Rotating Right
