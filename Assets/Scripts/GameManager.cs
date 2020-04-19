@@ -23,10 +23,13 @@ public class GameManager : MonoBehaviour {
     public int currentvalueforpopup;
 
     //OBJECT REFERENCES
+
     public EventSystem eventSystem;
+    public GameObject bigbybutton;
     public GameObject resumeGameButton;
     public GameObject retryGameButton;
     public GameObject submarine = null;
+    public GameObject bigby;
     public GameObject po;
     public GameObject penny;
     public GameObject crumbs;
@@ -77,7 +80,8 @@ public class GameManager : MonoBehaviour {
     public bool paused = false;
     public TimerScript timer;
     public int diversleft;
-    
+    public bool unlockbigby;
+
     void OnEnable ()
     {
         eventSystem = UnityEngine.EventSystems.EventSystem.current;
@@ -85,6 +89,10 @@ public class GameManager : MonoBehaviour {
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
         crumbs = GameObject.Find("Crumbs");
+        bigby = GameObject.Find("Bigby");
+        bigbybutton = GameObject.Find("ToggleBigby");
+        //unlockbigby = true;
+        BigbyBool();
         SceneManager.sceneLoaded += OnSceneLoaded;
         // DEBUG MODE
         //DebugSetDiverSpawnPoints();
@@ -214,6 +222,7 @@ public class GameManager : MonoBehaviour {
             po.SetActive(true);
             penny.SetActive(false);
             crumbs.SetActive(false);
+            bigby.SetActive(false);
             pennylab.SetActive(true);
             polab.SetActive(false);
             crumbslab.SetActive(false);
@@ -223,6 +232,7 @@ public class GameManager : MonoBehaviour {
             po.SetActive(false);
             penny.SetActive(true);
             crumbs.SetActive(false);
+            bigby.SetActive(false);
             pennylab.SetActive(false);
             polab.SetActive(false);
             crumbslab.SetActive(true);
@@ -232,11 +242,23 @@ public class GameManager : MonoBehaviour {
             po.SetActive(false);
             penny.SetActive(false);
             crumbs.SetActive(true);
+            bigby.SetActive(false);
+            pennylab.SetActive(false);
+            polab.SetActive(true);
+            crumbslab.SetActive(false);
+        }
+        else if (chosencharacter == "Bigby")
+        {
+            po.SetActive(false);
+            penny.SetActive(false);
+            crumbs.SetActive(false);
+            bigby.SetActive(true);
             pennylab.SetActive(false);
             polab.SetActive(true);
             crumbslab.SetActive(false);
         }
     }
+
     public void ChosenCharacter()
     {
         chosencharacter = null;
@@ -339,7 +361,21 @@ public class GameManager : MonoBehaviour {
         }
         fishtank.ChangeFishOnLevel();
     }
-
+    public void UnlockingBigby()
+    {
+        unlockbigby = true;
+    }
+    public void BigbyBool()
+    {
+        if (unlockbigby == true)
+        {
+            bigbybutton.SetActive(true);
+        }
+        else if (unlockbigby == false)
+        {
+            bigbybutton.SetActive(false);
+        }
+    }
     public void BeatingLevel()
     {
         if (level <= 8)
@@ -488,6 +524,7 @@ public class GameManager : MonoBehaviour {
     }
     public void ObjectReferences()
     {
+        bigbybutton = null;
         resumeGameButton = GameObject.Find("ResumeGameButton");
         retryGameButton = GameObject.Find("RetryLevel");
         eventSystem = UnityEngine.EventSystems.EventSystem.current;
@@ -497,6 +534,7 @@ public class GameManager : MonoBehaviour {
         Pause = GameObject.Find("PauseScreen");
         Panel = GameObject.Find("Panel");
         Panel.SetActive(false);
+        bigby = GameObject.Find("Bigby");
         po = GameObject.Find("popo");
         penny = GameObject.Find("PennyModel");
         crumbs = GameObject.Find("Crumbs");
@@ -513,16 +551,20 @@ public class GameManager : MonoBehaviour {
         music = Camera.main.GetComponent<AudioSource>();
         fishtank = GameObject.Find("FishTank").GetComponent<FishTank>();
     }
-    void OnSceneLoaded (Scene scene, LoadSceneMode mode)
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.buildIndex == 0)
         {
             eventSystem = UnityEngine.EventSystems.EventSystem.current;
+            bigby = GameObject.Find("Bigby");
             po = GameObject.Find("popo");
             penny = GameObject.Find("PennyModel");
             crumbs = GameObject.Find("Crumbs");
+            bigbybutton = GameObject.Find("ToggleBigby");
+            bigby.SetActive(false);
             penny.SetActive(false);
             crumbs.SetActive(false);
+            BigbyBool();
         }
         else if (scene.buildIndex == 1)
         {
@@ -545,6 +587,10 @@ public class GameManager : MonoBehaviour {
             spawnTreasure();
             SpawnWinScreen();
             StartCoroutine(DimMusicDuringWin());
+        }
+        else if (scene.buildIndex == 3)
+        {
+            unlockbigby = true;
         }
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CharacterSelect : MonoBehaviour
 {
+    public GameObject bigby;
     public GameObject penny;
     public GameObject po;
     public GameObject crumbs;
@@ -22,6 +23,7 @@ public class CharacterSelect : MonoBehaviour
         po.SetActive(true);
         penny.SetActive(false);
         crumbs.SetActive(false);
+        bigby.SetActive(false);
         gamemanager.chosencharacter = "Popo";
 
     }
@@ -31,6 +33,7 @@ public class CharacterSelect : MonoBehaviour
         po.SetActive(false);
         penny.SetActive(true);
         crumbs.SetActive(false);
+        bigby.SetActive(false);
         gamemanager.chosencharacter = "Penny";
     }
     public void switchToCrumbs()
@@ -39,6 +42,17 @@ public class CharacterSelect : MonoBehaviour
         po.SetActive(false);
         penny.SetActive(false);
         crumbs.SetActive(true);
+        bigby.SetActive(false);
         gamemanager.chosencharacter = "Crumbs";
+    }
+    public void switchToBigby()
+    {
+        audio.PlayOneShot(clickNoise);
+        po.SetActive(false);
+        penny.SetActive(false);
+        crumbs.SetActive(false);
+        bigby.SetActive(true);
+        gamemanager.chosencharacter = "Bigby";
+
     }
 }

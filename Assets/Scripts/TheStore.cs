@@ -11,6 +11,7 @@ public class TheStore : MonoBehaviour {
     public GameObject openstoreon;
     public GameObject submarine;
     public GameObject exitstoregameobject;
+    public GameObject yestorepair;
     public bool openstorebool;
     public bool openstorebooldown;
     public Button openstore;
@@ -53,13 +54,8 @@ public class TheStore : MonoBehaviour {
             GameManager.instance.subUpgradedCapacity += 1;
             GameManager.instance.subCarryingCapacity += 1;
             GameManager.instance.score -= secondupgrade;
-            ClawButtonDisabler();
-            BoostButtonDisabler();
-            FlashlightButtonDisabler();
-            RadarButtonDisabler();
-            RepairButtonDisabler();
-            CapicityButtonDisabler();
-            UpgradeHullButtonDisabler();
+            eventSystem.SetSelectedGameObject(exitstoregameobject);
+            CombinedButtonDisablers();
         }
     }
     public void hull2ship()
@@ -69,13 +65,8 @@ public class TheStore : MonoBehaviour {
             audiosource.PlayOneShot(upgradenoise);
             GameManager.instance.subHullLimit += 1;
             GameManager.instance.score -= firstupgrade;
-            ClawButtonDisabler();
-            BoostButtonDisabler();
-            FlashlightButtonDisabler();
-            RadarButtonDisabler();
-            RepairButtonDisabler();
-            CapicityButtonDisabler();
-            UpgradeHullButtonDisabler();
+            eventSystem.SetSelectedGameObject(exitstoregameobject);
+            CombinedButtonDisablers();
         }
     }
     public void flashlight2gamemanager()
@@ -85,13 +76,8 @@ public class TheStore : MonoBehaviour {
             audiosource.PlayOneShot(upgradenoise);
             GameManager.instance.upgradedtolights = true;
             GameManager.instance.score -= firstupgrade;
-            ClawButtonDisabler();
-            BoostButtonDisabler();
-            FlashlightButtonDisabler();
-            RadarButtonDisabler();
-            RepairButtonDisabler();
-            CapicityButtonDisabler();
-            UpgradeHullButtonDisabler();
+            eventSystem.SetSelectedGameObject(exitstoregameobject);
+            CombinedButtonDisablers();
         }
     }
     public void boost2gamemanager()
@@ -101,13 +87,8 @@ public class TheStore : MonoBehaviour {
             audiosource.PlayOneShot(upgradenoise);
             GameManager.instance.upgradedtoboost = true;
             GameManager.instance.score -= firstupgrade;
-            ClawButtonDisabler();
-            BoostButtonDisabler();
-            FlashlightButtonDisabler();
-            RadarButtonDisabler();
-            RepairButtonDisabler();
-            CapicityButtonDisabler();
-            UpgradeHullButtonDisabler();
+            eventSystem.SetSelectedGameObject(exitstoregameobject);
+            CombinedButtonDisablers();
         }
     }
     public void claw2gamemanager()
@@ -117,13 +98,8 @@ public class TheStore : MonoBehaviour {
             audiosource.PlayOneShot(upgradenoise);
             GameManager.instance.upgradedtoclaw = true;
             GameManager.instance.score -= firstupgrade;
-            ClawButtonDisabler();
-            BoostButtonDisabler();
-            FlashlightButtonDisabler();
-            RadarButtonDisabler();
-            RepairButtonDisabler();
-            CapicityButtonDisabler();
-            UpgradeHullButtonDisabler();
+            eventSystem.SetSelectedGameObject(exitstoregameobject);
+            CombinedButtonDisablers();
         }
     }
 
@@ -134,13 +110,8 @@ public class TheStore : MonoBehaviour {
             audiosource.PlayOneShot(upgradenoise);
             GameManager.instance.upgradedtoradar = true;
             GameManager.instance.score -= firstupgrade;
-            ClawButtonDisabler();
-            BoostButtonDisabler();
-            FlashlightButtonDisabler();
-            RadarButtonDisabler();
-            RepairButtonDisabler();
-            CapicityButtonDisabler();
-            UpgradeHullButtonDisabler();
+            eventSystem.SetSelectedGameObject(exitstoregameobject);
+            CombinedButtonDisablers();
         }
     }
     public void repair2ship()
@@ -150,13 +121,11 @@ public class TheStore : MonoBehaviour {
             audiosource.PlayOneShot(repairnoise);
             GameManager.instance.subHull += 1;
             GameManager.instance.score -= repaircost;
-            ClawButtonDisabler();
-            BoostButtonDisabler();
-            FlashlightButtonDisabler();
-            RadarButtonDisabler();
-            RepairButtonDisabler();
-            CapicityButtonDisabler();
-            UpgradeHullButtonDisabler();
+            CombinedButtonDisablers();
+            if (repairhull.interactable == false)
+            {
+                eventSystem.SetSelectedGameObject(exitstoregameobject);
+            }
         }
     }
 
